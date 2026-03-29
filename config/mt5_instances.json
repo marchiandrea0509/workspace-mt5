@@ -1,0 +1,28 @@
+{
+  "defaultInstance": "oanda_appdata",
+  "instances": {
+    "oanda_appdata": {
+      "label": "Current OANDA AppData-backed MT5 terminal",
+      "terminalExe": "C:\\Program Files\\OANDA TMS MT5 Terminal\\terminal64.exe",
+      "metaEditorExe": "C:\\Program Files\\OANDA TMS MT5 Terminal\\MetaEditor64.exe",
+      "dataRoot": "C:\\Users\\anmar\\AppData\\Roaming\\MetaQuotes\\Terminal\\47AEB69EDDAD4D73097816C71FB25856",
+      "profile": "Default",
+      "portable": false,
+      "mql5Root": "C:\\Users\\anmar\\AppData\\Roaming\\MetaQuotes\\Terminal\\47AEB69EDDAD4D73097816C71FB25856\\MQL5",
+      "eaSource": "C:\\Users\\anmar\\AppData\\Roaming\\MetaQuotes\\Terminal\\47AEB69EDDAD4D73097816C71FB25856\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+      "bridgeRoot": "C:\\Users\\anmar\\AppData\\Roaming\\MetaQuotes\\Terminal\\47AEB69EDDAD4D73097816C71FB25856\\MQL5\\Files\\gray_bridge"
+    },
+    "oanda_paper_oc": {
+      "label": "Dedicated portable OANDA paper / OpenClaw terminal",
+      "terminalExe": "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+      "metaEditorExe": "C:\\MT5_OANDA_PAPER_OC\\MetaEditor64.exe",
+      "dataRoot": "C:\\MT5_OANDA_PAPER_OC",
+      "profile": "Default",
+      "portable": true,
+      "launchArgs": "/portable /profile:Default",
+      "mql5Root": "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+      "eaSource": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+      "bridgeRoot": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge"
+    }
+  }
+}
