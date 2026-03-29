@@ -1,0 +1,44 @@
+{
+  "bridge_version": "mt5.paper.v1",
+  "ticket_id": "mt5-paper-20260329-nzdsgd-autotrade-open-001",
+  "created_at": "2026-03-29T21:42:00Z",
+  "mode": "paper",
+  "symbol": "NZDSGD",
+  "side": "sell",
+  "order_plan": "limit_ladder",
+  "entries": [
+    {
+      "client_entry_id": "nzdsgd-sell-limit-mid",
+      "entry_type": "limit",
+      "price": 0.7442,
+      "volume_lots": 0.17,
+      "comment": "NZDSGD primary rally-short midpoint entry"
+    }
+  ],
+  "stop_loss": {
+    "price": 0.7514
+  },
+  "take_profit": {
+    "price": 0.7315
+  },
+  "max_risk_usdt": 100,
+  "strategy_context": {
+    "source": "Deep analysis autotrade plan for screener winner NZDSGD",
+    "timeframe": "4H / 1D",
+    "setup_bias": "bearish continuation / sell rally",
+    "recommended_report_entry_zone": "0.7432-0.7450",
+    "bridge_executable_entry": 0.7442,
+    "one_day_invalidation": 0.7514,
+    "planned_tp1": 0.7369,
+    "planned_tp2": 0.7315,
+    "planned_rr_tp1": 1.01,
+    "planned_rr_tp2": 1.76,
+    "assumed_nzdusd": 0.5753,
+    "planned_total_notional_usd": 9780.1,
+    "modeled_effective_leverage": 10,
+    "modeled_margin_usd": 978.0,
+    "bridge_limit_note": "Current EA scaffold supports one executable entry only, so the live ticket uses the midpoint of the recommended sell zone.",
+    "bridge_tp_note": "Bridge schema supports one live TP only; TP2 is used as the executable TP while TP1 remains a reporting/management level."
+  },
+  "note": "NZDSGD paper autotrade for market reopen. Default risk budget 100 USD. Short rally into EMA band using a midpoint sell-limit; SL anchored to 1D invalidation."
+}
