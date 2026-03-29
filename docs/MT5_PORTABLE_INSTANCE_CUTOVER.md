@@ -58,14 +58,17 @@ Use the new pointer file:
 python scripts\emit_mt5_bridge_ticket.py --ticket <ticket.json> --pointer mql5\MQL5_OANDA_PAPER_OC
 ```
 
-## Recommended cutover order
-1. Create the portable instance.
-2. Log in and attach the EA there.
-3. Run `check_mt5_bridge_health.ps1 -InstanceName oanda_paper_oc`.
-4. Run a smoke paper ticket against the portable pointer file.
-5. Verify result JSON lands in `C:\MT5_OANDA_PAPER_OC\MQL5\Files\gray_bridge\outbox`.
-6. Once proven, treat `oanda_paper_oc` as the automation default.
-7. Only after that, decide whether to repoint `mql5/MQL5` from AppData to the portable instance.
+## Cutover result
+The cutover is now complete.
+
+Completed outcomes:
+1. Portable instance created at `C:\MT5_OANDA_PAPER_OC`.
+2. `GrayPaperBridgeEA` attached and initialized there.
+3. Health check proved the terminal and bridge paths are live.
+4. A portable-instance ETHUSD smoke ticket first failed with `TRADE_RETCODE_CLIENT_DISABLES_AT`, confirming the path was wired but AutoTrading was still disabled.
+5. After enabling AutoTrading, a retry ETHUSD smoke ticket was accepted with `TRADE_RETCODE_DONE`.
+6. The default workspace pointer `mql5/MQL5` has now been repointed to `C:\MT5_OANDA_PAPER_OC\MQL5`.
+7. The prior AppData-backed terminal remains preserved as fallback through `mql5/MQL5_OANDA_APPDATA` and `config/mt5_instances.json`.
 
 ## Important caution
-Do not flip the default workspace pointer (`mql5/MQL5`) until the portable instance has passed at least one full end-to-end paper smoke test.
+Keep using the portable instance as the default automation target unless there is a deliberate rollback. Preserve the AppData-backed terminal as fallback/manual history rather than silently mixing the two again.

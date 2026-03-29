@@ -1,5 +1,5 @@
 {
-  "defaultInstance": "oanda_appdata",
+  "defaultInstance": "oanda_paper_oc",
   "instances": {
     "oanda_appdata": {
       "label": "Current OANDA AppData-backed MT5 terminal",

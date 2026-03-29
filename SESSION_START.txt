@@ -1,0 +1,17 @@
+Read in this order:
+1. PROJECT_STATE.md
+2. docs/MT5_AGENT_TRANSFER_PACK_2026-03-29.md
+3. docs/MT5_OANDA_PAPER_BRIDGE_STATUS.md
+4. docs/MT5_OANDA_PAPER_BRIDGE_PLAN.md
+
+Then do this before proposing work:
+- Treat `mt5_bridge/GrayPaperBridgeEA.mq5` as the tracked mirror, but compare it against the live EA in the active MT5 instance before editing.
+- Default automation target is now the portable instance at `C:\MT5_OANDA_PAPER_OC\MQL5` via `mql5/MQL5`.
+- Old AppData-backed instance is preserved as fallback via `mql5/MQL5_OANDA_APPDATA` and `config/mt5_instances.json`.
+- Use `scripts/check_mt5_bridge_health.ps1` before live paper tests.
+- Use `scripts/reload_mt5_bridge.ps1` after EA edits instead of relying on manual MT5 restarts.
+- Keep the bridge paper-only unless explicitly instructed otherwise.
+
+Then give:
+1. a 5-line summary
+2. the single best next action
