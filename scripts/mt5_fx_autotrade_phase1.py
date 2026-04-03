@@ -470,7 +470,8 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
     tv_symbol = plan['symbol']
     symbol = preview.get('mt5_execution_symbol') or tv_symbol
     direction = plan['bias']['direction']
-    ticket_id = f"mt5-paper-{session_id.replace('|', '-').replace(':', '').replace('.', '-')}-{tv_symbol.lower()}-phase1-001"
+    unique_suffix = now_utc().strftime('%Y%m%d-%H%M%S')
+    ticket_id = f"mt5-paper-{session_id.replace('|', '-').replace(':', '').replace('.', '-')}-{tv_symbol.lower()}-{unique_suffix}-phase1-001"
     return {
         'bridge_version': 'mt5.paper.v1',
         'ticket_id': ticket_id,
