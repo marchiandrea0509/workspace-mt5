@@ -671,6 +671,7 @@ def preflight_mt5_ticket(ticket: dict[str, Any], cfg: dict[str, Any]) -> tuple[d
                 ('buy', 'stop'): mt5.ORDER_TYPE_BUY_STOP,
                 ('sell', 'stop'): mt5.ORDER_TYPE_SELL_STOP,
             }
+            preflight_comment = str(entry.get('client_entry_id') or ticket['ticket_id'])[:31]
             req = {
                 'action': mt5.TRADE_ACTION_PENDING,
                 'symbol': symbol,
@@ -682,14 +683,17 @@ def preflight_mt5_ticket(ticket: dict[str, Any], cfg: dict[str, Any]) -> tuple[d
                 'deviation': 20,
                 'type_time': mt5.ORDER_TIME_GTC,
                 'type_filling': mt5.ORDER_FILLING_RETURN,
-                'comment': ticket['ticket_id'],
+                'comment': preflight_comment,
                 'type': type_map[(side, et)],
             }
             chk = mt5.order_check(req)
-            retcode = getattr(chk, 'retcode', None)
-            comment = getattr(chk, 'comment', None)
-            if retcode not in (0, 10009, 10008):
-                local_reasons.append(f'order_check retcode {retcode} ({comment})')
+            if chk is None:
+                local_reasons.append(f'order_check returned None (last_error={mt5.last_error()})')
+            else:
+                retcode = getattr(chk, 'retcode', None)
+                comment = getattr(chk, 'comment', None)
+                if retcode not in (0, 10009, 10008):
+                    local_reasons.append(f'order_check retcode {retcode} ({comment})')
             if local_reasons:
                 rejected.append({'client_entry_id': entry.get('client_entry_id'), 'entry_type': et, 'price': price, 'original_price': entry.get('price'), 'adjusted': adjusted, 'reasons': local_reasons, 'order_type': order_type_names.get(req['type'], str(req['type']))})
             else:
