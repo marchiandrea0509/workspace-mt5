@@ -93,5 +93,7 @@ Validated on live terminal:
 - phase1 dry-run using MT5 v2 analysis: success
 
 ## Notes / current constraints
-- Bridge v1 still executes one leg only (`entries[0]` effectively), so ladder/hybrid templates are represented in analysis and collapsed to one executable fallback leg at emission time.
+- Bridge now executes multi-entry pending packages for ladder and hybrid templates.
+- Hybrid package cancel-on-fill is managed by an EA-side package state file under `gray_bridge\\trailing`.
+- Current remaining constraint: package legs still share one live TP/SL set; branch-specific TP/SL management is not implemented yet.
 - Proxy symbol metadata remains preserved (`CHFPLN -> Forexcom`) while analysis levels are MT5-native.

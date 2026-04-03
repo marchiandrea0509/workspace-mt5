@@ -467,11 +467,75 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
 
 def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
     preview = plan['trade_ticket_preview']
+    key = plan.get('key_levels', {})
     tv_symbol = plan['symbol']
     symbol = preview.get('mt5_execution_symbol') or tv_symbol
     direction = plan['bias']['direction']
+    template = str(plan.get('orderability_decision', {}).get('execution_template') or '')
     unique_suffix = now_utc().strftime('%Y%m%d-%H%M%S')
     ticket_id = f"mt5-paper-{session_id.replace('|', '-').replace(':', '').replace('.', '-')}-{tv_symbol.lower()}-{unique_suffix}-phase1-001"
+
+    total_lots = float(preview['volume_lots'])
+    entries: list[dict[str, Any]] = []
+
+    def split_lots(parts: int) -> list[float]:
+        if parts <= 1:
+            return [round(total_lots, 2)]
+        base = round(total_lots / parts, 2)
+        vals = [base for _ in range(parts)]
+        used = round(sum(vals), 2)
+        vals[-1] = round(max(total_lots - (used - vals[-1]), 0.01), 2)
+        return vals
+
+    if template == 'breakout_stop_limit':
+        order_plan = 'stop_entry'
+        breakout_price = float(key.get('breakout_trigger') or preview['entry'])
+        lots = split_lots(1)
+        entries.append({
+            'client_entry_id': f'{tv_symbol.lower()}-phase1-breakout-1',
+            'entry_type': 'stop',
+            'price': breakout_price,
+            'volume_lots': lots[0],
+            'comment': f'{tv_symbol} -> {symbol} phase1 breakout stop entry'
+        })
+    elif template == 'hybrid_ladder_breakout':
+        order_plan = 'hybrid_ladder_breakout'
+        ladder = list(key.get('ladder_entries') or [])
+        ladder = ladder[:2] if len(ladder) >= 2 else ([float(preview['entry'])] if preview.get('entry') else [])
+        breakout_price = float(key.get('breakout_trigger') or (float(preview['entry']) + (abs(float(preview['entry']) - float(preview['sl'])) * (1 if direction == 'LONG' else -1))))
+        lots = split_lots(len(ladder) + 1)
+        for i, px in enumerate(ladder):
+            entries.append({
+                'client_entry_id': f'{tv_symbol.lower()}-phase1-ladder-{i+1}',
+                'entry_type': 'limit',
+                'price': float(px),
+                'volume_lots': lots[i],
+                'comment': f'{tv_symbol} -> {symbol} phase1 ladder limit entry {i+1}'
+            })
+        entries.append({
+            'client_entry_id': f'{tv_symbol.lower()}-phase1-breakout-1',
+            'entry_type': 'stop',
+            'price': breakout_price,
+            'volume_lots': lots[-1],
+            'comment': f'{tv_symbol} -> {symbol} phase1 hybrid breakout stop entry'
+        })
+    else:
+        order_plan = 'limit_ladder'
+        ladder = list(key.get('ladder_entries') or [])
+        leg_count = 3 if template == 'ladder_limit_3' else 2 if template == 'ladder_limit_2' else 1
+        if not ladder:
+            ladder = [float(preview['entry'])]
+        ladder = ladder[:leg_count]
+        lots = split_lots(len(ladder))
+        for i, px in enumerate(ladder):
+            entries.append({
+                'client_entry_id': f'{tv_symbol.lower()}-phase1-ladder-{i+1}',
+                'entry_type': 'limit',
+                'price': float(px),
+                'volume_lots': lots[i],
+                'comment': f'{tv_symbol} -> {symbol} phase1 ladder limit entry {i+1}'
+            })
+
     return {
         'bridge_version': 'mt5.paper.v1',
         'ticket_id': ticket_id,
@@ -479,16 +543,8 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
         'mode': 'paper',
         'symbol': symbol,
         'side': preview['side'],
-        'order_plan': preview['order_plan'],
-        'entries': [
-            {
-                'client_entry_id': f'{tv_symbol.lower()}-phase1-entry-1',
-                'entry_type': preview['entry_type'],
-                'price': preview['entry'],
-                'volume_lots': preview['volume_lots'],
-                'comment': f'{tv_symbol} -> {symbol} phase1 autotrade {direction.lower()} limit entry'
-            }
-        ],
+        'order_plan': order_plan,
+        'entries': entries,
         'stop_loss': {'price': preview['sl']},
         'take_profit': {'price': preview['tp_live']},
         'max_risk_usdt': preview['max_risk_usdt'],
@@ -501,6 +557,7 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
             'is_proxy_symbol': plan['source_context'].get('is_proxy_symbol', False),
             'proxy_source': plan['source_context'].get('proxy_source'),
             'orderability_decision': plan['orderability_decision']['decision'],
+            'execution_template': template,
             'setup': plan['bias']['setup'],
             'planned_tp1': preview['planned_tp1'],
             'planned_tp2': preview['planned_tp2'],
@@ -508,9 +565,9 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
             'planned_rr_tp2': plan['risk_plan']['rr_tp2'],
             'planned_total_notional_usd': plan['risk_plan']['total_notional_usdt'],
             'modeled_margin_usd': plan['risk_plan']['total_margin_usdt'],
-            'bridge_tp_note': 'Bridge v1 supports one live TP only; TP2 is used as executable TP while TP1 remains a management level.'
+            'bridge_tp_note': 'Bridge v1 supports one live TP for the package; TP2 is used as executable TP while TP1 remains a management level.'
         },
-        'note': f"{tv_symbol} phase1 autotrade via {symbol}." + (f" Proxy source: {plan['source_context'].get('proxy_source')}." if plan['source_context'].get('is_proxy_symbol') else '') + f" Default risk budget {plan['risk_plan']['risk_budget_usdt']:.0f} USD. Single conditional limit entry from screener-led deep analysis."
+        'note': f"{tv_symbol} phase1 autotrade via {symbol}." + (f" Proxy source: {plan['source_context'].get('proxy_source')}." if plan['source_context'].get('is_proxy_symbol') else '') + f" Default risk budget {plan['risk_plan']['risk_budget_usdt']:.0f} USD. Execution template: {template or order_plan}."
     }
 
 

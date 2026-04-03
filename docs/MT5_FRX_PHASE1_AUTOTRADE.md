@@ -3,8 +3,8 @@
 ## Scope (Phase 1)
 - Input: latest `MT5_FRX` Pine Screener report (`4h`, best-score sorted).
 - Selection: first symbol that passes predefined criteria.
-- Analysis: deterministic FX deep-analysis summary with orderability decision.
-- Execution cap: **max 1 trade per screening session**.
+- Analysis: MT5-native FX deep-analysis summary with orderability decision.
+- Execution cap: **max 1 trade package per screening session**.
 - Asset cap: one active asset lock in local state.
 - MT5 mode: **paper only** (`mt5.paper.v1`).
 
@@ -74,3 +74,9 @@ Dry run:
 
 Live paper run:
 `python scripts/mt5_fx_autotrade_phase1.py --force`
+
+## Current execution capability
+- Ladder packages are now live through the bridge.
+- Hybrid ladder + breakout packages are now live through the bridge.
+- Hybrid package state is persisted in `gray_bridge\\trailing\\*__package.json` so the EA timer can cancel the opposite branch after a fill.
+- Current limitation: package legs still share one live TP/SL set; per-leg TP/SL differentiation is not implemented yet.

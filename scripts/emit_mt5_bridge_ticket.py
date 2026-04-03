@@ -63,25 +63,36 @@ def validate_ticket_shape(ticket: dict[str, Any]) -> None:
     require(ticket["bridge_version"] == "mt5.paper.v1", "bridge_version must be mt5.paper.v1")
     require(ticket["mode"] == "paper", "mode must be paper")
     require(ticket["side"] in {"buy", "sell"}, "side must be buy or sell")
-    require(ticket["order_plan"] in {"market", "limit_ladder", "stop_entry"}, "order_plan invalid")
-    require(isinstance(ticket["entries"], list) and len(ticket["entries"]) == 1, "Current EA scaffold supports exactly one entries[] object")
+    require(ticket["order_plan"] in {"market", "limit_ladder", "stop_entry", "hybrid_ladder_breakout"}, "order_plan invalid")
+    require(isinstance(ticket["entries"], list) and len(ticket["entries"]) >= 1, "entries[] must contain at least one object")
 
-    entry = ticket["entries"][0]
-    require(isinstance(entry, dict), "entries[0] must be an object")
-    require(entry.get("entry_type") in {"market", "limit", "stop"}, "entries[0].entry_type invalid")
-    require(float(entry.get("volume_lots", 0)) > 0, "entries[0].volume_lots must be > 0")
+    has_limit = False
+    has_stop = False
+    has_market = False
+    for idx, entry in enumerate(ticket["entries"]):
+        require(isinstance(entry, dict), f"entries[{idx}] must be an object")
+        et = entry.get("entry_type")
+        require(et in {"market", "limit", "stop"}, f"entries[{idx}].entry_type invalid")
+        require(float(entry.get("volume_lots", 0)) > 0, f"entries[{idx}].volume_lots must be > 0")
+
+        if et == "market":
+            has_market = True
+            require(entry.get("price") in (None, "", 0) or entry.get("price") is None, f"entries[{idx}] market entry should not carry a price in v1")
+        else:
+            require(float(entry.get("price", 0)) > 0, f"entries[{idx}].price must be > 0 for pending orders")
+            if et == "limit":
+                has_limit = True
+            if et == "stop":
+                has_stop = True
 
     if ticket["order_plan"] == "limit_ladder":
-        require(entry.get("entry_type") == "limit", "limit_ladder requires entries[0].entry_type == limit")
+        require(has_limit and not has_market and not has_stop, "limit_ladder requires only limit entries")
     elif ticket["order_plan"] == "stop_entry":
-        require(entry.get("entry_type") == "stop", "stop_entry requires entries[0].entry_type == stop")
+        require(has_stop and not has_market and not has_limit, "stop_entry requires only stop entries")
+    elif ticket["order_plan"] == "hybrid_ladder_breakout":
+        require(len(ticket["entries"]) >= 2 and has_limit and has_stop and not has_market, "hybrid_ladder_breakout requires mixed limit + stop entries")
     else:
-        require(entry.get("entry_type") == "market", "market order_plan requires entries[0].entry_type == market")
-
-    if entry.get("entry_type") == "market":
-        require(entry.get("price") in (None, "", 0) or entry.get("price") is None, "market entries should not carry a price in v1")
-    else:
-        require(float(entry.get("price", 0)) > 0, "entries[0].price must be > 0 for pending orders")
+        require(len(ticket["entries"]) == 1 and has_market, "market order_plan requires exactly one market entry")
 
     stop_loss = ticket["stop_loss"]
     take_profit = ticket["take_profit"]

@@ -452,13 +452,13 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
     notes = [
         'Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.',
         'TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.',
-        'Bridge v1 still supports one executable leg only; ladder/hybrid templates are represented in analysis and collapsed to one bridge-compatible fallback leg when auto-placement is allowed.'
+        'Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop.'
     ]
     notes.extend(bias_notes)
     if is_proxy_symbol:
         notes.append(f'Proxy symbol: screener selection for {root_symbol} came from {proxy_source}, but deep analysis now uses MT5 symbol {profile.analysis_symbol}.')
     if execution_template == 'hybrid_ladder_breakout':
-        notes.append('Hybrid template detected: recommended package is ladder + breakout stop, but bridge fallback remains a single midpoint ladder leg until linked-order cancellation is implemented.')
+        notes.append('Hybrid template detected: recommended package is ladder + breakout stop, with EA-managed cancel-on-fill for the opposite branch.')
 
     best_score_val = safe_float(row.get('03 Best Score'))
     best_setup_val = safe_float(row.get('02 Best Setup Code'))
@@ -586,7 +586,7 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
             'planned_tp2': tp2,
             'volume_lots': risk_plan['volume_lots'],
             'max_risk_usdt': risk_plan['risk_budget_usdt'],
-            'bridge_fallback_reason': 'Bridge v1 uses one executable leg; recommended ladder/hybrid package is collapsed to one compatible leg when auto-placement proceeds.' if execution_template != 'breakout_stop_limit' else None,
+            'bridge_fallback_reason': 'Hybrid execution still uses one live TP across all legs; branch-level TP/SL separation is not yet implemented.' if execution_template == 'hybrid_ladder_breakout' else None,
         },
         'notes': notes,
     }
