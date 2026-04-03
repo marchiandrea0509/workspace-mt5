@@ -11,6 +11,7 @@
       "D1": 260
     }
   },
+  "latestReportMaxAgeMinutes": 20,
   "screenerReportsDir": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener",
   "mt5SymbolsExportCsv": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\OANDA_All_Symbols.csv",
   "mt5TradesThreadId": "1489519869962752000",

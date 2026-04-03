@@ -22,6 +22,18 @@
       "candidate": "GBPNZD",
       "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T150611-246Z-gbpnzd-20260403-150726-phase1-001",
       "processed_at": "2026-04-03T15:07:30Z"
+    },
+    "MT5_FRX|4 hours|2026-04-03T16:57:44.738Z": {
+      "status": "skipped",
+      "candidate": "NZDUSD",
+      "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T165744-738Z-nzdusd-20260403-174923-phase1-001",
+      "processed_at": "2026-04-03T17:49:23Z"
+    },
+    "MT5_FRX|4 hours|2026-04-03T17:50:06.813Z": {
+      "status": "skipped",
+      "candidate": "EURGBP",
+      "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T175006-813Z-eurgbp-20260403-181323-phase1-001",
+      "processed_at": "2026-04-03T18:13:23Z"
     }
   }
 }

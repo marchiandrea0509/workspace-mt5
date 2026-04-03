@@ -1,0 +1,9 @@
+report_resolution=latest
+report_path=C:\Users\anmar\.openclaw\workspace\tradingview\reports\pine_screener\pine_screener_2026-04-03T16-56-43-267Z.json
+candidate=NZDUSD
+status=skipped
+retcode=None
+retcode_text=None
+message=All candidate entries became invalid at MT5 preflight time.
+order_ids=null
+preflight={"mode": "applied", "symbol": "NZDUSD.pro", "valid_entries": 0, "rejected_entries": [{"client_entry_id": "nzdusd-phase1-ladder-1", "entry_type": "limit", "price": 0.57826, "original_price": 0.57826, "adjusted": false, "reasons": ["order_check retcode None (None)"], "order_type": "SELL_LIMIT"}, {"client_entry_id": "nzdusd-phase1-ladder-2", "entry_type": "limit", "price": 0.57777, "original_price": 0.57777, "adjusted": false, "reasons": ["order_check retcode None (None)"], "order_type": "SELL_LIMIT"}, {"client_entry_id": "nzdusd-phase1-ladder-3", "entry_type": "limit", "price": 0.57728, "original_price": 0.57728, "adjusted": false, "reasons": ["order_check retcode None (None)"], "order_type": "SELL_LIMIT"}], "original_entries": 3, "adjusted_order_plan": "limit_ladder"}
