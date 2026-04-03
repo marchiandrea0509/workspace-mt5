@@ -1,0 +1,179 @@
+{
+  "result": "trade_review",
+  "session_key": "MT5_FRX|4 hours|2026-04-03T13:06:12.927Z",
+  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-03T13-05-10-442Z.json",
+  "candidate": "EURCAD",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260403_130713.md",
+  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_EURCAD_20260403_130713.json",
+  "execution": {
+    "result_file": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge\\outbox\\20260403_150719__mt5-paper-MT5_FRX-4 hours-2026-04-03T130612-927Z-eurcad-20260403-130717-phase1-001__result.json",
+    "status": "accepted",
+    "message": "Pending order package accepted by GrayPaperBridgeEA",
+    "symbol": "EURCAD.pro",
+    "side": "buy",
+    "retcode": 10009,
+    "retcode_text": "TRADE_RETCODE_DONE",
+    "mt5_order_ids": [
+      142047754,
+      142047755,
+      142047756
+    ],
+    "timestamp": "2026-04-03T15:07:19",
+    "returncode": 0
+  },
+  "audit": [
+    {
+      "symbol": "EURGBP",
+      "passed": false,
+      "reasons": [
+        "asset already marked active from a prior autotrade"
+      ]
+    },
+    {
+      "symbol": "EURCAD",
+      "passed": true,
+      "reasons": []
+    }
+  ],
+  "plan": {
+    "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
+    "generated_at_utc": "2026-04-03T13:07:17Z",
+    "symbol": "EURCAD",
+    "description": "EUR/CAD",
+    "source_context": {
+      "watchlist": "MT5_FRX",
+      "indicator": "OC Hybrid Edge Screener v4",
+      "timeframe": "4 hours",
+      "best_score": 73.56413385780758,
+      "best_setup_code": 2,
+      "conviction_state": 3,
+      "screener_rank_top5": 2,
+      "tv_root_symbol": "EURCAD",
+      "analysis_source_kind": "mt5_python",
+      "analysis_symbol": "EURCAD.pro",
+      "mt5_execution_symbol": "EURCAD.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null
+    },
+    "bias": {
+      "direction": "LONG",
+      "setup": "LONG_CONTINUATION",
+      "quality_call": "broker-feed MT5 structure validated",
+      "final_trader_call": "Ready for bridge fallback execution"
+    },
+    "market_source": {
+      "kind": "mt5_python",
+      "analysis_symbol": "EURCAD.pro",
+      "execution_symbol": "EURCAD.pro",
+      "trade_mode": "FULL",
+      "path": "PRO\\FX\\Major\\EURCAD.pro",
+      "digits": 5,
+      "volume_min": 0.01,
+      "volume_step": 0.01
+    },
+    "metrics": {
+      "close_h4": 1.6072199999999999,
+      "fast_ema_h4": 1.605051083171106,
+      "medium_ema_h4": 1.6005436473976575,
+      "slow_ema_h4": 1.596410231388928,
+      "atr_h4": 0.002902260155451675,
+      "rsi_h4": 59.19685190180864,
+      "adx_h4": 28.542301410503732,
+      "plus_di_h4": 30.756913939772037,
+      "minus_di_h4": 14.983558514704963,
+      "macd_hist_h4": -0.0003957173010673458,
+      "rel_volume_h4": 0.40784108226967525,
+      "dist_fast_ema_atr": 0.7473199205866221,
+      "ema_spread_atr": 2.9772836752580303,
+      "d1_close": 1.6072199999999999,
+      "d1_ema50": 1.5982938134990015,
+      "d1_ema200": 1.6052694786494246,
+      "d1_rsi": 61.383278858222454,
+      "d1_adx": 29.882573133199823,
+      "d1_plus_di": 30.140609655360706,
+      "d1_minus_di": 13.932074408058357
+    },
+    "lifecycle": {
+      "trend_dir_h4": 1,
+      "macro_dir_d1": 0,
+      "fresh_structure_shift": 0,
+      "breakout_dir": 0,
+      "breakout_fresh": false,
+      "retest_state": 0,
+      "retest_label": "none",
+      "fake_breakout_risk": false,
+      "overextended": false
+    },
+    "key_levels": {
+      "analysis_price_reference": 1.60722,
+      "price_reference": 1.60722,
+      "support_zone_level": 1.59363,
+      "support_zone_lower": 1.5929,
+      "support_zone_upper": 1.59436,
+      "resistance_zone_level": 1.61464,
+      "resistance_zone_lower": 1.61391,
+      "resistance_zone_upper": 1.61537,
+      "ladder_entries": [
+        1.5929,
+        1.59363,
+        1.60505
+      ],
+      "ema_pullback_zone_from": 1.5929,
+      "ema_pullback_zone_to": 1.59363,
+      "slow_ema_invalidation_anchor": 1.59641,
+      "breakout_trigger": 1.60874,
+      "breakout_limit": 1.60903,
+      "entry": 1.59719,
+      "stop_loss": 1.59247,
+      "tp1": 1.60191,
+      "tp2": 1.60569
+    },
+    "orderability_decision": {
+      "decision": "placeable_conditional_only",
+      "execution_template": "ladder_limit_3",
+      "bridge_supported_now": true,
+      "market_order_now": false,
+      "ladder_limit_orders": true,
+      "stop_entry_orders": false,
+      "allowed_order_types": [
+        "LIMIT"
+      ],
+      "why": "Continuation quality is good and structure supports a deeper 3-level pullback ladder."
+    },
+    "risk_plan": {
+      "risk_budget_usdt": 100.0,
+      "model_leverage": 10.0,
+      "quote_to_usd": 0.7175145296692258,
+      "contract_size": 100000.0,
+      "volume_lots": 0.08,
+      "total_risk_usdt": 27.09,
+      "total_notional_usdt": 9168.06,
+      "total_margin_usdt": 916.81,
+      "rr_tp1": 1.0,
+      "rr_tp2": 1.8
+    },
+    "trade_ticket_preview": {
+      "side": "buy",
+      "tv_root_symbol": "EURCAD",
+      "analysis_symbol": "EURCAD.pro",
+      "mt5_execution_symbol": "EURCAD.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null,
+      "order_plan": "limit_ladder",
+      "entry_type": "limit",
+      "entry": 1.59719,
+      "sl": 1.59247,
+      "tp_live": 1.60569,
+      "planned_tp1": 1.60191,
+      "planned_tp2": 1.60569,
+      "volume_lots": 0.08,
+      "max_risk_usdt": 100.0,
+      "bridge_fallback_reason": null
+    },
+    "notes": [
+      "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
+      "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
+      "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop."
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+    "bridge_version":  "mt5.paper.v1",
+    "ticket_id":  "mt5-paper-20260329-223555-eth-default-pointer-smoke-003",
+    "created_at":  "2026-03-29T22:35:55.6051233+02:00",
+    "mode":  "paper",
+    "symbol":  "ETHUSD",
+    "side":  "buy",
+    "order_plan":  "stop_entry",
+    "entries":  [
+                    {
+                        "client_entry_id":  "eth-smoke-entry-1",
+                        "entry_type":  "stop",
+                        "price":  2100.0,
+                        "volume_lots":  0.01,
+                        "comment":  "paper bridge ETH stop-buy test"
+                    }
+                ],
+    "stop_loss":  {
+                      "price":  1950.0
+                  },
+    "take_profit":  {
+                        "price":  2250.0
+                    },
+    "trailing":  {
+                     "enabled":  false,
+                     "activation_price":  null,
+                     "distance_price":  null,
+                     "step_price":  null
+                 },
+    "max_risk_usdt":  30,
+    "strategy_context":  {
+                             "source":  "Gray MT5 bridge ETH smoke test via default pointer after portable cutover",
+                             "timeframe":  "1H",
+                             "placeable_now":  true
+                         },
+    "note":  "Paper-only ETHUSD smoke test using the default workspace pointer after portable cutover."
+}

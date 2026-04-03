@@ -1,0 +1,33 @@
+{
+  "bridge_version": "mt5.paper.v1",
+  "ticket_id": "mt5-paper-20260326-001",
+  "status": "accepted",
+  "symbol": "EURUSD",
+  "side": "buy",
+  "order_plan": "limit_ladder",
+  "executor_mode": "paper",
+  "ticket_file": "gray_bridge/inbox/mt5-paper-20260326-001.json",
+  "archive_file": "gray_bridge/archive/20260326_124501__mt5-paper-20260326-001.json",
+  "error_file": null,
+  "normalized_entry": 1.0825,
+  "normalized_volume_lots": 0.1,
+  "normalized_stop_loss": 1.0795,
+  "normalized_take_profit": 1.0885,
+  "mt5_order_ids": [123456789],
+  "mt5_position_ids": [],
+  "retcode": 10009,
+  "retcode_text": "TRADE_RETCODE_DONE",
+  "message": "Pending order accepted by MT5 bridge.",
+  "timestamp": "2026-03-26T12:45:01+01:00",
+  "account": {
+    "login": 12345678,
+    "server": "OANDA-Demo-1"
+  },
+  "trailing": {
+    "enabled": false,
+    "activation_price": null,
+    "distance_price": null,
+    "step_price": null,
+    "mode": "ea_managed_v1"
+  }
+}

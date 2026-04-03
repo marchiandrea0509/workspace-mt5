@@ -1,0 +1,102 @@
+{
+  "result": "trade_review",
+  "session_key": "MT5_FRX|4 hours|2026-04-03T07:06:24.055Z",
+  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-03T07-05-25-254Z.json",
+  "candidate": "EURGBP",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260403_071250.md",
+  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_EURGBP_20260403_071250.json",
+  "execution": {
+    "status": "dry_run",
+    "message": "Ticket compiled but not emitted."
+  },
+  "audit": [
+    {
+      "symbol": "EURGBP",
+      "passed": true,
+      "reasons": []
+    }
+  ],
+  "plan": {
+    "report_type": "MT5_FX_PHASE1_DEEP_ANALYSIS",
+    "generated_at_utc": "2026-04-03T07:12:50Z",
+    "symbol": "EURGBP",
+    "description": "EUR/GBP",
+    "source_context": {
+      "watchlist": "MT5_FRX",
+      "indicator": "OC Hybrid Edge Screener v4",
+      "timeframe": "4 hours",
+      "best_score": 74.54705179864116,
+      "best_setup_code": 2,
+      "conviction_state": 3,
+      "screener_rank_top5": 1
+    },
+    "bias": {
+      "direction": "LONG",
+      "setup": "LONG_CONTINUATION",
+      "quality_call": "good market, conditional-only entry",
+      "final_trader_call": "Ready to place one conditional limit order"
+    },
+    "metrics": {
+      "fast_ema": 0.8712292213173117,
+      "medium_ema": 0.8692768857897771,
+      "slow_ema": 0.8681699796363161,
+      "trend_dir": 1.0,
+      "macro_dir_1d": 1.0,
+      "adx": 25.409041730758503,
+      "rel_volume": 0.09587886779107488,
+      "dist_fast_ema_atr": 0.5799731960869214,
+      "tactical_trend_score": 82.78023312467117,
+      "tactical_breakout_score": 2.8659625752732785,
+      "tactical_meanrev_score": -16.960983321014893
+    },
+    "key_levels": {
+      "entry": 0.87123,
+      "stop_loss": 0.86588,
+      "tp1": 0.87658,
+      "tp2": 0.88087,
+      "price_reference": 0.86956,
+      "ema_pullback_zone_from": 0.86928,
+      "ema_pullback_zone_to": 0.87123,
+      "slow_ema_invalidation_anchor": 0.86817
+    },
+    "orderability_decision": {
+      "decision": "placeable_conditional_only",
+      "market_order_now": false,
+      "ladder_limit_orders": true,
+      "stop_entry_orders": false,
+      "allowed_order_types": [
+        "LIMIT"
+      ],
+      "why": "The setup is executable via one resting limit order near the fast-EMA pullback zone; no market-now order is justified in phase 1."
+    },
+    "risk_plan": {
+      "risk_budget_usdt": 100.0,
+      "model_leverage": 10.0,
+      "quote_to_usd": 1.330014561069098,
+      "contract_size": 100000.0,
+      "volume_lots": 0.08,
+      "total_risk_usdt": 56.96,
+      "total_notional_usdt": 9269.98,
+      "total_margin_usdt": 927.0,
+      "rr_tp1": 1.0,
+      "rr_tp2": 1.8
+    },
+    "trade_ticket_preview": {
+      "side": "buy",
+      "order_plan": "limit_ladder",
+      "entry_type": "limit",
+      "entry": 0.87123,
+      "sl": 0.86588,
+      "tp_live": 0.88087,
+      "planned_tp1": 0.87658,
+      "planned_tp2": 0.88087,
+      "volume_lots": 0.08,
+      "max_risk_usdt": 100.0
+    },
+    "notes": [
+      "Phase 1 only permits one single-entry pending order per screening session.",
+      "Phase 1 prefers conditional limit entries into the fast-EMA pullback zone rather than market chasing.",
+      "Bridge remains paper-only and uses one executable TP in the live ticket; TP2 is used as the live bridge TP while TP1 remains an analysis/management level."
+    ]
+  }
+}

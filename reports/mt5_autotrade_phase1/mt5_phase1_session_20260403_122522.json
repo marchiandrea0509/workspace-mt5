@@ -1,0 +1,164 @@
+{
+  "result": "trade_review",
+  "session_key": "MT5_FRX|4 hours|2026-04-03T07:06:24.055Z",
+  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-03T07-05-25-254Z.json",
+  "candidate": "EURGBP",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260403_122522.md",
+  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_EURGBP_20260403_122522.json",
+  "execution": {
+    "result": "timeout",
+    "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T070624-055Z-eurgbp-20260403-122522-phase1-001",
+    "wait_seconds": 90.0,
+    "outbox_dir": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge\\outbox",
+    "hint": "No result file appeared yet. If the EA is not attached/running, the ticket may still be sitting in C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge\\inbox. Errors copy path would be under C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge\\errors.",
+    "returncode": 2
+  },
+  "audit": [
+    {
+      "symbol": "EURGBP",
+      "passed": true,
+      "reasons": []
+    }
+  ],
+  "plan": {
+    "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
+    "generated_at_utc": "2026-04-03T12:25:22Z",
+    "symbol": "EURGBP",
+    "description": "EUR/GBP",
+    "source_context": {
+      "watchlist": "MT5_FRX",
+      "indicator": "OC Hybrid Edge Screener v4",
+      "timeframe": "4 hours",
+      "best_score": 74.54705179864116,
+      "best_setup_code": 2,
+      "conviction_state": 3,
+      "screener_rank_top5": 1,
+      "tv_root_symbol": "EURGBP",
+      "analysis_source_kind": "mt5_python",
+      "analysis_symbol": "EURGBP.pro",
+      "mt5_execution_symbol": "EURGBP.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null
+    },
+    "bias": {
+      "direction": "LONG",
+      "setup": "LONG_CONTINUATION",
+      "quality_call": "broker-feed MT5 structure validated",
+      "final_trader_call": "Ready for bridge fallback execution"
+    },
+    "market_source": {
+      "kind": "mt5_python",
+      "analysis_symbol": "EURGBP.pro",
+      "execution_symbol": "EURGBP.pro",
+      "trade_mode": "FULL",
+      "path": "PRO\\FX\\Major\\EURGBP.pro",
+      "digits": 5,
+      "volume_min": 0.01,
+      "volume_step": 0.01
+    },
+    "metrics": {
+      "close_h4": 0.87225,
+      "fast_ema_h4": 0.871396721399079,
+      "medium_ema_h4": 0.8694421860676987,
+      "slow_ema_h4": 0.8679828517707222,
+      "atr_h4": 0.0012392180615738903,
+      "rsi_h4": 58.02651079685934,
+      "adx_h4": 24.19038485468959,
+      "plus_di_h4": 21.724895129847837,
+      "minus_di_h4": 13.23693208560559,
+      "macd_hist_h4": -0.0002019840150095898,
+      "rel_volume_h4": 0.21614768545718793,
+      "dist_fast_ema_atr": 0.6885621081387978,
+      "ema_spread_atr": 2.754857869018569,
+      "d1_close": 0.87225,
+      "d1_ema50": 0.8685722707003443,
+      "d1_ema200": 0.8678541345289501,
+      "d1_rsi": 59.33172158175755,
+      "d1_adx": 17.250666603320578,
+      "d1_plus_di": 26.336478128647837,
+      "d1_minus_di": 14.166266512580913
+    },
+    "lifecycle": {
+      "trend_dir_h4": 1,
+      "macro_dir_d1": 1,
+      "fresh_structure_shift": 0,
+      "breakout_dir": 0,
+      "breakout_fresh": false,
+      "retest_state": 0,
+      "retest_label": "none",
+      "fake_breakout_risk": false,
+      "overextended": false
+    },
+    "key_levels": {
+      "analysis_price_reference": 0.87225,
+      "price_reference": 0.87225,
+      "support_zone_level": 0.87076,
+      "support_zone_lower": 0.87045,
+      "support_zone_upper": 0.87107,
+      "resistance_zone_level": 0.87462,
+      "resistance_zone_lower": 0.87431,
+      "resistance_zone_upper": 0.87493,
+      "ladder_entries": [
+        0.86798,
+        0.87076,
+        0.8714
+      ],
+      "ema_pullback_zone_from": 0.86798,
+      "ema_pullback_zone_to": 0.87076,
+      "slow_ema_invalidation_anchor": 0.86798,
+      "breakout_trigger": 0.8732,
+      "breakout_limit": 0.87332,
+      "entry": 0.87005,
+      "stop_loss": 0.86743,
+      "tp1": 0.87267,
+      "tp2": 0.87477
+    },
+    "orderability_decision": {
+      "decision": "placeable_conditional_only",
+      "execution_template": "ladder_limit_3",
+      "bridge_supported_now": true,
+      "market_order_now": false,
+      "ladder_limit_orders": true,
+      "stop_entry_orders": false,
+      "allowed_order_types": [
+        "LIMIT"
+      ],
+      "why": "Continuation quality is good and structure supports a deeper 3-level pullback ladder."
+    },
+    "risk_plan": {
+      "risk_budget_usdt": 100.0,
+      "model_leverage": 10.0,
+      "quote_to_usd": 1.32361,
+      "contract_size": 100000.0,
+      "volume_lots": 0.08,
+      "total_risk_usdt": 27.74,
+      "total_notional_usdt": 9212.86,
+      "total_margin_usdt": 921.29,
+      "rr_tp1": 1.0,
+      "rr_tp2": 1.8
+    },
+    "trade_ticket_preview": {
+      "side": "buy",
+      "tv_root_symbol": "EURGBP",
+      "analysis_symbol": "EURGBP.pro",
+      "mt5_execution_symbol": "EURGBP.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null,
+      "order_plan": "limit_ladder",
+      "entry_type": "limit",
+      "entry": 0.87005,
+      "sl": 0.86743,
+      "tp_live": 0.87477,
+      "planned_tp1": 0.87267,
+      "planned_tp2": 0.87477,
+      "volume_lots": 0.08,
+      "max_risk_usdt": 100.0,
+      "bridge_fallback_reason": null
+    },
+    "notes": [
+      "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
+      "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
+      "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop."
+    ]
+  }
+}

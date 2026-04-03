@@ -1,0 +1,59 @@
+{
+  "bridge_version": "mt5.paper.v1",
+  "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T130612-927Z-eurcad-20260403-130717-phase1-001",
+  "created_at": "2026-04-03T13:07:17Z",
+  "mode": "paper",
+  "symbol": "EURCAD.pro",
+  "side": "buy",
+  "order_plan": "limit_ladder",
+  "entries": [
+    {
+      "client_entry_id": "eurcad-phase1-ladder-1",
+      "entry_type": "limit",
+      "price": 1.5929,
+      "volume_lots": 0.03,
+      "comment": "EURCAD -> EURCAD.pro phase1 ladder limit entry 1"
+    },
+    {
+      "client_entry_id": "eurcad-phase1-ladder-2",
+      "entry_type": "limit",
+      "price": 1.59363,
+      "volume_lots": 0.03,
+      "comment": "EURCAD -> EURCAD.pro phase1 ladder limit entry 2"
+    },
+    {
+      "client_entry_id": "eurcad-phase1-ladder-3",
+      "entry_type": "limit",
+      "price": 1.60505,
+      "volume_lots": 0.02,
+      "comment": "EURCAD -> EURCAD.pro phase1 ladder limit entry 3"
+    }
+  ],
+  "stop_loss": {
+    "price": 1.59247
+  },
+  "take_profit": {
+    "price": 1.60569
+  },
+  "max_risk_usdt": 100.0,
+  "strategy_context": {
+    "source": "Phase1 MT5 FX autotrade deep analysis for EURCAD",
+    "watchlist": "MT5_FRX",
+    "timeframe": "4 hours",
+    "tv_root_symbol": "EURCAD",
+    "mt5_execution_symbol": "EURCAD.pro",
+    "is_proxy_symbol": false,
+    "proxy_source": null,
+    "orderability_decision": "placeable_conditional_only",
+    "execution_template": "ladder_limit_3",
+    "setup": "LONG_CONTINUATION",
+    "planned_tp1": 1.60191,
+    "planned_tp2": 1.60569,
+    "planned_rr_tp1": 1.0,
+    "planned_rr_tp2": 1.8,
+    "planned_total_notional_usd": 9168.06,
+    "modeled_margin_usd": 916.81,
+    "bridge_tp_note": "Bridge v1 supports one live TP for the package; TP2 is used as executable TP while TP1 remains a management level."
+  },
+  "note": "EURCAD phase1 autotrade via EURCAD.pro. Default risk budget 100 USD. Execution template: ladder_limit_3."
+}

@@ -1,0 +1,189 @@
+{
+  "result": "trade_review",
+  "session_key": "MT5_FRX|4 hours|2026-04-03T15:06:11.246Z",
+  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-03T15-05-12-415Z.json",
+  "candidate": "GBPNZD",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260403_150721.md",
+  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_GBPNZD_20260403_150721.json",
+  "execution": {
+    "result_file": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge\\outbox\\20260403_170729__mt5-paper-MT5_FRX-4 hours-2026-04-03T150611-246Z-gbpnzd-20260403-150726-phase1-001__result.json",
+    "status": "rejected",
+    "message": "Buy ticket stop_loss must be below every entry price",
+    "symbol": "GBPNZD.pro",
+    "side": "buy",
+    "retcode": 10013,
+    "retcode_text": "TRADE_RETCODE_INVALID",
+    "mt5_order_ids": [],
+    "timestamp": "2026-04-03T17:07:29",
+    "returncode": 0
+  },
+  "audit": [
+    {
+      "symbol": "NZDUSD",
+      "passed": false,
+      "reasons": [
+        "Dist Fast EMA ATR outside threshold 1.35"
+      ]
+    },
+    {
+      "symbol": "EURGBP",
+      "passed": false,
+      "reasons": [
+        "asset already marked active from a prior autotrade"
+      ]
+    },
+    {
+      "symbol": "EURCAD",
+      "passed": false,
+      "reasons": [
+        "asset already marked active from a prior autotrade"
+      ]
+    },
+    {
+      "symbol": "GBPNZD",
+      "passed": true,
+      "reasons": []
+    }
+  ],
+  "plan": {
+    "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
+    "generated_at_utc": "2026-04-03T15:07:26Z",
+    "symbol": "GBPNZD",
+    "description": "GBP/NZD",
+    "source_context": {
+      "watchlist": "MT5_FRX",
+      "indicator": "OC Hybrid Edge Screener v4",
+      "timeframe": "4 hours",
+      "best_score": 73.19527417375994,
+      "best_setup_code": 2,
+      "conviction_state": 3,
+      "screener_rank_top5": 4,
+      "tv_root_symbol": "GBPNZD",
+      "analysis_source_kind": "mt5_python",
+      "analysis_symbol": "GBPNZD.pro",
+      "mt5_execution_symbol": "GBPNZD.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null
+    },
+    "bias": {
+      "direction": "LONG",
+      "setup": "LONG_CONTINUATION",
+      "quality_call": "broker-feed MT5 structure validated",
+      "final_trader_call": "Ready for bridge fallback execution"
+    },
+    "market_source": {
+      "kind": "mt5_python",
+      "analysis_symbol": "GBPNZD.pro",
+      "execution_symbol": "GBPNZD.pro",
+      "trade_mode": "FULL",
+      "path": "PRO\\FX\\Non-Major\\GBPNZD.pro",
+      "digits": 5,
+      "volume_min": 0.01,
+      "volume_step": 0.01
+    },
+    "metrics": {
+      "close_h4": 2.31795,
+      "fast_ema_h4": 2.313299706119508,
+      "medium_ema_h4": 2.307754402842012,
+      "slow_ema_h4": 2.2893762609693775,
+      "atr_h4": 0.004844872066167028,
+      "rsi_h4": 59.219504501806675,
+      "adx_h4": 16.535410702288207,
+      "plus_di_h4": 21.981827356575742,
+      "minus_di_h4": 17.596465473669944,
+      "macd_hist_h4": 0.00040098190604775496,
+      "rel_volume_h4": 0.09741137822461188,
+      "dist_fast_ema_atr": 0.9598383232792441,
+      "ema_spread_atr": 4.937889963533598,
+      "d1_close": 2.31792,
+      "d1_ema50": 2.2886874257313043,
+      "d1_ema200": 2.2902403093848047,
+      "d1_rsi": 66.01294377752997,
+      "d1_adx": 24.389424370826372,
+      "d1_plus_di": 18.96622404788508,
+      "d1_minus_di": 11.125844002550739
+    },
+    "lifecycle": {
+      "trend_dir_h4": 0,
+      "macro_dir_d1": 0,
+      "fresh_structure_shift": 2,
+      "breakout_dir": 0,
+      "breakout_fresh": false,
+      "retest_state": 0,
+      "retest_label": "none",
+      "fake_breakout_risk": false,
+      "overextended": true
+    },
+    "key_levels": {
+      "analysis_price_reference": 2.31795,
+      "price_reference": 2.31795,
+      "support_zone_level": 2.30067,
+      "support_zone_lower": 2.29946,
+      "support_zone_upper": 2.30188,
+      "resistance_zone_level": null,
+      "resistance_zone_lower": null,
+      "resistance_zone_upper": null,
+      "ladder_entries": [
+        2.28938,
+        2.30067,
+        2.3133
+      ],
+      "ema_pullback_zone_from": 2.28938,
+      "ema_pullback_zone_to": 2.30067,
+      "slow_ema_invalidation_anchor": 2.28938,
+      "breakout_trigger": 2.32094,
+      "breakout_limit": 2.32142,
+      "entry": 2.30112,
+      "stop_loss": 2.29873,
+      "tp1": 2.30351,
+      "tp2": 2.30542
+    },
+    "orderability_decision": {
+      "decision": "placeable_conditional_only",
+      "execution_template": "ladder_limit_3",
+      "bridge_supported_now": true,
+      "market_order_now": false,
+      "ladder_limit_orders": true,
+      "stop_entry_orders": false,
+      "allowed_order_types": [
+        "LIMIT"
+      ],
+      "why": "Continuation quality is good and structure supports a deeper 3-level pullback ladder."
+    },
+    "risk_plan": {
+      "risk_budget_usdt": 100.0,
+      "model_leverage": 10.0,
+      "quote_to_usd": 0.56961,
+      "contract_size": 100000.0,
+      "volume_lots": 0.07,
+      "total_risk_usdt": 9.53,
+      "total_notional_usdt": 9175.19,
+      "total_margin_usdt": 917.52,
+      "rr_tp1": 1.0,
+      "rr_tp2": 1.8
+    },
+    "trade_ticket_preview": {
+      "side": "buy",
+      "tv_root_symbol": "GBPNZD",
+      "analysis_symbol": "GBPNZD.pro",
+      "mt5_execution_symbol": "GBPNZD.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null,
+      "order_plan": "limit_ladder",
+      "entry_type": "limit",
+      "entry": 2.30112,
+      "sl": 2.29873,
+      "tp_live": 2.30542,
+      "planned_tp1": 2.30351,
+      "planned_tp2": 2.30542,
+      "volume_lots": 0.07,
+      "max_risk_usdt": 100.0,
+      "bridge_fallback_reason": null
+    },
+    "notes": [
+      "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
+      "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
+      "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop."
+    ]
+  }
+}

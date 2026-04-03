@@ -1,0 +1,304 @@
+{
+  "report_type": "TRADE_PLAN_DEEP_DIVE",
+  "generated_at_utc": "2026-03-26T17:07:22Z",
+  "generated_at_local": "2026-03-26T18:07:22+01:00",
+  "symbol": "HOODX",
+  "mode": "deep",
+  "inputs": {
+    "free_margin_usdt": 1000.0,
+    "equity_usdt": null,
+    "risk_budget_usdt": 100.0,
+    "risk_budget_meta": {
+      "source": "RISK_BUDGET_USDT",
+      "provided_risk_budget_usdt": 100.0,
+      "provided_brb_percent": null
+    },
+    "direction_bias": "AUTO",
+    "preferred_execution_style": "AUTO",
+    "horizon_days": 10,
+    "max_ladder_levels": 3
+  },
+  "source_context": {
+    "best_setup": "SHORT_MEANREV",
+    "best_score": 72.56066499745141,
+    "best_score_rank": 3,
+    "conviction_label": "HIGH",
+    "decision_posture": "KEEP_SELECTIVE",
+    "screening_quality": {
+      "score": 72.56066499745141,
+      "rank": 3,
+      "best_score_rank": 3,
+      "conviction_label": "HIGH",
+      "daily_quality_label": "USABLE",
+      "daily_quality_factor": 0.8
+    }
+  },
+  "market_state": {
+    "h4_trend": "NEUTRAL",
+    "d1_trend": "BEAR",
+    "h4_side": "NEUTRAL",
+    "d1_side": "SHORT",
+    "volatility_regime": "EXTREME",
+    "adx_regime": "TRENDING",
+    "direction": "SHORT"
+  },
+  "macro_news_fundamental": {
+    "macro_alignment": "MIXED",
+    "headline_pressure": "MIXED",
+    "event_risk_next_24h": "LOW",
+    "event_risk_next_72h": "LOW",
+    "official_macro_bias": "MIXED",
+    "sentiment_state": "NEUTRAL",
+    "decision_posture": "KEEP_SELECTIVE",
+    "decision_note": "Macro alignment is mixed; headline pressure is mixed; event risk in the next 24h is low.",
+    "top_headlines": [
+      {
+        "title": "Robinhood Shares Jump After Company Announces $1.5 Billion Stock Buyback Plan - Barron's",
+        "link": "https://news.google.com/rss/articles/CBMigANBVV95cUxPVlN6ZkdnNEthUm81c2xTZE0xZzUyVzJuZjdBUHp3RFcyWkdxQVhrOEoxQ2tPVFltNlBHdklTWXd0MkhSaTdHNmJtelVtaUVGRkdHQ0NUSzc3MXpCQXZEeTN3MktrV05iaWFjTjlCd1N3RUl4QWJzSWFmN21DQkFETEVTYi1zbUxPLWJDX2hiV0llbTJNbnVnRWYzMm5hbTNRM2FHa3ptWXpoSUhaZUI5ZTN4Vkx1TFFia3BNOTlzaVo3VlYtcUZ2V2hBRG1CRVZzMjNDcVdCY2NCUUVYcElWZVhxU3hMQkszOEZEMVlhMDJ5NXlYLVZhV2pQUVNmWVcwaWJSZEJoTTUtUDViSlFJc1JsZ3hhRV8zejhfVHMxMDNYTmhBUGpaVnNQcG1YdEdiN1VCektwRU93UmFubkxmOTFwYU5DQU5CWTl1N2ZCSGw5aGtNUDJwVDc0TjFrSlBJN3NqR1dlaGpNZzBVUEN0Y1FGeW9fRW5zazNjNzl1MDU?oc=5",
+        "published_at_utc": "2026-03-25T13:59:00Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMigANBVV95cUxPVlN6ZkdnNEthUm81c2xTZE0xZzUyVzJuZjdBUHp3RFcyWkdxQVhrOEoxQ2tPVFltNlBHdklTWXd0MkhSaTdHNmJtelVtaUVGRkdHQ0NUSzc3MXpCQXZEeTN3MktrV05iaWFjTjlCd1N3RUl4QWJzSWFmN21DQkFETEVTYi1zbUxPLWJDX2hiV0llbTJNbnVnRWYzMm5hbTNRM2FHa3ptWXpoSUhaZUI5ZTN4Vkx1TFFia3BNOTlzaVo3VlYtcUZ2V2hBRG1CRVZzMjNDcVdCY2NCUUVYcElWZVhxU3hMQkszOEZEMVlhMDJ5NXlYLVZhV2pQUVNmWVcwaWJSZEJoTTUtUDViSlFJc1JsZ3hhRV8zejhfVHMxMDNYTmhBUGpaVnNQcG1YdEdiN1VCektwRU93UmFubkxmOTFwYU5DQU5CWTl1N2ZCSGw5aGtNUDJwVDc0TjFrSlBJN3NqR1dlaGpNZzBVUEN0Y1FGeW9fRW5zazNjNzl1MDU?oc=5\" target=\"_blank\">Robinhood Shares Jump After Company Announces $1.5 Billion Stock Buyback Plan</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barron's</font>"
+      },
+      {
+        "title": "Robinhood announces $1.5 billion share buyback - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQWEc4dVlJVjJ6R0t1WXNnMnpHcEVvQlo5VWI1bEhvc1lzeVIybTBaSG1OS2Z4ME5ZRUMwZ3U3VlpycEN1R0dRekdSYXZOY3hGVUt3UXEyOXdaelJYQjlDZUZLbUxzSVVWbS12SHF5WjVqS0xhbV9WUFNoMlFPWGZhQXhIM1BrUjFtSnhJdVpMN203NVE?oc=5",
+        "published_at_utc": "2026-03-24T20:17:16Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxQWEc4dVlJVjJ6R0t1WXNnMnpHcEVvQlo5VWI1bEhvc1lzeVIybTBaSG1OS2Z4ME5ZRUMwZ3U3VlpycEN1R0dRekdSYXZOY3hGVUt3UXEyOXdaelJYQjlDZUZLbUxzSVVWbS12SHF5WjVqS0xhbV9WUFNoMlFPWGZhQXhIM1BrUjFtSnhJdVpMN203NVE?oc=5\" target=\"_blank\">Robinhood announces $1.5 billion share buyback</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Reuters</font>"
+      },
+      {
+        "title": "Robinhood (HOOD) lifts buyback program to $1.5 billion - CoinDesk",
+        "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPQjhERFczbG1peS10NWZ6TEF6S1JYUll5cnU0VU52VnFBOEhaVUdZZlFDX19ZNlJzVjdQa0pTVGU2OUUtWWUwTWVJLWQzc0FRWVI4UVc2SE4zS0psbUpCcHJlNG5IVVVqODNXdS1UZ3JfX2c0VmFMT1Q5QzBEeEFTa2hySmRKakI5dEZyX0NCT3k4MmhXcDNVa1lUWkUyNm8tejlqMXItU0ZKbUZ0alZWZU42R1loWjBJS1QwQXNjcGUzUQ?oc=5",
+        "published_at_utc": "2026-03-24T21:02:32Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMiwgFBVV95cUxPQjhERFczbG1peS10NWZ6TEF6S1JYUll5cnU0VU52VnFBOEhaVUdZZlFDX19ZNlJzVjdQa0pTVGU2OUUtWWUwTWVJLWQzc0FRWVI4UVc2SE4zS0psbUpCcHJlNG5IVVVqODNXdS1UZ3JfX2c0VmFMT1Q5QzBEeEFTa2hySmRKakI5dEZyX0NCT3k4MmhXcDNVa1lUWkUyNm8tejlqMXItU0ZKbUZ0alZWZU42R1loWjBJS1QwQXNjcGUzUQ?oc=5\" target=\"_blank\">Robinhood (HOOD) lifts buyback program to $1.5 billion</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CoinDesk</font>"
+      },
+      {
+        "title": "Robinhood stock jumps 7% on $1.5 billion \u200cshare buyback news - thestreet.com",
+        "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPNElmUFFRQlpPUEliSjlKN3REY29EcXJiTXRUejZTanZZZjNqTEFtSk94eUJuVEQ1ZFVGNU84ZDVBc1UxaGtUdm1FS1RERUZaYmJEc2xxeHR6c1ppdmtpdzc0OUh2MEI2aGFWQTQ1UjFBeUd0ZjJKMzJkS3FMMF95S3R5LWxBSjQxbTU0aGRYYmt6RUp4cDFuZm51Tkdyb3JTWnc?oc=5",
+        "published_at_utc": "2026-03-25T15:30:00Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMiogFBVV95cUxPNElmUFFRQlpPUEliSjlKN3REY29EcXJiTXRUejZTanZZZjNqTEFtSk94eUJuVEQ1ZFVGNU84ZDVBc1UxaGtUdm1FS1RERUZaYmJEc2xxeHR6c1ppdmtpdzc0OUh2MEI2aGFWQTQ1UjFBeUd0ZjJKMzJkS3FMMF95S3R5LWxBSjQxbTU0aGRYYmt6RUp4cDFuZm51Tkdyb3JTWnc?oc=5\" target=\"_blank\">Robinhood stock jumps 7% on $1.5 billion \u200cshare buyback news</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">thestreet.com</font>"
+      },
+      {
+        "title": "UMass Chan junior faculty receive child health research grants from Hood Foundation - UMass Chan Medical School",
+        "link": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOaHlEMFAtRzZodFREbWcwV3FBVmdRNHJSR21MX0NnRFVsZ2NHTGRwOWRBczZVQnptaTgxVEFMci1pQWdYeXBoeWx4d0J4M0tpY0IwUHAyd2ZTcWR6NEM4a1BxNVA4SG1vVkdiNEhNVDI5UFk2Q1VrWFJoODNXclpYcFU3Q0h3TXFQcEZPdXgzdVI0dWNkUUxQVDdtYVQyYTZsYkNuakxXTVVmdUtnSVduU1F0U1AwWm5ZQTZSaWtLbXFKUE5VRkpwU1FVVQ?oc=5",
+        "published_at_utc": "2026-03-25T04:17:33Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxOaHlEMFAtRzZodFREbWcwV3FBVmdRNHJSR21MX0NnRFVsZ2NHTGRwOWRBczZVQnptaTgxVEFMci1pQWdYeXBoeWx4d0J4M0tpY0IwUHAyd2ZTcWR6NEM4a1BxNVA4SG1vVkdiNEhNVDI5UFk2Q1VrWFJoODNXclpYcFU3Q0h3TXFQcEZPdXgzdVI0dWNkUUxQVDdtYVQyYTZsYkNuakxXTVVmdUtnSVduU1F0U1AwWm5ZQTZSaWtLbXFKUE5VRkpwU1FVVQ?oc=5\" target=\"_blank\">UMass Chan junior faculty receive child health research grants from Hood Foundation</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">UMass Chan Medical School</font>"
+      }
+    ],
+    "scheduled_events": [
+      {
+        "title": "U.S. International Trade in Goods and Services, February 2026",
+        "scheduled_at_utc": "2026-04-02T08:30:00Z",
+        "importance": "NEWS"
+      },
+      {
+        "title": "GDP (Third Estimate), Industries, Corporate Profits, State GDP, and State Personal Income, 4th Quarter and Year 2025",
+        "scheduled_at_utc": "2026-04-09T08:30:00Z",
+        "importance": "NEWS"
+      },
+      {
+        "title": "Personal Income and Outlays, February 2026",
+        "scheduled_at_utc": "2026-04-09T08:30:00Z",
+        "importance": "NEWS"
+      },
+      {
+        "title": "GDP (Advance Estimate), 1st Quarter 2026",
+        "scheduled_at_utc": "2026-04-30T08:30:00Z",
+        "importance": "NEWS"
+      },
+      {
+        "title": "Personal Income and Outlays, March 2026",
+        "scheduled_at_utc": "2026-04-30T08:30:00Z",
+        "importance": "NEWS"
+      }
+    ],
+    "fundamental_availability": "PROXY_ONLY",
+    "fundamental_note": "Company/index context is news-driven in v1; no earnings/valuation feed is wired yet.",
+    "news_volume": 8
+  },
+  "key_levels": [
+    {
+      "type": "SUPPORT",
+      "label": "S1",
+      "price": 73.1,
+      "note": "4h pivot support"
+    },
+    {
+      "type": "SUPPORT",
+      "label": "S4",
+      "price": 71.5455,
+      "note": "ATR pullback objective"
+    },
+    {
+      "type": "SUPPORT",
+      "label": "S2",
+      "price": 69.32,
+      "note": "1d pivot support"
+    },
+    {
+      "type": "RESISTANCE",
+      "label": "R3",
+      "price": 75.3945,
+      "note": "ATR stretch objective"
+    },
+    {
+      "type": "RESISTANCE",
+      "label": "R4",
+      "price": 75.8549,
+      "note": "buffered disaster SL"
+    },
+    {
+      "type": "RESISTANCE",
+      "label": "R1",
+      "price": 78.48,
+      "note": "4h pivot resistance"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "Bearish follow-through / lower reset",
+      "probability_pct": 55,
+      "expected_move_pct": 2.42,
+      "trigger": "Lose 73.8549 and fail to reclaim the 4h reaction zone."
+    },
+    {
+      "scenario": "Squeeze / continuation higher",
+      "probability_pct": 45,
+      "expected_move_pct": 0.5,
+      "trigger": "Accept back above 78.4800 or invalidate the fade structure."
+    }
+  ],
+  "peak_risk": {
+    "label": "LOW",
+    "score": 2,
+    "action": "Normal sizing is acceptable if the structure remains intact.",
+    "bullets": [
+      "Mean-reversion setups decay faster than continuation setups and need cleaner execution.",
+      "Price is very close to the nearest opposing 4h barrier, so room may be constrained."
+    ]
+  },
+  "decision": {
+    "trade_candidate": "YES",
+    "direction": "SHORT",
+    "trade_type": "SHORT_MEANREV",
+    "primary_entry_method": "SELL_RALLY",
+    "backup_entry_method": "BREAKDOWN",
+    "entry_basis": "4H_EXECUTION_STRUCTURE",
+    "sl_basis": "D1_RECENT_7BAR_HIGH",
+    "invalidation": 75.8549,
+    "event_risk_24h": "LOW",
+    "risk_bucket": "LOW",
+    "quality_label": "HIGH",
+    "quality_rank": 3,
+    "leverage_cap": 5,
+    "size_fraction_of_risk_budget": 1.0,
+    "size_note": "Normal risk budget allowed"
+  },
+  "orderability_decision": {
+    "decision": "placeable_conditional_only",
+    "market_order_now": false,
+    "ladder_limit_orders": true,
+    "stop_entry_orders": false,
+    "allowed_order_types": [
+      "LIMIT"
+    ],
+    "why": "The setup is executable only via resting limit orders into the planned zone; no market-now order is justified."
+  },
+  "orders": [
+    {
+      "level": "L1",
+      "order_type": "LIMIT",
+      "entry": 73.8549,
+      "size_pct_of_deployable_margin": 36.6,
+      "margin_usdt": 292.78,
+      "leverage": 5.0,
+      "notional_usdt": 1463.88,
+      "sl": 75.8549,
+      "tp1": 73.1,
+      "rr_tp1": 0.38,
+      "tp2": 71.6887,
+      "rr_tp2": 1.08,
+      "trail_trigger": 73.1,
+      "trail_distance": 0.6415,
+      "risk_usdt": 39.64,
+      "stop_dist_pct": 0.027080126030906548
+    },
+    {
+      "level": "L2",
+      "order_type": "LIMIT",
+      "entry": 74.3681,
+      "size_pct_of_deployable_margin": 43.38,
+      "margin_usdt": 347.0,
+      "leverage": 5.0,
+      "notional_usdt": 1735.0,
+      "sl": 75.8549,
+      "tp1": 73.2134,
+      "rr_tp1": 0.78,
+      "tp2": 71.8021,
+      "rr_tp2": 1.73,
+      "trail_trigger": 73.2134,
+      "trail_distance": 0.6415,
+      "risk_usdt": 34.69,
+      "stop_dist_pct": 0.0199924429963923
+    },
+    {
+      "level": "L3",
+      "order_type": "LIMIT",
+      "entry": 73.5793,
+      "size_pct_of_deployable_margin": 20.03,
+      "margin_usdt": 160.22,
+      "leverage": 5.0,
+      "notional_usdt": 801.12,
+      "sl": 75.8549,
+      "tp1": 73.1,
+      "rr_tp1": 0.21,
+      "tp2": 71.6887,
+      "rr_tp2": 0.83,
+      "trail_trigger": 73.1,
+      "trail_distance": 0.6415,
+      "risk_usdt": 24.78,
+      "stop_dist_pct": 0.030927176529268383
+    }
+  ],
+  "risk_summary": {
+    "risk_budget_usdt": 100.0,
+    "estimated_total_loss_usdt": 99.11,
+    "estimated_total_loss_pct_equity": null,
+    "pass_vs_risk_budget": "YES",
+    "estimated_average_entry": 74.0223,
+    "deployable_margin_used_pct_of_free_margin": 80.0,
+    "total_margin_usdt": 800.0
+  },
+  "final_trade_setup": {
+    "symbol": "HOODX",
+    "direction": "SHORT",
+    "trade_type": "SHORT_MEANREV",
+    "screening_score": 72.56066499745141,
+    "screening_rank": 3,
+    "quality": "HIGH",
+    "risk": "LOW",
+    "orderability_decision": "placeable_conditional_only",
+    "entry_zone": {
+      "from": 73.5793,
+      "to": 74.3681
+    },
+    "estimated_average_entry": 74.0223,
+    "disaster_sl": 75.8549,
+    "tp1": 73.1,
+    "tp2": 71.6887,
+    "total_margin_usdt": 800.0,
+    "estimated_total_loss_usdt": 99.11,
+    "estimated_total_loss_pct_equity": null,
+    "size_fraction_of_risk_budget": 1.0,
+    "pass_vs_risk_budget": "YES",
+    "decision_posture": "KEEP_SELECTIVE"
+  },
+  "notes": [
+    "Macro alignment is mixed; headline pressure is mixed; event risk in the next 24h is low."
+  ],
+  "do_this_now": [
+    "Check whether price is near the first planned order at 73.8549 before placing the setup.",
+    "Use the disaster SL at 75.8549 and do not tighten it just to fit size.",
+    "Keep total risk at or below 100.00 USDT.",
+    "Conditional-only setup: market-now=FALSE, ladder-limits=TRUE, stop-entry=FALSE.",
+    "If event risk stays LOW, keep leverage <= x5 and avoid chasing."
+  ]
+}

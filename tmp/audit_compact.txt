@@ -1,0 +1,4 @@
+NZDUSD: SKIP | Dist Fast EMA ATR outside threshold 1.35
+EURGBP: SKIP | asset already marked active from a prior autotrade
+EURCAD: SKIP | asset already marked active from a prior autotrade
+GBPNZD: PASS | meets criteria

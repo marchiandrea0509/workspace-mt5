@@ -1,0 +1,85 @@
+MT5 AGENT FILE MANIFEST
+Prepared: 2026-03-29
+
+[CORE WORKSPACE FILES]
+C:\Users\anmar\.openclaw\workspace\mql5\MQL5
+C:\Users\anmar\.openclaw\workspace\data_pipeline\docs\MT5_OANDA_PAPER_BRIDGE_PLAN.md
+C:\Users\anmar\.openclaw\workspace\data_pipeline\docs\MT5_OANDA_PAPER_BRIDGE_STATUS.md
+C:\Users\anmar\.openclaw\workspace\data_pipeline\docs\MT5_AGENT_TRANSFER_PACK_2026-03-29.md
+C:\Users\anmar\.openclaw\workspace\data_pipeline\config\mt5_bridge_ticket.schema.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\config\mt5_bridge_result.schema.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\scripts\emit_mt5_bridge_ticket.py
+C:\Users\anmar\.openclaw\workspace\data_pipeline\scripts\reload_mt5_bridge.ps1
+C:\Users\anmar\.openclaw\workspace\data_pipeline\scripts\check_mt5_bridge_health.ps1
+C:\Users\anmar\.openclaw\workspace\data_pipeline\mt5_bridge\GrayPaperBridgeEA.mq5
+
+[WORKSPACE EXAMPLES]
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_result.accepted.example.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.limit.single.example.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.limit.single.btc.ladder1.20260328.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.limit.single.btc.ladder2.20260328.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.stop.single.smoke.20260328.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.stop.single.smoke.20260328b.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.stop.single.smoke.20260328c.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.stop.single.btc.smoke.20260328.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.stop.single.btc.tight.20260328.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.stop.single.eth.smoke.20260328.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.stop.single.btc.trailing.percent.example.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\examples\mt5_bridge_ticket.paper.stop.single.btc.trailing.test.20260328.json
+C:\Users\anmar\.openclaw\workspace\data_pipeline\state\mt5_bridge_sandbox\inbox\20260327T071143Z__mt5-paper-20260326-001.json
+
+[LIVE TERMINAL ROOT]
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5
+
+[LIVE EA FILES]
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\Gray\GrayPaperBridgeEA.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\Gray\GrayPaperBridgeEA.ex5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\Gray\GrayPaperBridgeEA.compile.log
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\Gray\GrayPaperBridgeEA.before_trailing_20260328.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\Gray\GrayPaperBridgeEA.before_trailing_20260328.ex5
+
+[LIVE BRIDGE FOLDER CONTENT]
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\README.txt
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_114321__mt5-paper-20260328-smoke-001__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_114616__mt5-paper-20260328-smoke-002__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_115104__mt5-paper-20260328-smoke-003__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_122852__mt5-paper-20260328-btc-smoke-001__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_123147__mt5-paper-20260328-btc-tight-001__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_125024__mt5-paper-20260328-btc-ladder-001__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_125034__mt5-paper-20260328-btc-ladder-002__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_125454__mt5-paper-20260328-eth-smoke-001__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\outbox\20260328_130845__mt5-paper-20260328-btc-trailing-test-001__result.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\archive\20260328_122852__20260328T112850Z__mt5-paper-20260328-btc-smoke-001.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\archive\20260328_123147__20260328T113144Z__mt5-paper-20260328-btc-tight-001.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\archive\20260328_125024__20260328T115022Z__mt5-paper-20260328-btc-ladder-001.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\archive\20260328_125034__20260328T115033Z__mt5-paper-20260328-btc-ladder-002.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\archive\20260328_125454__20260328T115450Z__mt5-paper-20260328-eth-smoke-001.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\archive\20260328_130845__20260328T120843Z__mt5-paper-20260328-btc-trailing-test-001.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\errors\20260328_114321__20260328T104320Z__mt5-paper-20260328-smoke-001.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\errors\20260328_114616__20260328T104615Z__mt5-paper-20260328-smoke-002.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\errors\20260328_115104__20260328T105104Z__mt5-paper-20260328-smoke-003.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Files\gray_bridge\trailing_archive\20260328_144021__mt5-paper-20260328-btc-trailing-test-001__trailing.json
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Logs\20260327.log
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Logs\20260328.log
+
+[LEGACY / REFERENCE DEBUGGING FILES]
+C:\Users\anmar\.openclaw\workspace\tools\mt5_digest.py
+C:\Users\anmar\.openclaw\workspace\tools\digest_mt5_tester_logs.sh
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\LimitedTestHarness.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\LimitedTestHarness.ex5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\LimitedTestHarness_DIAG_20260215.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\LimitedTestHarness_DIAG_20260215.ex5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\LimitedTestHarness_DIAG_20260215_RULES.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\LimitedTestHarness_DIAG_20260215_RULES_v3.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\LimitedTestHarness_DIAG_20260215_RULES_v3.ex5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\SLTP_ModifyProbe.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\SLTP_ModifyProbe.ex5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\SLTP_InvalidStopsProbe.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\SLTP_InvalidStopsProbe_FIXED.mq5
+C:\Users\anmar\AppData\Roaming\MetaQuotes\Terminal\47AEB69EDDAD4D73097816C71FB25856\MQL5\Experts\SLTP_InvalidStopsProbe_FIXED.ex5
+
+[IMPORTANT MEMORY SOURCES]
+C:\Users\anmar\.openclaw\workspace\MEMORY.md
+C:\Users\anmar\.openclaw\workspace\memory\2026-03-26.md
+C:\Users\anmar\.openclaw\workspace\memory\2026-03-27.md
+C:\Users\anmar\.openclaw\workspace\memory\2026-03-28.md

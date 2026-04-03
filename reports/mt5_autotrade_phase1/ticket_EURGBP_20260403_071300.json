@@ -1,0 +1,40 @@
+{
+  "bridge_version": "mt5.paper.v1",
+  "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T070624-055Z-eurgbp-phase1-001",
+  "created_at": "2026-04-03T07:13:00Z",
+  "mode": "paper",
+  "symbol": "EURGBP",
+  "side": "buy",
+  "order_plan": "limit_ladder",
+  "entries": [
+    {
+      "client_entry_id": "eurgbp-phase1-entry-1",
+      "entry_type": "limit",
+      "price": 0.87123,
+      "volume_lots": 0.08,
+      "comment": "EURGBP phase1 autotrade long limit entry"
+    }
+  ],
+  "stop_loss": {
+    "price": 0.86588
+  },
+  "take_profit": {
+    "price": 0.88087
+  },
+  "max_risk_usdt": 100.0,
+  "strategy_context": {
+    "source": "Phase1 MT5 FX autotrade deep analysis for EURGBP",
+    "watchlist": "MT5_FRX",
+    "timeframe": "4 hours",
+    "orderability_decision": "placeable_conditional_only",
+    "setup": "LONG_CONTINUATION",
+    "planned_tp1": 0.87658,
+    "planned_tp2": 0.88087,
+    "planned_rr_tp1": 1.0,
+    "planned_rr_tp2": 1.8,
+    "planned_total_notional_usd": 9269.98,
+    "modeled_margin_usd": 927.0,
+    "bridge_tp_note": "Bridge v1 supports one live TP only; TP2 is used as executable TP while TP1 remains a management level."
+  },
+  "note": "EURGBP phase1 autotrade. Default risk budget 100 USD. Single conditional limit entry from screener-led deep analysis."
+}

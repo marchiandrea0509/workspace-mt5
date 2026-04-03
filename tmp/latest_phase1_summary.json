@@ -1,0 +1,36 @@
+{
+  "result": "trade_review",
+  "candidate": "GBPNZD",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260403_150721.md",
+  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_GBPNZD_20260403_150721.json",
+  "execution": {
+    "result_file": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge\\outbox\\20260403_170729__mt5-paper-MT5_FRX-4 hours-2026-04-03T150611-246Z-gbpnzd-20260403-150726-phase1-001__result.json",
+    "status": "rejected",
+    "message": "Buy ticket stop_loss must be below every entry price",
+    "symbol": "GBPNZD.pro",
+    "side": "buy",
+    "retcode": 10013,
+    "retcode_text": "TRADE_RETCODE_INVALID",
+    "mt5_order_ids": [],
+    "timestamp": "2026-04-03T17:07:29",
+    "returncode": 0
+  },
+  "plan_bias": {
+    "direction": "LONG",
+    "setup": "LONG_CONTINUATION",
+    "quality_call": "broker-feed MT5 structure validated",
+    "final_trader_call": "Ready for bridge fallback execution"
+  },
+  "orderability": {
+    "decision": "placeable_conditional_only",
+    "execution_template": "ladder_limit_3",
+    "bridge_supported_now": true,
+    "market_order_now": false,
+    "ladder_limit_orders": true,
+    "stop_entry_orders": false,
+    "allowed_order_types": [
+      "LIMIT"
+    ],
+    "why": "Continuation quality is good and structure supports a deeper 3-level pullback ladder."
+  }
+}

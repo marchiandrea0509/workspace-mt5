@@ -1,0 +1,22 @@
+MT5 Phase1 trade report
+
+Candidate: GBPNZD
+Setup: LONG_CONTINUATION
+Orderability: placeable_conditional_only
+Execution template: ladder_limit_3
+
+Trade package:
+- symbol: GBPNZD.pro
+- side: buy
+- order_plan: limit_ladder
+- entry: 2.30112
+- SL: 2.29873
+- TP: 2.30542
+- lots: 0.07
+- modeled risk: 9.53 USD
+- modeled margin: 917.52 USD
+
+Execution:
+- status: rejected
+- retcode: 10013 (TRADE_RETCODE_INVALID)
+- message: Buy ticket stop_loss must be below every entry price

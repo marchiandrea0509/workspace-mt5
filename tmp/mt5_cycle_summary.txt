@@ -1,0 +1,10 @@
+candidate=GBPNZD
+status=rejected
+retcode=10013
+retcode_text=TRADE_RETCODE_INVALID
+message=Buy ticket stop_loss must be below every entry price
+order_ids=[]
+preflight=null
+setup=LONG_CONTINUATION
+orderability=placeable_conditional_only
+template=ladder_limit_3

@@ -1,0 +1,56 @@
+{
+  "risk_budget_usdt": 100.0,
+  "model_leverage": 10.0,
+  "quote_to_usd": 0.56961,
+  "contract_size": 100000.0,
+  "volume_lots": 0.07,
+  "total_risk_usdt": 9.53,
+  "total_notional_usdt": 9175.19,
+  "total_margin_usdt": 917.52,
+  "rr_tp1": 1.0,
+  "rr_tp2": 1.8
+}
+LEVELS
+{
+  "analysis_price_reference": 2.31795,
+  "price_reference": 2.31795,
+  "support_zone_level": 2.30067,
+  "support_zone_lower": 2.29946,
+  "support_zone_upper": 2.30188,
+  "resistance_zone_level": null,
+  "resistance_zone_lower": null,
+  "resistance_zone_upper": null,
+  "ladder_entries": [
+    2.28938,
+    2.30067,
+    2.3133
+  ],
+  "ema_pullback_zone_from": 2.28938,
+  "ema_pullback_zone_to": 2.30067,
+  "slow_ema_invalidation_anchor": 2.28938,
+  "breakout_trigger": 2.32094,
+  "breakout_limit": 2.32142,
+  "entry": 2.30112,
+  "stop_loss": 2.29873,
+  "tp1": 2.30351,
+  "tp2": 2.30542
+}
+PREVIEW
+{
+  "side": "buy",
+  "tv_root_symbol": "GBPNZD",
+  "analysis_symbol": "GBPNZD.pro",
+  "mt5_execution_symbol": "GBPNZD.pro",
+  "is_proxy_symbol": false,
+  "proxy_source": null,
+  "order_plan": "limit_ladder",
+  "entry_type": "limit",
+  "entry": 2.30112,
+  "sl": 2.29873,
+  "tp_live": 2.30542,
+  "planned_tp1": 2.30351,
+  "planned_tp2": 2.30542,
+  "volume_lots": 0.07,
+  "max_risk_usdt": 100.0,
+  "bridge_fallback_reason": null
+}

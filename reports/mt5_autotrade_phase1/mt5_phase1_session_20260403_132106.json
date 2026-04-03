@@ -1,0 +1,174 @@
+{
+  "result": "trade_review",
+  "session_key": "MT5_FRX|4 hours|2026-04-03T13:06:12.927Z",
+  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-03T13-05-10-442Z.json",
+  "candidate": "NZDUSD",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260403_132106.md",
+  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_NZDUSD_20260403_132106.json",
+  "execution": {
+    "status": "dry_run",
+    "message": "Ticket compiled but not emitted."
+  },
+  "audit": [
+    {
+      "symbol": "EURGBP",
+      "passed": false,
+      "reasons": [
+        "asset already marked active from a prior autotrade"
+      ]
+    },
+    {
+      "symbol": "EURCAD",
+      "passed": false,
+      "reasons": [
+        "asset already marked active from a prior autotrade"
+      ]
+    },
+    {
+      "symbol": "NZDUSD",
+      "passed": true,
+      "reasons": []
+    }
+  ],
+  "plan": {
+    "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
+    "generated_at_utc": "2026-04-03T13:21:10Z",
+    "symbol": "NZDUSD",
+    "description": "NZD/USD",
+    "source_context": {
+      "watchlist": "MT5_FRX",
+      "indicator": "OC Hybrid Edge Screener v4",
+      "timeframe": "4 hours",
+      "best_score": 72.99521600345906,
+      "best_setup_code": -2,
+      "conviction_state": 3,
+      "screener_rank_top5": 3,
+      "tv_root_symbol": "NZDUSD",
+      "analysis_source_kind": "mt5_python",
+      "analysis_symbol": "NZDUSD.pro",
+      "mt5_execution_symbol": "NZDUSD.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null
+    },
+    "bias": {
+      "direction": "SHORT",
+      "setup": "SHORT_CONTINUATION",
+      "quality_call": "broker-feed MT5 structure validated",
+      "final_trader_call": "Ready for bridge fallback execution"
+    },
+    "market_source": {
+      "kind": "mt5_python",
+      "analysis_symbol": "NZDUSD.pro",
+      "execution_symbol": "NZDUSD.pro",
+      "trade_mode": "FULL",
+      "path": "PRO\\FX\\Non-Major\\NZDUSD.pro",
+      "digits": 5,
+      "volume_min": 0.01,
+      "volume_step": 0.01
+    },
+    "metrics": {
+      "close_h4": 0.57076,
+      "fast_ema_h4": 0.5726478970394625,
+      "medium_ema_h4": 0.5753081106990534,
+      "slow_ema_h4": 0.5839836482800153,
+      "atr_h4": 0.0019649882032077895,
+      "rsi_h4": 38.02571109537228,
+      "adx_h4": 20.43578475125986,
+      "plus_di_h4": 15.930286121788026,
+      "minus_di_h4": 25.138390970800927,
+      "macd_hist_h4": -8.599935835099603e-05,
+      "rel_volume_h4": 0.3197530446751252,
+      "dist_fast_ema_atr": 0.9607676200704515,
+      "ema_spread_atr": 5.768864780993313,
+      "d1_close": 0.57076,
+      "d1_ema50": 0.5848405212055807,
+      "d1_ema200": 0.5865373729943897,
+      "d1_rsi": 35.44282745471068,
+      "d1_adx": 17.27060686592825,
+      "d1_plus_di": 15.141558024150076,
+      "d1_minus_di": 23.300451088383717
+    },
+    "lifecycle": {
+      "trend_dir_h4": -1,
+      "macro_dir_d1": -1,
+      "fresh_structure_shift": 0,
+      "breakout_dir": 0,
+      "breakout_fresh": false,
+      "retest_state": 0,
+      "retest_label": "none",
+      "fake_breakout_risk": false,
+      "overextended": true
+    },
+    "key_levels": {
+      "analysis_price_reference": 0.57076,
+      "price_reference": 0.57076,
+      "support_zone_level": 0.5698,
+      "support_zone_lower": 0.56931,
+      "support_zone_upper": 0.57029,
+      "resistance_zone_level": 0.57777,
+      "resistance_zone_lower": 0.57728,
+      "resistance_zone_upper": 0.57826,
+      "ladder_entries": [
+        0.58398,
+        0.57777,
+        0.57265
+      ],
+      "ema_pullback_zone_from": 0.57777,
+      "ema_pullback_zone_to": 0.58398,
+      "slow_ema_invalidation_anchor": 0.58398,
+      "breakout_trigger": 0.56951,
+      "breakout_limit": 0.56931,
+      "entry": 0.57813,
+      "stop_loss": 0.57856,
+      "tp1": 0.5777,
+      "tp2": 0.57736
+    },
+    "orderability_decision": {
+      "decision": "placeable_conditional_only",
+      "execution_template": "ladder_limit_3",
+      "bridge_supported_now": true,
+      "market_order_now": false,
+      "ladder_limit_orders": true,
+      "stop_entry_orders": false,
+      "allowed_order_types": [
+        "LIMIT"
+      ],
+      "why": "Continuation quality is good and structure supports a deeper 3-level pullback ladder."
+    },
+    "risk_plan": {
+      "risk_budget_usdt": 100.0,
+      "model_leverage": 10.0,
+      "quote_to_usd": 1.0,
+      "contract_size": 100000.0,
+      "volume_lots": 0.17,
+      "total_risk_usdt": 7.31,
+      "total_notional_usdt": 9828.21,
+      "total_margin_usdt": 982.82,
+      "rr_tp1": 1.0,
+      "rr_tp2": 1.79
+    },
+    "trade_ticket_preview": {
+      "side": "sell",
+      "tv_root_symbol": "NZDUSD",
+      "analysis_symbol": "NZDUSD.pro",
+      "mt5_execution_symbol": "NZDUSD.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null,
+      "order_plan": "limit_ladder",
+      "entry_type": "limit",
+      "entry": 0.57813,
+      "sl": 0.57856,
+      "tp_live": 0.57736,
+      "planned_tp1": 0.5777,
+      "planned_tp2": 0.57736,
+      "volume_lots": 0.17,
+      "max_risk_usdt": 100.0,
+      "bridge_fallback_reason": null
+    },
+    "notes": [
+      "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
+      "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
+      "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop."
+    ]
+  }
+}

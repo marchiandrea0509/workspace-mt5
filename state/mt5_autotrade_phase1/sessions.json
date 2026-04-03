@@ -1,0 +1,27 @@
+{
+  "sessions": {
+    "MT5_FRX|4 hours|2026-04-03T07:06:24.055Z": {
+      "status": "accepted",
+      "candidate": "EURGBP",
+      "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T070624-055Z-eurgbp-20260403-130039-phase1-001",
+      "processed_at": "2026-04-03T13:00:46Z"
+    },
+    "UNKNOWN|UNKNOWN|2026-04-03T08:00:52.236Z": {
+      "status": "no_trade",
+      "reason": "no candidate passed the predefined criteria",
+      "processed_at": "2026-04-03T09:24:55Z"
+    },
+    "MT5_FRX|4 hours|2026-04-03T13:06:12.927Z": {
+      "status": "dry_run",
+      "candidate": "NZDUSD",
+      "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T130612-927Z-nzdusd-20260403-132110-phase1-001",
+      "processed_at": "2026-04-03T13:21:10Z"
+    },
+    "MT5_FRX|4 hours|2026-04-03T15:06:11.246Z": {
+      "status": "rejected",
+      "candidate": "GBPNZD",
+      "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T150611-246Z-gbpnzd-20260403-150726-phase1-001",
+      "processed_at": "2026-04-03T15:07:30Z"
+    }
+  }
+}

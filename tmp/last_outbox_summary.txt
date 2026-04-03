@@ -1,0 +1,7 @@
+status=rejected
+retcode=10013
+retcode_text=TRADE_RETCODE_INVALID
+message=Buy ticket stop_loss must be below every entry price
+orders=[]
+symbol=GBPNZD.pro
+ticket_id=mt5-paper-MT5_FRX-4 hours-2026-04-03T150611-246Z-gbpnzd-20260403-150726-phase1-001

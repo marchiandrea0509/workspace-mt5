@@ -1,0 +1,31 @@
+CANDIDATE
+"GBPNZD"
+AUDIT
+[
+  {
+    "symbol": "NZDUSD",
+    "passed": false,
+    "reasons": [
+      "Dist Fast EMA ATR outside threshold 1.35"
+    ]
+  },
+  {
+    "symbol": "EURGBP",
+    "passed": false,
+    "reasons": [
+      "asset already marked active from a prior autotrade"
+    ]
+  },
+  {
+    "symbol": "EURCAD",
+    "passed": false,
+    "reasons": [
+      "asset already marked active from a prior autotrade"
+    ]
+  },
+  {
+    "symbol": "GBPNZD",
+    "passed": true,
+    "reasons": []
+  }
+]

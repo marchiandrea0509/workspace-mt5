@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gray.local/schemas/mt5_bridge_result.schema.json",
+  "title": "Gray MT5 Paper Bridge Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bridge_version",
+    "ticket_id",
+    "status",
+    "symbol",
+    "side",
+    "order_plan",
+    "executor_mode",
+    "timestamp",
+    "message"
+  ],
+  "properties": {
+    "bridge_version": {
+      "type": "string",
+      "const": "mt5.paper.v1"
+    },
+    "ticket_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "rejected",
+        "partial",
+        "filled",
+        "closed",
+        "error"
+      ]
+    },
+    "symbol": {
+      "type": "string"
+    },
+    "side": {
+      "type": "string",
+      "enum": ["buy", "sell"]
+    },
+    "order_plan": {
+      "type": "string",
+      "enum": ["market", "limit_ladder", "stop_entry"]
+    },
+    "executor_mode": {
+      "type": "string",
+      "enum": ["paper"]
+    },
+    "ticket_file": {
+      "type": "string"
+    },
+    "archive_file": {
+      "type": ["string", "null"]
+    },
+    "error_file": {
+      "type": ["string", "null"]
+    },
+    "normalized_entry": {
+      "type": ["number", "null"]
+    },
+    "normalized_volume_lots": {
+      "type": ["number", "null"]
+    },
+    "normalized_stop_loss": {
+      "type": ["number", "null"]
+    },
+    "normalized_take_profit": {
+      "type": ["number", "null"]
+    },
+    "mt5_order_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "mt5_position_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "retcode": {
+      "type": ["integer", "null"]
+    },
+    "retcode_text": {
+      "type": ["string", "null"]
+    },
+    "message": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "account": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "trailing": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

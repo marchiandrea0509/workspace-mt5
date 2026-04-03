@@ -1,0 +1,38 @@
+{
+  "bridge_version": "mt5.paper.v1",
+  "ticket_id": "mt5-paper-20260328-btc-trailing-test-001",
+  "created_at": "2026-03-28T13:09:00+01:00",
+  "mode": "paper",
+  "symbol": "BTCUSD",
+  "side": "buy",
+  "order_plan": "stop_entry",
+  "entries": [
+    {
+      "client_entry_id": "btc-trailing-test-entry-1",
+      "entry_type": "stop",
+      "price": 66350.0,
+      "volume_lots": 0.01,
+      "comment": "paper bridge BTC trailing test"
+    }
+  ],
+  "stop_loss": {
+    "price": 66050.0
+  },
+  "take_profit": {
+    "price": 66950.0
+  },
+  "trailing": {
+    "enabled": true,
+    "trigger_price": 66500.0,
+    "distance_mode": "price",
+    "distance_value": 120.0,
+    "step_price": 25.0
+  },
+  "max_risk_usdt": 30,
+  "strategy_context": {
+    "source": "Gray MT5 bridge trailing live test",
+    "timeframe": "H4",
+    "placeable_now": true
+  },
+  "note": "BTCUSD paper trailing test after EA reload. Activate trailing above 66500 and trail SL by 120 USD with 25 USD minimum improvement step."
+}

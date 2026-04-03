@@ -1,0 +1,297 @@
+{
+  "report_type": "TRADE_PLAN_DEEP_DIVE",
+  "generated_at_utc": "2026-03-23T12:21:44Z",
+  "generated_at_local": "2026-03-23T13:21:44+01:00",
+  "symbol": "ETH_PERP",
+  "mode": "deep",
+  "inputs": {
+    "free_margin_usdt": 1000.0,
+    "equity_usdt": null,
+    "risk_budget_usdt": 100.0,
+    "risk_budget_meta": {
+      "source": "RISK_BUDGET_USDT",
+      "provided_risk_budget_usdt": 100.0,
+      "provided_brb_percent": null
+    },
+    "direction_bias": "SHORT",
+    "preferred_execution_style": "SELL_RALLY",
+    "horizon_days": 10,
+    "max_ladder_levels": 3
+  },
+  "source_context": {
+    "best_setup": "SHORT_CONTINUATION",
+    "best_score": 57.497248663938,
+    "best_score_rank": 19,
+    "conviction_label": "LOW",
+    "decision_posture": "AVOID_AGGRESSION",
+    "screening_quality": {
+      "score": 57.497248663938,
+      "rank": 17,
+      "best_score_rank": 19,
+      "conviction_label": "LOW",
+      "daily_quality_label": "STRONG",
+      "daily_quality_factor": 1.0
+    }
+  },
+  "market_state": {
+    "h4_trend": "NEUTRAL",
+    "d1_trend": "NEUTRAL",
+    "h4_side": "NEUTRAL",
+    "d1_side": "SHORT",
+    "volatility_regime": "HIGH",
+    "adx_regime": "TRENDING",
+    "direction": "SHORT"
+  },
+  "macro_news_fundamental": {
+    "macro_alignment": "UNFAVORABLE",
+    "headline_pressure": "MIXED",
+    "event_risk_next_24h": "LOW",
+    "event_risk_next_72h": "MEDIUM",
+    "official_macro_bias": "MIXED",
+    "sentiment_state": "EXTREME_FEAR",
+    "decision_posture": "AVOID_AGGRESSION",
+    "decision_note": "Macro alignment is unfavorable; headline pressure is mixed; event risk in the next 24h is low; crypto sentiment is extreme fear.",
+    "top_headlines": [
+      {
+        "title": "Crypto market rattled by $400 million liquidations as bitcoin dips to $68,000: Crypto Markets Today - CoinDesk",
+        "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOVDYwNm4wSk5YZFgzdGkxem1WVVpkbHYtYkZpdWowLUpZazJtQVozeUQ1enB3ZnkxV1BjekhTOVRvaml5YlRGMHNFZ2ZvMVFMRjdNWVM1TmV4TFNWTG53TnpOa3lsLVFFLXZTd0pZdVZSZ2h3WFZhTEp3T3pWY3JReWY3Xzc2OE9SZ3VpQmpnbUJodldRQmsxYXVWbHJOeUdyUnRZZTBkN0xld2NhRjg2WjdOYXFadm1WVEEwYVRNVQ?oc=5",
+        "published_at_utc": "2026-03-23T10:49:33Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMivwFBVV95cUxOVDYwNm4wSk5YZFgzdGkxem1WVVpkbHYtYkZpdWowLUpZazJtQVozeUQ1enB3ZnkxV1BjekhTOVRvaml5YlRGMHNFZ2ZvMVFMRjdNWVM1TmV4TFNWTG53TnpOa3lsLVFFLXZTd0pZdVZSZ2h3WFZhTEp3T3pWY3JReWY3Xzc2OE9SZ3VpQmpnbUJodldRQmsxYXVWbHJOeUdyUnRZZTBkN0xld2NhRjg2WjdOYXFadm1WVEEwYVRNVQ?oc=5\" target=\"_blank\">Crypto market rattled by $400 million liquidations as bitcoin dips to $68,000: Crypto Markets Today</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CoinDesk</font>"
+      },
+      {
+        "title": "Nasdaq Seeks to Build Crypto Into Wall Street\u2019s Market Plumbing - Bloomberg.com",
+        "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNaHlJV2szU3UzR2xvdEVCWDJ2V3BxdjlwbHJSUHFjWGJfQ0tfM2l1OHhJUWVhVlBaWXdFcXhTQmE2MnRCdlY5SGFJUXYyQzN6MFp5M2JFRXRaWFBvTU9HZjQ4VGRISFNKX1NXbS1MUEk2RWpuSmxyRUl1d0xWNXluS2draGRrd0FYeGtrd1FITktldFBNNTIzakdZM0JDb1UzNzMtQWFJR2FBUHAtbExTWU5SRlg?oc=5",
+        "published_at_utc": "2026-03-23T11:00:00Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxNaHlJV2szU3UzR2xvdEVCWDJ2V3BxdjlwbHJSUHFjWGJfQ0tfM2l1OHhJUWVhVlBaWXdFcXhTQmE2MnRCdlY5SGFJUXYyQzN6MFp5M2JFRXRaWFBvTU9HZjQ4VGRISFNKX1NXbS1MUEk2RWpuSmxyRUl1d0xWNXluS2draGRrd0FYeGtrd1FITktldFBNNTIzakdZM0JDb1UzNzMtQWFJR2FBUHAtbExTWU5SRlg?oc=5\" target=\"_blank\">Nasdaq Seeks to Build Crypto Into Wall Street\u2019s Market Plumbing</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Bloomberg.com</font>"
+      },
+      {
+        "title": "Stock Market Crash: The Best Cryptocurrencies to Buy Right Now - The Motley Fool",
+        "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNalVYUExpcU1USS1uaS1PeXM0WXdSdDZ2Z2E3SDBvR1FxWEtyVzUyRXdRTTI1bmFIYnZramdrN19jaWZPRTIyanZvNlVLd0kzTVJNdjZ0YVMzbkhtNU9kaHFFM0xEZ3BjaXJtRDdabFlrTW5CMUhlMlg0RExybmNWVEU3SXl2Tjd2UC1oeGsyeWRreENt?oc=5",
+        "published_at_utc": "2026-03-22T22:49:00Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMilAFBVV95cUxNalVYUExpcU1USS1uaS1PeXM0WXdSdDZ2Z2E3SDBvR1FxWEtyVzUyRXdRTTI1bmFIYnZramdrN19jaWZPRTIyanZvNlVLd0kzTVJNdjZ0YVMzbkhtNU9kaHFFM0xEZ3BjaXJtRDdabFlrTW5CMUhlMlg0RExybmNWVEU3SXl2Tjd2UC1oeGsyeWRreENt?oc=5\" target=\"_blank\">Stock Market Crash: The Best Cryptocurrencies to Buy Right Now</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>"
+      },
+      {
+        "title": "Crypto Weekly Digest | BTC Hits $76K Then Retreats as SEC Declares Major Tokens Not Securities - Moomoo",
+        "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQ09kVE4wT1lQVldVWmdzOVAzU2MzUVlrSnZ0STN0dXc5c2hhTng0bkVyRXBQTktPQndIVmZ1WFBWQnVtb2dIdmlnTmJfYnVzblJyci16dkVOUWwtb1pmSl9wOVZ6Qy1pa2pTMzlpVE41X2UwTy0wWFRlV0xTak1VZEdkbHp6M19jMVlWc2NWNVFQOHZoMkFEQWhQcmpfQlZhWm5XU0NaWW1aX0Ju?oc=5",
+        "published_at_utc": "2026-03-23T10:03:43Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMirAFBVV95cUxPQ09kVE4wT1lQVldVWmdzOVAzU2MzUVlrSnZ0STN0dXc5c2hhTng0bkVyRXBQTktPQndIVmZ1WFBWQnVtb2dIdmlnTmJfYnVzblJyci16dkVOUWwtb1pmSl9wOVZ6Qy1pa2pTMzlpVE41X2UwTy0wWFRlV0xTak1VZEdkbHp6M19jMVlWc2NWNVFQOHZoMkFEQWhQcmpfQlZhWm5XU0NaWW1aX0Ju?oc=5\" target=\"_blank\">Crypto Weekly Digest | BTC Hits $76K Then Retreats as SEC Declares Major Tokens Not Securities</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moomoo</font>"
+      },
+      {
+        "title": "The end of shadow trading? Russia\u2019s forthcoming crypto-market rules - ForkLog",
+        "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNT1hxd1l2Uy1Kc3FoaTBjUVpEMXI5MUJMQnVtVFlPazZ6UnhQOFFsVlZjaXgtMVJzT0tVeXJDRE51ejNXU2U1YndjcXNGNVAxODdLajNhQTMtT2d3dnhXa1hpd0k4Y0hmdzI5UXFOT1QzLU9XXzg3bWVmX1Izem5jV3pmVFlfd0dZTjZ4ZkswbjdJdGPSAZgBQVVfeXFMUDUtVFRRa3d2cjZSYWpLYUJUY2trRHlqS01rVlpqMXdJdEd2WXpOVXJkOHB3c0JqNzFMVnVXajlGVkVJLUs2VDJzTkQ0WV82T3l1eUNwcnlTYjVPMmxJQ0ZjM0I1RXJfUEJPbWVuVnkycWRseFdKd0djZkpZeUd5TGxFbGsyT3hqc1VwM3R6QVN4SHB6ZzRIY3U?oc=5",
+        "published_at_utc": "2026-03-23T08:15:13Z",
+        "description": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxNT1hxd1l2Uy1Kc3FoaTBjUVpEMXI5MUJMQnVtVFlPazZ6UnhQOFFsVlZjaXgtMVJzT0tVeXJDRE51ejNXU2U1YndjcXNGNVAxODdLajNhQTMtT2d3dnhXa1hpd0k4Y0hmdzI5UXFOT1QzLU9XXzg3bWVmX1Izem5jV3pmVFlfd0dZTjZ4ZkswbjdJdGPSAZgBQVVfeXFMUDUtVFRRa3d2cjZSYWpLYUJUY2trRHlqS01rVlpqMXdJdEd2WXpOVXJkOHB3c0JqNzFMVnVXajlGVkVJLUs2VDJzTkQ0WV82T3l1eUNwcnlTYjVPMmxJQ0ZjM0I1RXJfUEJPbWVuVnkycWRseFdKd0djZkpZeUd5TGxFbGsyT3hqc1VwM3R6QVN4SHB6ZzRIY3U?oc=5\" target=\"_blank\">The end of shadow trading? Russia\u2019s forthcoming crypto-market rules</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ForkLog</font>"
+      }
+    ],
+    "scheduled_events": [
+      {
+        "title": "U.S. International Transactions and Investment Position, 4th Quarter and Year 2025",
+        "scheduled_at_utc": "2026-03-25T08:30:00Z",
+        "importance": "NEWS"
+      },
+      {
+        "title": "U.S. International Trade in Goods and Services, February 2026",
+        "scheduled_at_utc": "2026-04-02T08:30:00Z",
+        "importance": "NEWS"
+      },
+      {
+        "title": "GDP (Third Estimate), Industries, Corporate Profits, State GDP, and State Personal Income, 4th Quarter and Year 2025",
+        "scheduled_at_utc": "2026-04-09T08:30:00Z",
+        "importance": "NEWS"
+      },
+      {
+        "title": "Personal Income and Outlays, February 2026",
+        "scheduled_at_utc": "2026-04-09T08:30:00Z",
+        "importance": "NEWS"
+      },
+      {
+        "title": "GDP (Advance Estimate), 1st Quarter 2026",
+        "scheduled_at_utc": "2026-04-30T08:30:00Z",
+        "importance": "NEWS"
+      }
+    ],
+    "fundamental_availability": "PROXY_ONLY",
+    "fundamental_note": "Macro/flows/news context is available; classic corporate fundamentals are not applicable or not wired.",
+    "news_volume": 7
+  },
+  "key_levels": [
+    {
+      "type": "SUPPORT",
+      "label": "S4",
+      "price": 2052.6104,
+      "note": "ATR pullback objective"
+    },
+    {
+      "type": "SUPPORT",
+      "label": "S1",
+      "price": 1908.94,
+      "note": "4h pivot support"
+    },
+    {
+      "type": "SUPPORT",
+      "label": "S2",
+      "price": 1797.0,
+      "note": "1d pivot support"
+    },
+    {
+      "type": "RESISTANCE",
+      "label": "R3",
+      "price": 2193.3696,
+      "note": "ATR stretch objective"
+    },
+    {
+      "type": "RESISTANCE",
+      "label": "R1",
+      "price": 2385.0,
+      "note": "4h pivot resistance"
+    },
+    {
+      "type": "RESISTANCE",
+      "label": "R4",
+      "price": 2394.1241,
+      "note": "buffered disaster SL"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "Bearish follow-through / lower reset",
+      "probability_pct": 60,
+      "expected_move_pct": 3.76,
+      "trigger": "Lose 2137.0659 and fail to reclaim the 4h reaction zone."
+    },
+    {
+      "scenario": "Squeeze / continuation higher",
+      "probability_pct": 40,
+      "expected_move_pct": 10.08,
+      "trigger": "Accept back above 2385.0000 or invalidate the fade structure."
+    }
+  ],
+  "peak_risk": {
+    "label": "LOW",
+    "score": 0,
+    "action": "Normal sizing is acceptable if the structure remains intact.",
+    "bullets": [
+      "No major stress flags fired; use normal structure discipline."
+    ]
+  },
+  "decision": {
+    "trade_candidate": "NO",
+    "direction": "SHORT",
+    "trade_type": "SHORT_CONTINUATION",
+    "primary_entry_method": "SELL_RALLY",
+    "backup_entry_method": "BREAKDOWN",
+    "entry_basis": "4H_EXECUTION_STRUCTURE",
+    "sl_basis": "D1_RECENT_7BAR_HIGH",
+    "invalidation": 2394.1241,
+    "event_risk_24h": "LOW",
+    "risk_bucket": "LOW",
+    "quality_label": "LOW",
+    "quality_rank": 17,
+    "leverage_cap": 5,
+    "size_fraction_of_risk_budget": 1.0,
+    "size_note": "Normal risk budget allowed"
+  },
+  "orders": [
+    {
+      "level": "L1",
+      "order_type": "LIMIT",
+      "entry": 2137.0659,
+      "size_pct_of_deployable_margin": 37.2,
+      "margin_usdt": 166.27,
+      "leverage": 2.0,
+      "notional_usdt": 332.54,
+      "sl": 2394.1241,
+      "tp1": 2094.8382,
+      "rr_tp1": 0.16,
+      "tp2": 2043.2265,
+      "rr_tp2": 0.37,
+      "trail_trigger": 2094.8382,
+      "trail_distance": 23.4599,
+      "risk_usdt": 40.0,
+      "stop_dist_pct": 0.12028557472186512
+    },
+    {
+      "level": "L2",
+      "order_type": "LIMIT",
+      "entry": 2155.8338,
+      "size_pct_of_deployable_margin": 35.42,
+      "margin_usdt": 158.32,
+      "leverage": 2.0,
+      "notional_usdt": 316.65,
+      "sl": 2394.1241,
+      "tp1": 2113.6061,
+      "rr_tp1": 0.18,
+      "tp2": 2061.9944,
+      "rr_tp2": 0.39,
+      "trail_trigger": 2113.6061,
+      "trail_distance": 23.4599,
+      "risk_usdt": 35.0,
+      "stop_dist_pct": 0.1105327785472146
+    },
+    {
+      "level": "L3",
+      "order_type": "LIMIT",
+      "entry": 2172.2557,
+      "size_pct_of_deployable_margin": 27.38,
+      "margin_usdt": 122.38,
+      "leverage": 2.0,
+      "notional_usdt": 244.77,
+      "sl": 2394.1241,
+      "tp1": 2130.028,
+      "rr_tp1": 0.19,
+      "tp2": 2078.4163,
+      "rr_tp2": 0.42,
+      "trail_trigger": 2130.028,
+      "trail_distance": 23.4599,
+      "risk_usdt": 25.0,
+      "stop_dist_pct": 0.10213733125432693
+    }
+  ],
+  "risk_summary": {
+    "risk_budget_usdt": 100.0,
+    "estimated_total_loss_usdt": 100.0,
+    "estimated_total_loss_pct_equity": null,
+    "pass_vs_risk_budget": "YES",
+    "estimated_average_entry": 2153.3488,
+    "deployable_margin_used_pct_of_free_margin": 44.7,
+    "total_margin_usdt": 446.97
+  },
+  "final_trade_setup": {
+    "symbol": "ETH_PERP",
+    "direction": "SHORT",
+    "trade_type": "SHORT_CONTINUATION",
+    "screening_score": 57.497248663938,
+    "screening_rank": 19,
+    "quality": "LOW",
+    "risk": "LOW",
+    "entry_zone": {
+      "from": 2137.0659,
+      "to": 2172.2557
+    },
+    "estimated_average_entry": 2153.3488,
+    "disaster_sl": 2394.1241,
+    "tp1": 2094.8382,
+    "tp2": 2043.2265,
+    "total_margin_usdt": 446.97,
+    "estimated_total_loss_usdt": 100.0,
+    "estimated_total_loss_pct_equity": null,
+    "size_fraction_of_risk_budget": 1.0,
+    "pass_vs_risk_budget": "YES",
+    "decision_posture": "AVOID_AGGRESSION"
+  },
+  "notes": [
+    "Preferred execution style overrides screener-implied style (BREAKDOWN -> SELL_RALLY).",
+    "Continuation setup has insufficient projected reward-to-risk.",
+    "Macro alignment is unfavorable; headline pressure is mixed; event risk in the next 24h is low; crypto sentiment is extreme fear."
+  ],
+  "do_this_now": [
+    "Check whether price is near the first planned order at 2137.0659 before placing the setup.",
+    "Use the disaster SL at 2394.1241 and do not tighten it just to fit size.",
+    "Keep total risk at or below 100.00 USDT.",
+    "Start with the primary method (SELL_RALLY); backup is BREAKDOWN.",
+    "If event risk stays LOW, keep leverage <= x5 and avoid chasing."
+  ],
+  "visual_confirmation": {
+    "requested": false
+  }
+}

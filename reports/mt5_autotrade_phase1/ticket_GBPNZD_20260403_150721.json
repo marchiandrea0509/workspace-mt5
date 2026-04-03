@@ -1,0 +1,59 @@
+{
+  "bridge_version": "mt5.paper.v1",
+  "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T150611-246Z-gbpnzd-20260403-150726-phase1-001",
+  "created_at": "2026-04-03T15:07:26Z",
+  "mode": "paper",
+  "symbol": "GBPNZD.pro",
+  "side": "buy",
+  "order_plan": "limit_ladder",
+  "entries": [
+    {
+      "client_entry_id": "gbpnzd-phase1-ladder-1",
+      "entry_type": "limit",
+      "price": 2.28938,
+      "volume_lots": 0.02,
+      "comment": "GBPNZD -> GBPNZD.pro phase1 ladder limit entry 1"
+    },
+    {
+      "client_entry_id": "gbpnzd-phase1-ladder-2",
+      "entry_type": "limit",
+      "price": 2.30067,
+      "volume_lots": 0.02,
+      "comment": "GBPNZD -> GBPNZD.pro phase1 ladder limit entry 2"
+    },
+    {
+      "client_entry_id": "gbpnzd-phase1-ladder-3",
+      "entry_type": "limit",
+      "price": 2.3133,
+      "volume_lots": 0.03,
+      "comment": "GBPNZD -> GBPNZD.pro phase1 ladder limit entry 3"
+    }
+  ],
+  "stop_loss": {
+    "price": 2.29873
+  },
+  "take_profit": {
+    "price": 2.30542
+  },
+  "max_risk_usdt": 100.0,
+  "strategy_context": {
+    "source": "Phase1 MT5 FX autotrade deep analysis for GBPNZD",
+    "watchlist": "MT5_FRX",
+    "timeframe": "4 hours",
+    "tv_root_symbol": "GBPNZD",
+    "mt5_execution_symbol": "GBPNZD.pro",
+    "is_proxy_symbol": false,
+    "proxy_source": null,
+    "orderability_decision": "placeable_conditional_only",
+    "execution_template": "ladder_limit_3",
+    "setup": "LONG_CONTINUATION",
+    "planned_tp1": 2.30351,
+    "planned_tp2": 2.30542,
+    "planned_rr_tp1": 1.0,
+    "planned_rr_tp2": 1.8,
+    "planned_total_notional_usd": 9175.19,
+    "modeled_margin_usd": 917.52,
+    "bridge_tp_note": "Bridge v1 supports one live TP for the package; TP2 is used as executable TP while TP1 remains a management level."
+  },
+  "note": "GBPNZD phase1 autotrade via GBPNZD.pro. Default risk budget 100 USD. Execution template: ladder_limit_3."
+}

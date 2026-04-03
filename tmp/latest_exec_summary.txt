@@ -1,0 +1,5 @@
+rejected
+10013
+TRADE_RETCODE_INVALID
+Buy ticket stop_loss must be below every entry price
+C:\MT5_OANDA_PAPER_OC\MQL5\Files\gray_bridge\outbox\20260403_170729__mt5-paper-MT5_FRX-4 hours-2026-04-03T150611-246Z-gbpnzd-20260403-150726-phase1-001__result.json

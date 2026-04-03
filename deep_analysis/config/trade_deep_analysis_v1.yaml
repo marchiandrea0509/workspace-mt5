@@ -1,0 +1,91 @@
+version: 1
+updated_at: 2026-03-14
+purpose: >-
+  Default schema for Gray's deep trade analysis outputs. Prevent qualitative drift by
+  forcing quantitative trade structure, execution quality, and explicit orderability guidance.
+
+principle: PRICE_FIRST_CONTEXT_SECOND
+
+required_sections:
+  - core_read
+  - quantitative_levels
+  - setup_quality
+  - execution_plans
+  - orderability_decision
+  - gray_final_call
+
+core_read:
+  required_fields:
+    - bias
+    - setup
+    - conviction
+    - board_rank_if_known
+    - time_horizon
+
+quantitative_levels:
+  required_fields:
+    - current_or_recent_price_area
+    - tactical_support
+    - tactical_resistance
+    - higher_timeframe_support_if_known
+    - higher_timeframe_resistance_if_known
+  rules:
+    - Use explicit price levels/zones when available.
+    - Do not give a deep analysis without numeric levels unless the source data truly lacks them.
+    - If a level belongs to a specific timeframe, label it.
+
+setup_quality:
+  required_fields:
+    - market_quality
+    - entry_quality
+    - reason_for_mismatch_if_any
+  rules:
+    - Must distinguish "good market / bad entry" from "good trade now".
+    - Must explain whether stretch/support-resistance proximity is hurting the trade.
+
+execution_plans:
+  required_fields:
+    - preferred_setup
+    - secondary_setup_if_any
+    - invalidation
+    - targets
+    - risk_reward_comment
+  rules:
+    - Preferred setup must include concrete entry zone, stop/invalidation, and TP ladder.
+    - Secondary setup may be omitted only if no valid secondary structure exists.
+    - If the setup is not attractive now, still define what would improve it.
+
+orderability_decision:
+  allowed_values:
+    - placeable_now
+    - placeable_conditional_only
+    - not_placeable_yet
+  required_fields:
+    - decision
+    - market_order_now
+    - ladder_limit_orders
+    - stop_entry_orders
+    - why
+  rules:
+    - Always state explicitly whether resting orders may be placed.
+    - If ladder limits are allowed, give zone(s) and the condition that makes them valid.
+    - If stop orders are allowed, give trigger logic and invalidation.
+    - If the trade is not ready, say "no resting order yet" clearly.
+
+final_language_rules:
+  - Do not end at qualitative posture only.
+  - Deep analysis must contain a usable quantitative spine.
+  - If execution is unclear, say so explicitly rather than hiding behind prose.
+  - "Practical trading plan" must answer whether orders can be placed now, conditionally, or not yet.
+
+output_tags_for_gray:
+  market_quality_labels:
+    - strong_market_good_entry
+    - strong_market_bad_entry
+    - weak_market
+  execution_quality_labels:
+    - A_setup
+    - B_setup
+    - C_setup
+  notes: >-
+    These labels can remain internal, but the final user-facing analysis must still explain them in plain English.
