@@ -1,0 +1,32 @@
+{
+  "watchlist": "MT5_FRX",
+  "indicator": "OC Hybrid Edge Screener v4",
+  "timeframe": "4 hours",
+  "screenerReportsDir": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener",
+  "mt5TradesThreadId": "1489519869962752000",
+  "mt5ScreenerThreadId": "1489501923785572435",
+  "riskBudgetUsdt": 100.0,
+  "maxMarginUsdt": 1000.0,
+  "modelLeverage": 10.0,
+  "contractSizeFx": 100000.0,
+  "defaultMinLot": 0.01,
+  "defaultLotStep": 0.01,
+  "maxTradesPerSession": 1,
+  "candidateSearchDepth": 10,
+  "criteria": {
+    "minBestScore": 70.0,
+    "minConvictionState": 3,
+    "minAdx": 20.0,
+    "maxDistFastEmaAtr": 1.35,
+    "minDirectionalScore": 70.0,
+    "allowedSetupCodes": [2, -2],
+    "requireTrendAlignment": true,
+    "requireMacroAlignment": true
+  },
+  "emit": {
+    "waitSeconds": 90.0,
+    "pollSeconds": 2.0
+  },
+  "stateDir": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\state\\mt5_autotrade_phase1",
+  "reportsDir": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1"
+}
