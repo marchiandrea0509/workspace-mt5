@@ -366,6 +366,8 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
     rr2 = abs(tp2 - entry) / risk_per_unit
 
     execution_symbol = mt5_symbol_map.get(candidate.symbol, candidate.symbol)
+    proxy_source = str((cfg.get('proxySymbols') or {}).get(candidate.symbol) or '').strip()
+    is_proxy_symbol = bool(proxy_source)
 
     orderability = {
         'decision': 'placeable_conditional_only',
@@ -391,6 +393,8 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
             'screener_rank_top5': next((idx + 1 for idx, item in enumerate(report.get('top5') or []) if (item.get('symbol') or '').upper() == candidate.symbol), None),
             'tv_root_symbol': candidate.symbol,
             'mt5_execution_symbol': execution_symbol,
+            'is_proxy_symbol': is_proxy_symbol,
+            'proxy_source': proxy_source or None,
         },
         'bias': {
             'direction': candidate.direction,
@@ -438,6 +442,8 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
             'side': candidate.side,
             'tv_root_symbol': candidate.symbol,
             'mt5_execution_symbol': execution_symbol,
+            'is_proxy_symbol': is_proxy_symbol,
+            'proxy_source': proxy_source or None,
             'order_plan': 'limit_ladder',
             'entry_type': 'limit',
             'entry': round(entry, 5),
@@ -452,7 +458,7 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
             'Phase 1 only permits one single-entry pending order per screening session.',
             'Phase 1 prefers conditional limit entries into the fast-EMA pullback zone rather than market chasing.',
             'Bridge remains paper-only and uses one executable TP in the live ticket; TP2 is used as the live bridge TP while TP1 remains an analysis/management level.'
-        ]
+        ] + ([f"Proxy symbol: TradingView analysis for {candidate.symbol} is sourced from {proxy_source}, while MT5 execution still targets {execution_symbol}. Phase 1 applies no extra proxy rule yet."] if is_proxy_symbol else [])
     }
 
 
@@ -488,6 +494,8 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
             'timeframe': plan['source_context']['timeframe'],
             'tv_root_symbol': tv_symbol,
             'mt5_execution_symbol': symbol,
+            'is_proxy_symbol': plan['source_context'].get('is_proxy_symbol', False),
+            'proxy_source': plan['source_context'].get('proxy_source'),
             'orderability_decision': plan['orderability_decision']['decision'],
             'setup': plan['bias']['setup'],
             'planned_tp1': preview['planned_tp1'],
@@ -498,7 +506,7 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
             'modeled_margin_usd': plan['risk_plan']['total_margin_usdt'],
             'bridge_tp_note': 'Bridge v1 supports one live TP only; TP2 is used as executable TP while TP1 remains a management level.'
         },
-        'note': f"{tv_symbol} phase1 autotrade via {symbol}. Default risk budget {plan['risk_plan']['risk_budget_usdt']:.0f} USD. Single conditional limit entry from screener-led deep analysis."
+        'note': f"{tv_symbol} phase1 autotrade via {symbol}." + (f" Proxy source: {plan['source_context'].get('proxy_source')}." if plan['source_context'].get('is_proxy_symbol') else '') + f" Default risk budget {plan['risk_plan']['risk_budget_usdt']:.0f} USD. Single conditional limit entry from screener-led deep analysis."
     }
 
 
@@ -513,6 +521,8 @@ def render_markdown(plan: dict[str, Any], ticket: dict[str, Any] | None = None, 
     lines.append(f"- Timeframe: `{plan['source_context']['timeframe']}`")
     lines.append(f"- TradingView root symbol: `{plan['source_context']['tv_root_symbol']}`")
     lines.append(f"- MT5 execution symbol: `{plan['source_context']['mt5_execution_symbol']}`")
+    if plan['source_context'].get('is_proxy_symbol'):
+        lines.append(f"- Proxy symbol source: `{plan['source_context'].get('proxy_source')}`")
     lines.append(f"- Generated: `{plan['generated_at_utc']}`")
     lines.append('')
     lines.append('## Candidate gate')

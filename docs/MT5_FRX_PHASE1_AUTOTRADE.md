@@ -39,6 +39,14 @@
   - `EURGBP` -> `EURGBP.PRO`
   - `CHFPLN` -> `CHFPLN.PRO`
 - This avoids sending plain-root symbols to MT5 when the tradable broker instrument is the suffixed symbol.
+- Proxy-symbol tagging is supported too. Right now:
+  - `CHFPLN` is marked as a TradingView proxy symbol sourced from `Forexcom`
+- In phase 1 this is metadata only; it does **not** change trade rules yet.
+- The proxy marker is surfaced in:
+  - deep-analysis source context
+  - ticket preview metadata
+  - MT5 bridge `strategy_context`
+  - analysis notes / ticket note text
 
 The planner computes lot size from both:
 1) risk budget, and
