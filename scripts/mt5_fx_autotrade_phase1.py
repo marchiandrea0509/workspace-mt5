@@ -16,6 +16,11 @@ from typing import Any
 from market_source_lib import make_market_source
 from mt5_fx_deep_analysis_lib import analyze_candidate
 
+try:
+    import MetaTrader5 as mt5
+except Exception:
+    mt5 = None
+
 WORKSPACE = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = WORKSPACE / 'config' / 'mt5_fx_autotrade_phase1.json'
 EMIT_SCRIPT = WORKSPACE / 'scripts' / 'emit_mt5_bridge_ticket.py'
@@ -571,6 +576,112 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
     }
 
 
+def preflight_mt5_ticket(ticket: dict[str, Any], cfg: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    if mt5 is None:
+        return ticket, {'mode': 'skipped', 'reason': 'MetaTrader5 module unavailable'}
+
+    source_cfg = cfg.get('analysisDataSource') or {}
+    terminal = str(source_cfg.get('terminalExe') or '')
+    if not terminal:
+        return ticket, {'mode': 'skipped', 'reason': 'No terminal configured'}
+    if not mt5.initialize(path=terminal):
+        return ticket, {'mode': 'failed', 'reason': f'MT5 initialize failed: {mt5.last_error()}'}
+
+    try:
+        symbol = ticket['symbol']
+        info = mt5.symbol_info(symbol)
+        tick = mt5.symbol_info_tick(symbol)
+        if info is None or tick is None:
+            return ticket, {'mode': 'failed', 'reason': f'Missing symbol info/tick for {symbol}'}
+        mt5.symbol_select(symbol, True)
+        point = float(info.point or 0.0)
+        stops_level = float(getattr(info, 'trade_stops_level', 0) or 0)
+        sl = float(ticket['stop_loss']['price'])
+        tp = float(ticket['take_profit']['price'])
+        side = ticket['side']
+        valid = []
+        rejected = []
+        order_type_names = {
+            mt5.ORDER_TYPE_BUY_LIMIT: 'BUY_LIMIT',
+            mt5.ORDER_TYPE_SELL_LIMIT: 'SELL_LIMIT',
+            mt5.ORDER_TYPE_BUY_STOP: 'BUY_STOP',
+            mt5.ORDER_TYPE_SELL_STOP: 'SELL_STOP',
+        }
+        for entry in ticket['entries']:
+            et = entry['entry_type']
+            price = float(entry['price']) if entry.get('price') is not None else 0.0
+            local_reasons = []
+            if et == 'limit' and side == 'buy' and not (price < tick.ask):
+                local_reasons.append('buy limit no longer below current ask')
+            if et == 'limit' and side == 'sell' and not (price > tick.bid):
+                local_reasons.append('sell limit no longer above current bid')
+            if et == 'stop' and side == 'buy' and not (price > tick.ask):
+                local_reasons.append('buy stop no longer above current ask')
+            if et == 'stop' and side == 'sell' and not (price < tick.bid):
+                local_reasons.append('sell stop no longer below current bid')
+            if point > 0 and stops_level > 0:
+                market_dist_pts = abs((tick.ask if side == 'buy' else tick.bid) - price) / point
+                sl_dist_pts = abs(price - sl) / point
+                tp_dist_pts = abs(tp - price) / point
+                if market_dist_pts < stops_level:
+                    local_reasons.append(f'entry too close to market (<{int(stops_level)} pts)')
+                if sl_dist_pts < stops_level:
+                    local_reasons.append(f'SL too close (<{int(stops_level)} pts)')
+                if tp_dist_pts < stops_level:
+                    local_reasons.append(f'TP too close (<{int(stops_level)} pts)')
+            type_map = {
+                ('buy', 'limit'): mt5.ORDER_TYPE_BUY_LIMIT,
+                ('sell', 'limit'): mt5.ORDER_TYPE_SELL_LIMIT,
+                ('buy', 'stop'): mt5.ORDER_TYPE_BUY_STOP,
+                ('sell', 'stop'): mt5.ORDER_TYPE_SELL_STOP,
+            }
+            req = {
+                'action': mt5.TRADE_ACTION_PENDING,
+                'symbol': symbol,
+                'magic': 26032601,
+                'volume': float(entry['volume_lots']),
+                'price': price,
+                'sl': sl,
+                'tp': tp,
+                'deviation': 20,
+                'type_time': mt5.ORDER_TIME_GTC,
+                'type_filling': mt5.ORDER_FILLING_RETURN,
+                'comment': ticket['ticket_id'],
+                'type': type_map[(side, et)],
+            }
+            chk = mt5.order_check(req)
+            retcode = getattr(chk, 'retcode', None)
+            comment = getattr(chk, 'comment', None)
+            if retcode not in (0, 10009, 10008):
+                local_reasons.append(f'order_check retcode {retcode} ({comment})')
+            if local_reasons:
+                rejected.append({'client_entry_id': entry.get('client_entry_id'), 'entry_type': et, 'price': price, 'reasons': local_reasons, 'order_type': order_type_names.get(req['type'], str(req['type']))})
+            else:
+                valid.append(entry)
+
+        adjusted = dict(ticket)
+        adjusted['entries'] = valid
+        if valid:
+            has_limit = any(e['entry_type'] == 'limit' for e in valid)
+            has_stop = any(e['entry_type'] == 'stop' for e in valid)
+            if has_limit and has_stop:
+                adjusted['order_plan'] = 'hybrid_ladder_breakout'
+            elif has_limit:
+                adjusted['order_plan'] = 'limit_ladder'
+            elif has_stop:
+                adjusted['order_plan'] = 'stop_entry'
+        return adjusted, {
+            'mode': 'applied',
+            'symbol': symbol,
+            'valid_entries': len(valid),
+            'rejected_entries': rejected,
+            'original_entries': len(ticket['entries']),
+            'adjusted_order_plan': adjusted.get('order_plan'),
+        }
+    finally:
+        mt5.shutdown()
+
+
 def render_markdown(plan: dict[str, Any], ticket: dict[str, Any] | None = None, execution: dict[str, Any] | None = None, audit: list[dict[str, Any]] | None = None, session_id: str | None = None) -> str:
     lines: list[str] = []
     lines.append(f"# MT5 Phase 1 Trade Review — {plan['symbol']}")
@@ -636,6 +747,11 @@ def render_markdown(plan: dict[str, Any], ticket: dict[str, Any] | None = None, 
                 lines.append(f"- {key}: `{execution[key]}`")
         if execution.get('mt5_order_ids'):
             lines.append(f"- mt5_order_ids: `{execution['mt5_order_ids']}`")
+        preflight = execution.get('preflight') if isinstance(execution, dict) else None
+        if preflight:
+            lines.append(f"- preflight: valid_entries={preflight.get('valid_entries')} / original_entries={preflight.get('original_entries')} / adjusted_order_plan={preflight.get('adjusted_order_plan')}")
+            for item in (preflight.get('rejected_entries') or [])[:5]:
+                lines.append(f"  - rejected {item.get('client_entry_id')}: {'; '.join(item.get('reasons') or [])}")
         lines.append('')
     if plan.get('notes'):
         lines.append('## Notes')
@@ -737,20 +853,29 @@ def main() -> int:
 
     if plan['orderability_decision']['decision'] in {'placeable_now', 'placeable_conditional_only'}:
         ticket = plan_to_ticket(plan, sess_key)
-        ticket_path = reports_out / f'ticket_{candidate.symbol}_{stamp}.json'
-        save_json(ticket_path, ticket)
-        if not args.dry_run:
-            execution = run_emit(ticket_path, cfg)
-            if execution.get('status') == 'accepted':
-                active.setdefault('assets', {})[candidate.symbol] = {
-                    'session_key': sess_key,
-                    'ticket_id': ticket['ticket_id'],
-                    'placed_at': iso_z(now_utc()),
-                    'status': 'accepted',
-                    'result_file': execution.get('result_file')
-                }
+        ticket, preflight = preflight_mt5_ticket(ticket, cfg)
+        if preflight.get('mode') == 'applied' and preflight.get('valid_entries', 0) <= 0:
+            execution = {
+                'status': 'skipped',
+                'message': 'All candidate entries became invalid at MT5 preflight time.',
+                'preflight': preflight,
+            }
         else:
-            execution = {'status': 'dry_run', 'message': 'Ticket compiled but not emitted.'}
+            ticket_path = reports_out / f'ticket_{candidate.symbol}_{stamp}.json'
+            save_json(ticket_path, ticket)
+            if not args.dry_run:
+                execution = run_emit(ticket_path, cfg)
+                execution['preflight'] = preflight
+                if execution.get('status') == 'accepted':
+                    active.setdefault('assets', {})[candidate.symbol] = {
+                        'session_key': sess_key,
+                        'ticket_id': ticket['ticket_id'],
+                        'placed_at': iso_z(now_utc()),
+                        'status': 'accepted',
+                        'result_file': execution.get('result_file')
+                    }
+            else:
+                execution = {'status': 'dry_run', 'message': 'Ticket compiled but not emitted.', 'preflight': preflight}
     else:
         execution = {'status': 'skipped', 'message': 'Plan not executable under phase 1 rules.'}
 
