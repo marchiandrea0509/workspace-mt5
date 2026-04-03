@@ -755,6 +755,14 @@ def render_markdown(plan: dict[str, Any], ticket: dict[str, Any] | None = None, 
     lines.append(f"- Price reference: `{plan['key_levels']['price_reference']}`")
     lines.append(f"- Entry zone: `{plan['key_levels']['ema_pullback_zone_from']}` -> `{plan['key_levels']['ema_pullback_zone_to']}`")
     lines.append(f"- Executable entry: `{plan['key_levels']['entry']}`")
+    if plan['key_levels'].get('analysis_ladder_entries'):
+        lines.append(f"- Analysis ladder levels: `{plan['key_levels']['analysis_ladder_entries']}`")
+    if plan['key_levels'].get('ladder_entries'):
+        lines.append(f"- Executable ladder levels: `{plan['key_levels']['ladder_entries']}`")
+    if plan['key_levels'].get('selected_zone_quality_score') is not None:
+        lines.append(f"- Selected zone quality / touches / age: `{plan['key_levels']['selected_zone_quality_score']}` / `{plan['key_levels'].get('selected_zone_touches')}` / `{plan['key_levels'].get('selected_zone_age_bars')}`")
+    for note in (plan['key_levels'].get('level_selection_notes') or [])[:4]:
+        lines.append(f"- Level selection note: {note}")
     lines.append(f"- 1D-style invalidation anchor: slow EMA `{plan['key_levels']['slow_ema_invalidation_anchor']}`")
     lines.append(f"- Live SL: `{plan['key_levels']['stop_loss']}`")
     lines.append(f"- TP1: `{plan['key_levels']['tp1']}`")

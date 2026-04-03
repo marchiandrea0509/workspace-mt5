@@ -180,6 +180,74 @@ def nearest_zone(zones: list[dict[str, Any]], close: float, want_support: bool) 
     return best
 
 
+def zone_age_bars(zone: dict[str, Any], total_bars: int) -> int:
+    return max(0, (total_bars - 1) - int(zone.get('last_idx', total_bars - 1)))
+
+
+def zone_quality_score(zone: dict[str, Any], close: float, atr_value: float, total_bars: int, want_support: bool) -> float:
+    touches = float(zone.get('touches', 1))
+    age_bars = zone_age_bars(zone, total_bars)
+    dist_atr = abs(close - float(zone['level'])) / max(atr_value, 1e-9)
+    touch_score = clip((touches - 1.0) / 3.0, 0.0, 1.0)
+    fresh_score = clip(1.0 - (age_bars / 120.0), 0.0, 1.0)
+    if dist_atr < 0.12:
+        proximity_score = 0.10
+    elif dist_atr < 0.30:
+        proximity_score = 0.45
+    elif dist_atr <= 1.10:
+        proximity_score = 1.0 - abs(dist_atr - 0.55) / 0.55
+    else:
+        proximity_score = clip(1.25 - dist_atr, 0.0, 0.45)
+    side_ok = float(zone['level']) <= close if want_support else float(zone['level']) >= close
+    if not side_ok:
+        return -1.0
+    return round(0.50 * touch_score + 0.30 * fresh_score + 0.20 * clip(proximity_score, 0.0, 1.0), 4)
+
+
+def select_preferred_zone(zones: list[dict[str, Any]], close: float, atr_value: float, total_bars: int, want_support: bool) -> dict[str, Any] | None:
+    ranked: list[tuple[float, dict[str, Any]]] = []
+    for zone in zones:
+        score = zone_quality_score(zone, close, atr_value, total_bars, want_support)
+        if score < 0:
+            continue
+        ranked.append((score, zone))
+    if not ranked:
+        return None
+    ranked.sort(key=lambda item: (item[0], item[1].get('touches', 1), item[1].get('last_idx', 0), -abs(close - float(item[1]['level']))), reverse=True)
+    return ranked[0][1]
+
+
+def spaced_levels(levels: list[float], min_gap: float, digits: int, descending: bool = False) -> list[float]:
+    ordered = sorted((round(float(x), digits) for x in levels), reverse=descending)
+    kept: list[float] = []
+    for px in ordered:
+        if not kept or abs(px - kept[-1]) >= min_gap:
+            kept.append(px)
+    return kept
+
+
+def select_executable_ladder_levels(analysis_levels: list[float], close: float, atr_value: float, point: float, digits: int, direction: str, desired_levels: int) -> tuple[list[float], list[str]]:
+    min_market_gap = max(0.30 * atr_value, 12 * point)
+    min_level_spacing = max(0.25 * atr_value, 12 * point)
+    notes: list[str] = []
+    selected: list[float] = []
+    for idx, price in enumerate(analysis_levels):
+        px = round(float(price), digits)
+        market_gap = (close - px) if direction == 'LONG' else (px - close)
+        required_gap = min_market_gap * (0.75 if idx > 0 else 1.0)
+        if market_gap < required_gap:
+            label = f'L{idx + 1}'
+            notes.append(f'dropped {label}: too close to live market for executable pending placement')
+            continue
+        selected.append(px)
+    selected = spaced_levels(selected, min_level_spacing, digits, descending=(direction == 'SHORT'))
+    if len(selected) > desired_levels:
+        selected = selected[-desired_levels:] if direction == 'LONG' else selected[:desired_levels]
+    if not selected and analysis_levels:
+        notes.append('no structurally executable ladder levels survived; leaving ladder empty for downstream no-trade or breakout fallback handling')
+    return (sorted(selected) if direction == 'LONG' else sorted(selected, reverse=True)), notes
+
+
 def pick_recent_breakout(closes: list[float], highs: list[float], lows: list[float], resistance: dict[str, Any] | None, support: dict[str, Any] | None, atr_value: float) -> tuple[int, int | None]:
     margin = atr_value * 0.15
     breakout_dir = 0
@@ -411,8 +479,8 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
 
     support_zones = merge_zones(pivot_lows(lows, 10, 10), atr_now, True)
     resistance_zones = merge_zones(pivot_highs(highs, 10, 10), atr_now, False)
-    support_zone = nearest_zone(support_zones, close, True)
-    resistance_zone = nearest_zone(resistance_zones, close, False)
+    support_zone = select_preferred_zone(support_zones, close, atr_now, len(closes), True)
+    resistance_zone = select_preferred_zone(resistance_zones, close, atr_now, len(closes), False)
     breakout_dir, breakout_idx = pick_recent_breakout(closes, highs, lows, resistance_zone, support_zone, atr_now)
     retest_state, retest_label = recent_retest_state(breakout_dir, breakout_idx, closes, highs, lows, support_zone if breakout_dir == 1 else resistance_zone)
     trend_dir, struct_shift = trend_structure(highs, lows)
@@ -486,47 +554,55 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
     proxy_source = str((cfg.get('proxySymbols') or {}).get(root_symbol) or '').strip()
     is_proxy_symbol = bool(proxy_source)
 
-    min_struct_gap = max(0.20 * atr_now, 10 * profile.point)
+    selected_zone = support_zone if direction == 'LONG' else resistance_zone
+    selected_zone_age = zone_age_bars(selected_zone, len(closes)) if selected_zone else None
+    selected_zone_quality = zone_quality_score(selected_zone, close, atr_now, len(closes), direction == 'LONG') if selected_zone else None
+    selected_zone_touches = int(selected_zone.get('touches', 0)) if selected_zone else 0
+    if execution_template == 'ladder_limit_3' and selected_zone and (selected_zone_touches < 2 or (selected_zone_quality is not None and selected_zone_quality < 0.35)):
+        execution_template = 'ladder_limit_2'
+
+    desired_ladder_levels = 3 if execution_template == 'ladder_limit_3' else 2
+    level_selection_notes: list[str] = []
     if direction == 'LONG':
         if support_zone:
-            raw_ladder = [support_zone['upper'], support_zone['level'], support_zone['lower']]
+            analysis_ladder = [support_zone['upper'], support_zone['level'], support_zone['lower']]
         else:
             support_anchor = min(med, slow)
-            raw_ladder = [min(fast, close - 0.10 * atr_now), support_anchor, min(slow, support_anchor - 0.35 * atr_now)]
-        raw_ladder = [float(x) for x in raw_ladder if x is not None and x < close - 2 * profile.point]
-        raw_ladder = sorted(set(round(x, profile.digits) for x in raw_ladder), reverse=True)
-        ladder = []
-        for px in raw_ladder:
-            if not ladder or abs(px - ladder[-1]) >= min_struct_gap:
-                ladder.append(px)
-        ladder = sorted(ladder)
+            analysis_ladder = [min(fast, close - 0.10 * atr_now), support_anchor, min(slow, support_anchor - 0.35 * atr_now)]
+        analysis_ladder = [round(float(x), profile.digits) for x in analysis_ladder if x is not None and x < close - 2 * profile.point]
+        analysis_ladder = list(dict.fromkeys(analysis_ladder))
+        ladder, level_selection_notes = select_executable_ladder_levels(analysis_ladder, close, atr_now, profile.point, profile.digits, direction, desired_ladder_levels)
         breakout_trigger = round(max(highs[-5:]) + 0.20 * atr_now, profile.digits)
         breakout_limit = round(breakout_trigger + 0.10 * atr_now, profile.digits)
         structural_sl = round(min((support_zone['lower'] if support_zone else slow), min(lows[-20:])) - 0.20 * atr_now, profile.digits)
     else:
         if resistance_zone:
-            raw_ladder = [resistance_zone['lower'], resistance_zone['level'], resistance_zone['upper']]
+            analysis_ladder = [resistance_zone['lower'], resistance_zone['level'], resistance_zone['upper']]
         else:
             resistance_anchor = max(med, slow)
-            raw_ladder = [max(fast, close + 0.10 * atr_now), resistance_anchor, max(slow, resistance_anchor + 0.35 * atr_now)]
-        raw_ladder = [float(x) for x in raw_ladder if x is not None and x > close + 2 * profile.point]
-        raw_ladder = sorted(set(round(x, profile.digits) for x in raw_ladder))
-        ladder = []
-        for px in raw_ladder:
-            if not ladder or abs(px - ladder[-1]) >= min_struct_gap:
-                ladder.append(px)
-        ladder = sorted(ladder, reverse=True)
+            analysis_ladder = [max(fast, close + 0.10 * atr_now), resistance_anchor, max(slow, resistance_anchor + 0.35 * atr_now)]
+        analysis_ladder = [round(float(x), profile.digits) for x in analysis_ladder if x is not None and x > close + 2 * profile.point]
+        analysis_ladder = list(dict.fromkeys(analysis_ladder))
+        ladder, level_selection_notes = select_executable_ladder_levels(analysis_ladder, close, atr_now, profile.point, profile.digits, direction, desired_ladder_levels)
         breakout_trigger = round(min(lows[-5:]) - 0.20 * atr_now, profile.digits)
         breakout_limit = round(breakout_trigger - 0.10 * atr_now, profile.digits)
         structural_sl = round(max((resistance_zone['upper'] if resistance_zone else slow), max(highs[-20:])) + 0.20 * atr_now, profile.digits)
 
+    if execution_template == 'ladder_limit_3' and len(ladder) < 3:
+        level_selection_notes.append('reduced ladder_limit_3 to ladder_limit_2 because fewer than 3 executable ladder levels survived')
+        execution_template = 'ladder_limit_2'
+
+    no_order_reason = None
     if execution_template == 'breakout_stop_limit':
         entry = breakout_trigger
         entry_type = 'stop'
         order_plan = 'stop_entry'
     else:
-        usable_ladder = ladder[:3] if '3' in execution_template else ladder[:2]
+        usable_ladder = ladder[:3] if execution_template == 'ladder_limit_3' else ladder[:2]
         if not usable_ladder:
+            no_order_reason = 'No executable ladder levels survived the analysis-to-execution selection step.'
+            decision = 'not_placeable_yet'
+            execution_template = 'no_order'
             usable_ladder = [round(fast, profile.digits)]
         entry = round(sum(usable_ladder) / len(usable_ladder), profile.digits)
         entry_type = 'limit'
@@ -548,6 +624,9 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
         'Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop.'
     ]
     notes.extend(bias_notes)
+    if selected_zone is not None:
+        notes.append(f"Selected {'support' if direction == 'LONG' else 'resistance'} zone quality={selected_zone_quality:.2f}, touches={selected_zone_touches}, age_bars={selected_zone_age}.")
+    notes.extend(level_selection_notes)
     if is_proxy_symbol:
         notes.append(f'Proxy symbol: screener selection for {root_symbol} came from {proxy_source}, but deep analysis now uses MT5 symbol {profile.analysis_symbol}.')
     if execution_template == 'hybrid_ladder_breakout':
@@ -635,6 +714,10 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
             'resistance_zone_level': round(resistance_zone['level'], profile.digits) if resistance_zone else None,
             'resistance_zone_lower': round(resistance_zone['lower'], profile.digits) if resistance_zone else None,
             'resistance_zone_upper': round(resistance_zone['upper'], profile.digits) if resistance_zone else None,
+            'selected_zone_touches': selected_zone_touches or None,
+            'selected_zone_age_bars': selected_zone_age,
+            'selected_zone_quality_score': round(selected_zone_quality, 4) if selected_zone_quality is not None else None,
+            'analysis_ladder_entries': analysis_ladder[:3],
             'ladder_entries': ladder[:3],
             'ema_pullback_zone_from': round(min(ladder[:2]) if ladder else entry, profile.digits),
             'ema_pullback_zone_to': round(max(ladder[:2]) if ladder else entry, profile.digits),
@@ -645,6 +728,7 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
             'stop_loss': structural_sl,
             'tp1': tp1,
             'tp2': tp2,
+            'level_selection_notes': level_selection_notes,
         },
         'orderability_decision': {
             'decision': decision,
@@ -654,10 +738,10 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
             'ladder_limit_orders': execution_template.startswith('ladder') or execution_template == 'hybrid_ladder_breakout',
             'stop_entry_orders': execution_template in {'breakout_stop_limit', 'hybrid_ladder_breakout'},
             'allowed_order_types': ['LIMIT', 'STOP-LIMIT'] if execution_template == 'hybrid_ladder_breakout' else ['STOP'] if execution_template == 'breakout_stop_limit' else ['LIMIT'],
-            'why': {
+            'why': no_order_reason or {
                 'breakout_stop_limit': 'Fresh breakout on MT5 broker candles with trend/macro alignment and acceptable stretch.',
-                'ladder_limit_2': 'Continuation quality is good but current location is better handled as a pullback ladder.',
-                'ladder_limit_3': 'Continuation quality is good and structure supports a deeper 3-level pullback ladder.',
+                'ladder_limit_2': 'Continuation quality is good but current location is better handled as a pullback ladder after execution-aware level selection.',
+                'ladder_limit_3': 'Continuation quality is good and structure supports a deeper 3-level pullback ladder after execution-aware level selection.',
                 'hybrid_ladder_breakout': 'Both pullback and breakout continuation paths are valid on MT5 structure; ideal package is ladder + breakout, but bridge still needs linked-leg support.',
                 'no_order': 'MT5 structure, lifecycle, or alignment does not justify an executable order package yet.'
             }[execution_template],
