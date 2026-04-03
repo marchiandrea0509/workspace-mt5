@@ -3,6 +3,7 @@
   "indicator": "OC Hybrid Edge Screener v4",
   "timeframe": "4 hours",
   "screenerReportsDir": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener",
+  "mt5SymbolsExportCsv": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\OANDA_All_Symbols.csv",
   "mt5TradesThreadId": "1489519869962752000",
   "mt5ScreenerThreadId": "1489501923785572435",
   "riskBudgetUsdt": 100.0,

@@ -31,6 +31,15 @@
 - FX contract size model: 100,000
 - Default min lot: 0.01, step: 0.01
 
+## Symbol mapping
+- TradingView and screener logic use normalized FX roots like `EURGBP`.
+- MT5 execution now resolves those roots through the OANDA export file:
+  - `C:\MT5_OANDA_PAPER_OC\MQL5\Files\OANDA_All_Symbols.csv`
+- The planner prefers trade-enabled broker symbols, e.g.:
+  - `EURGBP` -> `EURGBP.PRO`
+  - `CHFPLN` -> `CHFPLN.PRO`
+- This avoids sending plain-root symbols to MT5 when the tradable broker instrument is the suffixed symbol.
+
 The planner computes lot size from both:
 1) risk budget, and
 2) margin cap,

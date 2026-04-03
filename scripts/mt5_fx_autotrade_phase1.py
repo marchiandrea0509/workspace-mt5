@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import math
 import subprocess
@@ -77,6 +78,70 @@ def load_csv_rows(path: Path) -> list[dict[str, Any]]:
         return []
     with path.open('r', encoding='utf-8-sig', newline='') as fh:
         return list(csv.DictReader(fh))
+
+
+def load_delimited_rows_tolerant(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    raw = path.read_bytes()
+    text = None
+    for enc in ('utf-8-sig', 'cp1252', 'latin-1', 'utf-16'):
+        try:
+            text = raw.decode(enc)
+            break
+        except Exception:
+            continue
+    if text is None:
+        text = raw.decode('latin-1', errors='replace')
+    sample = text[:4096]
+    try:
+        dialect = csv.Sniffer().sniff(sample, delimiters=',;\t')
+    except Exception:
+        class D(csv.excel):
+            delimiter = '\t'
+        dialect = D
+    return list(csv.DictReader(io.StringIO(text), dialect=dialect))
+
+
+def normalize_broker_symbol(symbol: str) -> str:
+    symbol = symbol.strip().upper()
+    if symbol.endswith('.PRO'):
+        symbol = symbol[:-4]
+    return symbol
+
+
+def load_mt5_symbol_map(path: Path) -> dict[str, str]:
+    rows = load_delimited_rows_tolerant(path)
+    candidates: dict[str, list[tuple[int, str]]] = {}
+    for row in rows:
+        raw_symbol = str(row.get('Symbol') or '').strip().upper()
+        if not raw_symbol:
+            continue
+        path_value = str(row.get('Path') or '').strip()
+        calc_mode = str(row.get('CalcMode') or '').strip().upper()
+        trade_mode = str(row.get('TradeMode') or '').strip().upper()
+        visible = str(row.get('Visible') or '').strip().lower() == 'true'
+        selected = str(row.get('Selected') or '').strip().lower() == 'true'
+        if not (path_value.startswith('Forex\\') or calc_mode == 'FOREX'):
+            continue
+        root = normalize_broker_symbol(raw_symbol)
+        score = 0
+        if trade_mode not in {'DISABLED', 'CLOSEONLY', ''}:
+            score += 100
+        if visible:
+            score += 10
+        if selected:
+            score += 5
+        if raw_symbol.endswith('.PRO'):
+            score += 3
+        score -= len(raw_symbol)
+        candidates.setdefault(root, []).append((score, raw_symbol))
+
+    mapping: dict[str, str] = {}
+    for root, items in candidates.items():
+        items.sort(reverse=True)
+        mapping[root] = items[0][1]
+    return mapping
 
 
 def approx_price_from_row(row: dict[str, Any]) -> float | None:
@@ -233,7 +298,7 @@ def select_candidate(report: dict[str, Any], cfg: dict[str, Any], active_assets:
     return None, audit
 
 
-def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, Any], universe_rows: list[dict[str, Any]]) -> dict[str, Any]:
+def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, Any], universe_rows: list[dict[str, Any]], mt5_symbol_map: dict[str, str]) -> dict[str, Any]:
     row = candidate.row
     fast = safe_float(row.get('Fast EMA'))
     medium = safe_float(row.get('Medium EMA'))
@@ -300,6 +365,8 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
     rr1 = abs(tp1 - entry) / risk_per_unit
     rr2 = abs(tp2 - entry) / risk_per_unit
 
+    execution_symbol = mt5_symbol_map.get(candidate.symbol, candidate.symbol)
+
     orderability = {
         'decision': 'placeable_conditional_only',
         'market_order_now': False,
@@ -322,6 +389,8 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
             'best_setup_code': int(safe_float(row.get('02 Best Setup Code'))),
             'conviction_state': int(safe_float(row.get('10 Conviction State'))),
             'screener_rank_top5': next((idx + 1 for idx, item in enumerate(report.get('top5') or []) if (item.get('symbol') or '').upper() == candidate.symbol), None),
+            'tv_root_symbol': candidate.symbol,
+            'mt5_execution_symbol': execution_symbol,
         },
         'bias': {
             'direction': candidate.direction,
@@ -367,6 +436,8 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
         },
         'trade_ticket_preview': {
             'side': candidate.side,
+            'tv_root_symbol': candidate.symbol,
+            'mt5_execution_symbol': execution_symbol,
             'order_plan': 'limit_ladder',
             'entry_type': 'limit',
             'entry': round(entry, 5),
@@ -387,9 +458,10 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
 
 def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
     preview = plan['trade_ticket_preview']
-    symbol = plan['symbol']
+    tv_symbol = plan['symbol']
+    symbol = preview.get('mt5_execution_symbol') or tv_symbol
     direction = plan['bias']['direction']
-    ticket_id = f"mt5-paper-{session_id.replace('|', '-').replace(':', '').replace('.', '-')}-{symbol.lower()}-phase1-001"
+    ticket_id = f"mt5-paper-{session_id.replace('|', '-').replace(':', '').replace('.', '-')}-{tv_symbol.lower()}-phase1-001"
     return {
         'bridge_version': 'mt5.paper.v1',
         'ticket_id': ticket_id,
@@ -400,20 +472,22 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
         'order_plan': preview['order_plan'],
         'entries': [
             {
-                'client_entry_id': f'{symbol.lower()}-phase1-entry-1',
+                'client_entry_id': f'{tv_symbol.lower()}-phase1-entry-1',
                 'entry_type': preview['entry_type'],
                 'price': preview['entry'],
                 'volume_lots': preview['volume_lots'],
-                'comment': f'{symbol} phase1 autotrade {direction.lower()} limit entry'
+                'comment': f'{tv_symbol} -> {symbol} phase1 autotrade {direction.lower()} limit entry'
             }
         ],
         'stop_loss': {'price': preview['sl']},
         'take_profit': {'price': preview['tp_live']},
         'max_risk_usdt': preview['max_risk_usdt'],
         'strategy_context': {
-            'source': f'Phase1 MT5 FX autotrade deep analysis for {symbol}',
+            'source': f'Phase1 MT5 FX autotrade deep analysis for {tv_symbol}',
             'watchlist': plan['source_context']['watchlist'],
             'timeframe': plan['source_context']['timeframe'],
+            'tv_root_symbol': tv_symbol,
+            'mt5_execution_symbol': symbol,
             'orderability_decision': plan['orderability_decision']['decision'],
             'setup': plan['bias']['setup'],
             'planned_tp1': preview['planned_tp1'],
@@ -424,7 +498,7 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
             'modeled_margin_usd': plan['risk_plan']['total_margin_usdt'],
             'bridge_tp_note': 'Bridge v1 supports one live TP only; TP2 is used as executable TP while TP1 remains a management level.'
         },
-        'note': f"{symbol} phase1 autotrade. Default risk budget {plan['risk_plan']['risk_budget_usdt']:.0f} USD. Single conditional limit entry from screener-led deep analysis."
+        'note': f"{tv_symbol} phase1 autotrade via {symbol}. Default risk budget {plan['risk_plan']['risk_budget_usdt']:.0f} USD. Single conditional limit entry from screener-led deep analysis."
     }
 
 
@@ -437,6 +511,8 @@ def render_markdown(plan: dict[str, Any], ticket: dict[str, Any] | None = None, 
     lines.append(f"- Watchlist: `{plan['source_context']['watchlist']}`")
     lines.append(f"- Indicator: `{plan['source_context']['indicator']}`")
     lines.append(f"- Timeframe: `{plan['source_context']['timeframe']}`")
+    lines.append(f"- TradingView root symbol: `{plan['source_context']['tv_root_symbol']}`")
+    lines.append(f"- MT5 execution symbol: `{plan['source_context']['mt5_execution_symbol']}`")
     lines.append(f"- Generated: `{plan['generated_at_utc']}`")
     lines.append('')
     lines.append('## Candidate gate')
@@ -544,6 +620,8 @@ def main() -> int:
 
     csv_path = Path(str(report.get('csvPath') or '')).expanduser() if report.get('csvPath') else None
     universe_rows = load_csv_rows(csv_path) if csv_path else []
+    mt5_symbols_csv = Path(str(cfg.get('mt5SymbolsExportCsv') or '')).expanduser() if cfg.get('mt5SymbolsExportCsv') else None
+    mt5_symbol_map = load_mt5_symbol_map(mt5_symbols_csv) if mt5_symbols_csv else {}
 
     state_dir = Path(cfg['stateDir'])
     reports_out = Path(cfg['reportsDir'])
@@ -580,7 +658,7 @@ def main() -> int:
         print(json.dumps(result, indent=2))
         return 0
 
-    plan = compute_plan(candidate, report, cfg, universe_rows=universe_rows)
+    plan = compute_plan(candidate, report, cfg, universe_rows=universe_rows, mt5_symbol_map=mt5_symbol_map)
     ticket = None
     execution = None
 
