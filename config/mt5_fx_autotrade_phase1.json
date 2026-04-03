@@ -2,6 +2,15 @@
   "watchlist": "MT5_FRX",
   "indicator": "OC Hybrid Edge Screener v4",
   "timeframe": "4 hours",
+  "analysisDataSource": {
+    "kind": "mt5_python",
+    "terminalExe": "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+    "preferredSuffixes": [".pro", ""],
+    "historyBars": {
+      "H4": 350,
+      "D1": 260
+    }
+  },
   "screenerReportsDir": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener",
   "mt5SymbolsExportCsv": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\OANDA_All_Symbols.csv",
   "mt5TradesThreadId": "1489519869962752000",

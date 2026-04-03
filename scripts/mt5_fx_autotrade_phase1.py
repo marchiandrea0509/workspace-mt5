@@ -13,6 +13,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from market_source_lib import make_market_source
+from mt5_fx_deep_analysis_lib import analyze_candidate
+
 WORKSPACE = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = WORKSPACE / 'config' / 'mt5_fx_autotrade_phase1.json'
 EMIT_SCRIPT = WORKSPACE / 'scripts' / 'emit_mt5_bridge_ticket.py'
@@ -628,11 +631,6 @@ def main() -> int:
     report_path = Path(args.report_json) if args.report_json else latest_report(reports_dir)
     report = load_json(report_path)
 
-    csv_path = Path(str(report.get('csvPath') or '')).expanduser() if report.get('csvPath') else None
-    universe_rows = load_csv_rows(csv_path) if csv_path else []
-    mt5_symbols_csv = Path(str(cfg.get('mt5SymbolsExportCsv') or '')).expanduser() if cfg.get('mt5SymbolsExportCsv') else None
-    mt5_symbol_map = load_mt5_symbol_map(mt5_symbols_csv) if mt5_symbols_csv else {}
-
     state_dir = Path(cfg['stateDir'])
     reports_out = Path(cfg['reportsDir'])
     reports_out.mkdir(parents=True, exist_ok=True)
@@ -668,7 +666,14 @@ def main() -> int:
         print(json.dumps(result, indent=2))
         return 0
 
-    plan = compute_plan(candidate, report, cfg, universe_rows=universe_rows, mt5_symbol_map=mt5_symbol_map)
+    source = make_market_source(cfg['analysisDataSource'])
+    try:
+        plan = analyze_candidate(candidate, report, cfg, source)
+    finally:
+        shutdown = getattr(source, 'shutdown', None)
+        if callable(shutdown):
+            shutdown()
+
     ticket = None
     execution = None
 
