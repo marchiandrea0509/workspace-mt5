@@ -482,8 +482,9 @@ def plan_to_ticket(plan: dict[str, Any], session_id: str) -> dict[str, Any]:
     symbol = preview.get('mt5_execution_symbol') or tv_symbol
     direction = plan['bias']['direction']
     template = str(plan.get('orderability_decision', {}).get('execution_template') or '')
-    unique_suffix = now_utc().strftime('%Y%m%d-%H%M%S')
-    ticket_id = f"mt5-paper-{session_id.replace('|', '-').replace(':', '').replace('.', '-')}-{tv_symbol.lower()}-{unique_suffix}-phase1-001"
+    unique_suffix = now_utc().strftime('%m%d%H%M%S')
+    ticket_symbol = ''.join(ch for ch in tv_symbol.lower() if ch.isalnum())[:8] or 'asset'
+    ticket_id = f"p1-{ticket_symbol}-{unique_suffix}"
 
     total_lots = float(preview['volume_lots'])
     entries: list[dict[str, Any]] = []
