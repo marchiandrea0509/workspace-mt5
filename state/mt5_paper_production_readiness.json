@@ -1,0 +1,21 @@
+{
+  "paperProductionEnabled": true,
+  "liveCapitalApproved": false,
+  "checkpoints": {
+    "screenerCronEnabled": true,
+    "mt5DeepAnalysisV2Integrated": true,
+    "brokerSymbolMapping": true,
+    "proxySymbolTagging": true,
+    "singleLegPaperExecution": true,
+    "multiLegLadderPlacement": true,
+    "hybridPackagePlacement": true,
+    "cleanupProcedure": true,
+    "scheduledCycleObservedClean": false,
+    "ladderFillObserved": false,
+    "hybridCancelOnFillObserved": false,
+    "noOrphanPackageStateAfterFill": false,
+    "duplicatePreventionObserved": false,
+    "threadReportingStable": false
+  },
+  "lastUpdated": "2026-04-03T13:22:00Z"
+}
