@@ -266,34 +266,108 @@ def choose_direction(candidate_direction: str, h4: dict[str, Any], d1: dict[str,
 
 
 def build_risk_plan(profile: SymbolProfile, quote_to_usd: float | None, entry: float, sl: float, cfg: dict[str, Any]) -> dict[str, Any]:
-    leverage = float(cfg['modelLeverage'])
-    risk_budget = float(cfg['riskBudgetUsdt'])
-    max_margin = float(cfg['maxMarginUsdt'])
+    preferred_leverage = float(cfg['modelLeverage'])
+    max_leverage = float(cfg.get('maxModelLeverage') or preferred_leverage)
+    preferred_risk = float(cfg['riskBudgetUsdt'])
+    max_risk = float(cfg.get('riskBudgetMaxUsdt') or preferred_risk)
+    preferred_margin = float(cfg.get('preferredMaxMarginUsdt') or cfg.get('maxMarginUsdt') or 1000.0)
+    max_margin = float(cfg.get('maxMarginUsdt') or preferred_margin)
     quote_to_usd = quote_to_usd or 1.0
     contract_size = profile.contract_size or float(cfg.get('contractSizeFx') or 100000.0)
     risk_per_lot = abs(entry - sl) * contract_size * quote_to_usd
     notional_per_lot = entry * contract_size * quote_to_usd
-    lots_by_risk = risk_budget / risk_per_lot if risk_per_lot > 0 else 0.0
-    lots_by_margin = (max_margin * leverage) / notional_per_lot if notional_per_lot > 0 else 0.0
     step = profile.volume_step or float(cfg['defaultLotStep'])
     min_lot = profile.volume_min or float(cfg['defaultMinLot'])
-    lots = math.floor(min(lots_by_risk, lots_by_margin) / step + 1e-12) * step if step > 0 else min(lots_by_risk, lots_by_margin)
-    lots = round(max(lots, 0.0), 2)
-    if lots < min_lot:
+
+    def floor_step(value: float) -> float:
+        if step <= 0:
+            return value
+        return math.floor(value / step + 1e-12) * step
+
+    if risk_per_lot <= 0 or notional_per_lot <= 0:
         lots = round(min_lot, 2)
-    total_risk = lots * risk_per_lot
-    total_notional = lots * notional_per_lot
-    total_margin = total_notional / leverage if leverage else total_notional
-    return {
-        'risk_budget_usdt': risk_budget,
-        'model_leverage': leverage,
-        'quote_to_usd': quote_to_usd,
-        'contract_size': contract_size,
-        'volume_lots': lots,
-        'total_risk_usdt': round(total_risk, 2),
-        'total_notional_usdt': round(total_notional, 2),
-        'total_margin_usdt': round(total_margin, 2),
-    }
+        return {
+            'risk_budget_usdt': preferred_risk,
+            'risk_budget_max_usdt': max_risk,
+            'preferred_max_margin_usdt': preferred_margin,
+            'max_margin_usdt': max_margin,
+            'model_leverage': preferred_leverage,
+            'max_model_leverage': max_leverage,
+            'quote_to_usd': quote_to_usd,
+            'contract_size': contract_size,
+            'volume_lots': lots,
+            'total_risk_usdt': 0.0,
+            'total_notional_usdt': 0.0,
+            'total_margin_usdt': 0.0,
+            'binding_constraint': 'invalid_risk_inputs',
+        }
+
+    best = None
+    leverage_values = sorted({round(x, 2) for x in [preferred_leverage] + list(range(int(math.ceil(preferred_leverage)), int(math.floor(max_leverage)) + 1)) + [max_leverage] if x >= preferred_leverage})
+    margin_caps = [preferred_margin, max_margin] if max_margin > preferred_margin else [preferred_margin]
+
+    for lev in leverage_values:
+        for margin_cap in margin_caps:
+            lots_by_margin = (margin_cap * lev) / notional_per_lot if notional_per_lot > 0 else 0.0
+            lots_pref = floor_step(min(preferred_risk / risk_per_lot, lots_by_margin))
+            lots_max = floor_step(min(max_risk / risk_per_lot, lots_by_margin))
+            for label, lots_candidate in [('preferred', lots_pref), ('max', lots_max)]:
+                if lots_candidate < min_lot:
+                    continue
+                total_risk = lots_candidate * risk_per_lot
+                total_notional = lots_candidate * notional_per_lot
+                total_margin = total_notional / lev if lev else total_notional
+                if total_risk > max_risk + 1e-6 or total_margin > margin_cap + 1e-6:
+                    continue
+                risk_gap = abs(preferred_risk - total_risk)
+                over_preferred_margin = max(total_margin - preferred_margin, 0.0)
+                leverage_penalty = max(lev - preferred_leverage, 0.0)
+                score = (risk_gap, over_preferred_margin, leverage_penalty, -lots_candidate)
+                payload = {
+                    'risk_budget_usdt': preferred_risk,
+                    'risk_budget_max_usdt': max_risk,
+                    'preferred_max_margin_usdt': preferred_margin,
+                    'max_margin_usdt': max_margin,
+                    'model_leverage': lev,
+                    'max_model_leverage': max_leverage,
+                    'quote_to_usd': quote_to_usd,
+                    'contract_size': contract_size,
+                    'volume_lots': round(lots_candidate, 2),
+                    'total_risk_usdt': round(total_risk, 2),
+                    'total_notional_usdt': round(total_notional, 2),
+                    'total_margin_usdt': round(total_margin, 2),
+                    'binding_constraint': 'risk_budget' if label == 'preferred' else ('volume_rounding_or_margin_extension'),
+                }
+                if best is None or score < best[0]:
+                    best = (score, payload)
+
+    if best is None:
+        lots = round(min_lot, 2)
+        total_risk = lots * risk_per_lot
+        total_notional = lots * notional_per_lot
+        total_margin = total_notional / max(preferred_leverage, 1.0)
+        return {
+            'risk_budget_usdt': preferred_risk,
+            'risk_budget_max_usdt': max_risk,
+            'preferred_max_margin_usdt': preferred_margin,
+            'max_margin_usdt': max_margin,
+            'model_leverage': preferred_leverage,
+            'max_model_leverage': max_leverage,
+            'quote_to_usd': quote_to_usd,
+            'contract_size': contract_size,
+            'volume_lots': lots,
+            'total_risk_usdt': round(total_risk, 2),
+            'total_notional_usdt': round(total_notional, 2),
+            'total_margin_usdt': round(total_margin, 2),
+            'binding_constraint': 'broker_min_lot_forces_undersized_or_oversized_trade',
+        }
+
+    payload = best[1]
+    if payload['total_risk_usdt'] < preferred_risk * 0.5:
+        payload['binding_constraint'] = 'margin_cap_or_symbol_value_kept_risk_far_below_target'
+    elif payload['total_risk_usdt'] > preferred_risk:
+        payload['binding_constraint'] = 'volume_rounding_or_margin_extension'
+    return payload
 
 
 def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any], source: MarketDataSource) -> dict[str, Any]:
@@ -412,20 +486,39 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
     proxy_source = str((cfg.get('proxySymbols') or {}).get(root_symbol) or '').strip()
     is_proxy_symbol = bool(proxy_source)
 
+    min_struct_gap = max(0.20 * atr_now, 10 * profile.point)
     if direction == 'LONG':
-        support_anchor = support_zone['level'] if support_zone else min(med, slow)
-        ladder = sorted({round(min(fast, close), profile.digits), round(support_anchor, profile.digits), round(min(slow, support_anchor - 0.25 * atr_now), profile.digits)})
-        ladder = [x for x in ladder if x < close + 5 * profile.point]
-        breakout_trigger = round(max(highs[-5:]) + 0.15 * atr_now, profile.digits)
+        if support_zone:
+            raw_ladder = [support_zone['upper'], support_zone['level'], support_zone['lower']]
+        else:
+            support_anchor = min(med, slow)
+            raw_ladder = [min(fast, close - 0.10 * atr_now), support_anchor, min(slow, support_anchor - 0.35 * atr_now)]
+        raw_ladder = [float(x) for x in raw_ladder if x is not None and x < close - 2 * profile.point]
+        raw_ladder = sorted(set(round(x, profile.digits) for x in raw_ladder), reverse=True)
+        ladder = []
+        for px in raw_ladder:
+            if not ladder or abs(px - ladder[-1]) >= min_struct_gap:
+                ladder.append(px)
+        ladder = sorted(ladder)
+        breakout_trigger = round(max(highs[-5:]) + 0.20 * atr_now, profile.digits)
         breakout_limit = round(breakout_trigger + 0.10 * atr_now, profile.digits)
-        structural_sl = round(min((support_zone['lower'] if support_zone else slow), min(lows[-20:])) - 0.15 * atr_now, profile.digits)
+        structural_sl = round(min((support_zone['lower'] if support_zone else slow), min(lows[-20:])) - 0.20 * atr_now, profile.digits)
     else:
-        resistance_anchor = resistance_zone['level'] if resistance_zone else max(med, slow)
-        ladder = sorted({round(max(fast, close), profile.digits), round(resistance_anchor, profile.digits), round(max(slow, resistance_anchor + 0.25 * atr_now), profile.digits)}, reverse=True)
-        ladder = [x for x in ladder if x > close - 5 * profile.point]
-        breakout_trigger = round(min(lows[-5:]) - 0.15 * atr_now, profile.digits)
+        if resistance_zone:
+            raw_ladder = [resistance_zone['lower'], resistance_zone['level'], resistance_zone['upper']]
+        else:
+            resistance_anchor = max(med, slow)
+            raw_ladder = [max(fast, close + 0.10 * atr_now), resistance_anchor, max(slow, resistance_anchor + 0.35 * atr_now)]
+        raw_ladder = [float(x) for x in raw_ladder if x is not None and x > close + 2 * profile.point]
+        raw_ladder = sorted(set(round(x, profile.digits) for x in raw_ladder))
+        ladder = []
+        for px in raw_ladder:
+            if not ladder or abs(px - ladder[-1]) >= min_struct_gap:
+                ladder.append(px)
+        ladder = sorted(ladder, reverse=True)
+        breakout_trigger = round(min(lows[-5:]) - 0.20 * atr_now, profile.digits)
         breakout_limit = round(breakout_trigger - 0.10 * atr_now, profile.digits)
-        structural_sl = round(max((resistance_zone['upper'] if resistance_zone else slow), max(highs[-20:])) + 0.15 * atr_now, profile.digits)
+        structural_sl = round(max((resistance_zone['upper'] if resistance_zone else slow), max(highs[-20:])) + 0.20 * atr_now, profile.digits)
 
     if execution_template == 'breakout_stop_limit':
         entry = breakout_trigger

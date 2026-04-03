@@ -219,6 +219,27 @@ def load_state(state_dir: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     return sessions, active
 
 
+def reconcile_active_assets(active: dict[str, Any], cfg: dict[str, Any]) -> dict[str, Any]:
+    assets = dict(active.get('assets', {}))
+    if not assets or mt5 is None:
+        return {'assets': assets}
+    terminal = str((cfg.get('analysisDataSource') or {}).get('terminalExe') or '')
+    if not terminal or not mt5.initialize(path=terminal):
+        return {'assets': assets}
+    try:
+        live_symbols = set()
+        for o in (mt5.orders_get() or []):
+            if int(getattr(o, 'magic', 0)) == 26032601:
+                live_symbols.add(str(o.symbol).upper().replace('.PRO', ''))
+        for p in (mt5.positions_get() or []):
+            if int(getattr(p, 'magic', 0)) == 26032601:
+                live_symbols.add(str(p.symbol).upper().replace('.PRO', ''))
+        assets = {sym: payload for sym, payload in assets.items() if sym.upper() in live_symbols}
+        return {'assets': assets}
+    finally:
+        mt5.shutdown()
+
+
 def save_state(state_dir: Path, sessions: dict[str, Any], active: dict[str, Any]) -> None:
     save_json(state_dir / 'sessions.json', sessions)
     save_json(state_dir / 'active_assets.json', active)
@@ -261,30 +282,14 @@ def row_passes(row: dict[str, Any], cfg: dict[str, Any], active_assets: dict[str
     if conviction is None or conviction < criteria['minConvictionState']:
         reasons.append(f'conviction below threshold {criteria["minConvictionState"]}')
 
-    adx = safe_float(row.get('16 ADX'))
-    if adx is None or adx < criteria['minAdx']:
-        reasons.append(f'ADX below threshold {criteria["minAdx"]}')
-
-    dist = safe_float(row.get('18 Dist Fast EMA ATR'))
-    if dist is None or abs(dist) > criteria['maxDistFastEmaAtr']:
-        reasons.append(f'Dist Fast EMA ATR outside threshold {criteria["maxDistFastEmaAtr"]}')
-
     if direction == 'LONG':
         directional_score = safe_float(row.get('04 Final Long Score'))
         if directional_score is None or directional_score < criteria['minDirectionalScore']:
             reasons.append(f'final long score below threshold {criteria["minDirectionalScore"]}')
-        if criteria.get('requireTrendAlignment') and safe_float(row.get('11 Trend Dir')) != 1:
-            reasons.append('trend direction not aligned bullish')
-        if criteria.get('requireMacroAlignment') and safe_float(row.get('12 Macro Dir 1D')) != 1:
-            reasons.append('1D macro direction not aligned bullish')
     elif direction == 'SHORT':
         directional_score = safe_float(row.get('05 Final Short Score'))
         if directional_score is None or directional_score < criteria['minDirectionalScore']:
             reasons.append(f'final short score below threshold {criteria["minDirectionalScore"]}')
-        if criteria.get('requireTrendAlignment') and safe_float(row.get('11 Trend Dir')) != -1:
-            reasons.append('trend direction not aligned bearish')
-        if criteria.get('requireMacroAlignment') and safe_float(row.get('12 Macro Dir 1D')) != -1:
-            reasons.append('1D macro direction not aligned bearish')
     else:
         reasons.append('unable to determine candidate direction')
 
@@ -596,6 +601,7 @@ def preflight_mt5_ticket(ticket: dict[str, Any], cfg: dict[str, Any]) -> tuple[d
         mt5.symbol_select(symbol, True)
         point = float(info.point or 0.0)
         stops_level = float(getattr(info, 'trade_stops_level', 0) or 0)
+        min_dist = max(stops_level * point, 5 * point if point > 0 else 0.0)
         sl = float(ticket['stop_loss']['price'])
         tp = float(ticket['take_profit']['price'])
         side = ticket['side']
@@ -609,8 +615,38 @@ def preflight_mt5_ticket(ticket: dict[str, Any], cfg: dict[str, Any]) -> tuple[d
         }
         for entry in ticket['entries']:
             et = entry['entry_type']
+            adjusted_entry = dict(entry)
             price = float(entry['price']) if entry.get('price') is not None else 0.0
+            adjusted = False
             local_reasons = []
+            if et == 'limit' and side == 'buy' and price >= tick.ask - min_dist:
+                new_price = tick.ask - min_dist
+                if point > 0:
+                    new_price = round(new_price / point) * point
+                adjusted_entry['price'] = new_price
+                price = float(new_price)
+                adjusted = True
+            if et == 'limit' and side == 'sell' and price <= tick.bid + min_dist:
+                new_price = tick.bid + min_dist
+                if point > 0:
+                    new_price = round(new_price / point) * point
+                adjusted_entry['price'] = new_price
+                price = float(new_price)
+                adjusted = True
+            if et == 'stop' and side == 'buy' and price <= tick.ask + min_dist:
+                new_price = tick.ask + min_dist
+                if point > 0:
+                    new_price = round(new_price / point) * point
+                adjusted_entry['price'] = new_price
+                price = float(new_price)
+                adjusted = True
+            if et == 'stop' and side == 'sell' and price >= tick.bid - min_dist:
+                new_price = tick.bid - min_dist
+                if point > 0:
+                    new_price = round(new_price / point) * point
+                adjusted_entry['price'] = new_price
+                price = float(new_price)
+                adjusted = True
             if et == 'limit' and side == 'buy' and not (price < tick.ask):
                 local_reasons.append('buy limit no longer below current ask')
             if et == 'limit' and side == 'sell' and not (price > tick.bid):
@@ -639,7 +675,7 @@ def preflight_mt5_ticket(ticket: dict[str, Any], cfg: dict[str, Any]) -> tuple[d
                 'action': mt5.TRADE_ACTION_PENDING,
                 'symbol': symbol,
                 'magic': 26032601,
-                'volume': float(entry['volume_lots']),
+                'volume': float(adjusted_entry['volume_lots']),
                 'price': price,
                 'sl': sl,
                 'tp': tp,
@@ -655,9 +691,9 @@ def preflight_mt5_ticket(ticket: dict[str, Any], cfg: dict[str, Any]) -> tuple[d
             if retcode not in (0, 10009, 10008):
                 local_reasons.append(f'order_check retcode {retcode} ({comment})')
             if local_reasons:
-                rejected.append({'client_entry_id': entry.get('client_entry_id'), 'entry_type': et, 'price': price, 'reasons': local_reasons, 'order_type': order_type_names.get(req['type'], str(req['type']))})
+                rejected.append({'client_entry_id': entry.get('client_entry_id'), 'entry_type': et, 'price': price, 'original_price': entry.get('price'), 'adjusted': adjusted, 'reasons': local_reasons, 'order_type': order_type_names.get(req['type'], str(req['type']))})
             else:
-                valid.append(entry)
+                valid.append(adjusted_entry)
 
         adjusted = dict(ticket)
         adjusted['entries'] = valid
@@ -726,13 +762,20 @@ def render_markdown(plan: dict[str, Any], ticket: dict[str, Any] | None = None, 
     lines.append('')
     lines.append('## Proposed trading plan')
     lines.append('')
-    lines.append('| Strategy | Order Type | Entry | SL | TP1 | RR1 | TP2 | RR2 | Size Lots | Size Notional USD | Margin USD | Risk USD |')
-    lines.append('|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|')
+    lines.append('| Strategy | Template | Entry Ref | SL | TP1 | RR1 | TP2 | RR2 | Size Lots | Size Notional USD | Margin USD | Risk USD | Binding Constraint |')
+    lines.append('|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|')
     lines.append(
-        f"| {plan['bias']['setup']} | {plan['trade_ticket_preview']['order_plan']} / {plan['trade_ticket_preview']['entry_type']} | {plan['trade_ticket_preview']['entry']:.5f} | {plan['trade_ticket_preview']['sl']:.5f} | {plan['trade_ticket_preview']['planned_tp1']:.5f} | {plan['risk_plan']['rr_tp1']:.2f} | {plan['trade_ticket_preview']['planned_tp2']:.5f} | {plan['risk_plan']['rr_tp2']:.2f} | {plan['trade_ticket_preview']['volume_lots']:.2f} | {plan['risk_plan']['total_notional_usdt']:.2f} | {plan['risk_plan']['total_margin_usdt']:.2f} | {plan['risk_plan']['total_risk_usdt']:.2f} |"
+        f"| {plan['bias']['setup']} | {plan['orderability_decision']['execution_template']} | {plan['trade_ticket_preview']['entry']:.5f} | {plan['trade_ticket_preview']['sl']:.5f} | {plan['trade_ticket_preview']['planned_tp1']:.5f} | {plan['risk_plan']['rr_tp1']:.2f} | {plan['trade_ticket_preview']['planned_tp2']:.5f} | {plan['risk_plan']['rr_tp2']:.2f} | {plan['trade_ticket_preview']['volume_lots']:.2f} | {plan['risk_plan']['total_notional_usdt']:.2f} | {plan['risk_plan']['total_margin_usdt']:.2f} | {plan['risk_plan']['total_risk_usdt']:.2f} | {plan['risk_plan'].get('binding_constraint','n/a')} |"
     )
     lines.append('')
     if ticket is not None:
+        lines.append('## Emitted MT5 package')
+        lines.append('')
+        lines.append('| # | Entry ID | Type | Price | Lots |')
+        lines.append('|---|---|---|---:|---:|')
+        for idx, entry in enumerate(ticket.get('entries', []), start=1):
+            lines.append(f"| {idx} | {entry.get('client_entry_id')} | {entry.get('entry_type')} | {entry.get('price')} | {entry.get('volume_lots')} |")
+        lines.append('')
         lines.append('## MT5 bridge ticket')
         lines.append('')
         lines.append('```json')
@@ -803,12 +846,17 @@ def main() -> int:
     cfg = load_json(Path(args.config))
     reports_dir = Path(cfg['screenerReportsDir'])
     report_path = Path(args.report_json) if args.report_json else latest_report(reports_dir)
+    report_resolution = 'explicit' if args.report_json else 'latest'
+    if args.report_json and not report_path.exists():
+        report_path = latest_report(reports_dir)
+        report_resolution = 'fallback_latest_missing_explicit'
     report = load_json(report_path)
 
     state_dir = Path(cfg['stateDir'])
     reports_out = Path(cfg['reportsDir'])
     reports_out.mkdir(parents=True, exist_ok=True)
     sessions, active = load_state(state_dir)
+    active = reconcile_active_assets(active, cfg)
 
     sess_key = session_key(report, report_path)
     if not args.force and sess_key in sessions['sessions']:
@@ -831,7 +879,8 @@ def main() -> int:
             'reason': 'no candidate passed the predefined criteria',
             'session_key': sess_key,
             'audit': audit,
-            'report_path': str(report_path)
+            'report_path': str(report_path),
+            'report_resolution': report_resolution
         }
         save_json(reports_out / f'mt5_phase1_session_{stamp}.json', result)
         save_json(reports_out / 'mt5_phase1_latest.json', result)
@@ -887,6 +936,7 @@ def main() -> int:
         'result': 'trade_review',
         'session_key': sess_key,
         'report_path': str(report_path),
+        'report_resolution': report_resolution,
         'candidate': candidate.symbol,
         'analysis_path': str(md_path),
         'ticket_path': str(reports_out / f'ticket_{candidate.symbol}_{stamp}.json') if ticket else None,

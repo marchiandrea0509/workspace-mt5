@@ -19,8 +19,11 @@
     "CHFPLN": "Forexcom"
   },
   "riskBudgetUsdt": 100.0,
-  "maxMarginUsdt": 1000.0,
+  "riskBudgetMaxUsdt": 150.0,
+  "preferredMaxMarginUsdt": 1000.0,
+  "maxMarginUsdt": 1500.0,
   "modelLeverage": 10.0,
+  "maxModelLeverage": 20.0,
   "contractSizeFx": 100000.0,
   "defaultMinLot": 0.01,
   "defaultLotStep": 0.01,
@@ -29,12 +32,8 @@
   "criteria": {
     "minBestScore": 70.0,
     "minConvictionState": 3,
-    "minAdx": 20.0,
-    "maxDistFastEmaAtr": 1.35,
     "minDirectionalScore": 70.0,
-    "allowedSetupCodes": [2, -2],
-    "requireTrendAlignment": true,
-    "requireMacroAlignment": true
+    "allowedSetupCodes": [2, -2]
   },
   "emit": {
     "waitSeconds": 90.0,
