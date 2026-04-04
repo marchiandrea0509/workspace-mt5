@@ -68,6 +68,13 @@ def safe_float(v: Any) -> float | None:
         return None
 
 
+def safe_int(v: Any) -> int | None:
+    num = safe_float(v)
+    if num is None:
+        return None
+    return int(num)
+
+
 def floor_step(value: float, step: float) -> float:
     if step <= 0:
         return value
@@ -284,7 +291,7 @@ def row_passes(row: dict[str, Any], cfg: dict[str, Any], active_assets: dict[str
         reasons.append(f'best score below threshold {criteria["minBestScore"]}')
 
     conviction = safe_float(row.get('10 Conviction State'))
-    if conviction is None or conviction < criteria['minConvictionState']:
+    if conviction is not None and conviction < criteria['minConvictionState']:
         reasons.append(f'conviction below threshold {criteria["minConvictionState"]}')
 
     if direction == 'LONG':
@@ -406,8 +413,8 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
             'indicator': report.get('indicator'),
             'timeframe': report.get('timeframe'),
             'best_score': safe_float(row.get('03 Best Score')),
-            'best_setup_code': int(safe_float(row.get('02 Best Setup Code'))),
-            'conviction_state': int(safe_float(row.get('10 Conviction State'))),
+            'best_setup_code': safe_int(row.get('02 Best Setup Code')),
+            'conviction_state': safe_int(row.get('10 Conviction State')),
             'screener_rank_top5': next((idx + 1 for idx, item in enumerate(report.get('top5') or []) if (item.get('symbol') or '').upper() == candidate.symbol), None),
             'tv_root_symbol': candidate.symbol,
             'mt5_execution_symbol': execution_symbol,
