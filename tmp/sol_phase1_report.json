@@ -1,0 +1,52 @@
+{
+  "watchlist": "TRADFI",
+  "indicator": "OC Hybrid Edge Screener v2",
+  "timeframe": "4 hours",
+  "generatedAt": "2026-04-04T04:01:12.200Z",
+  "top10": [
+    {
+      "symbol": "SOLUSDT.P",
+      "description": "SOL USDT PERPETUAL",
+      "bestSetupCode": -2,
+      "bestScore": 73.76149670440279,
+      "finalLongScore": 36.60408386370832,
+      "finalShortScore": 73.76149670440279,
+      "longMeanRev": 62.60408386370832,
+      "convictionState": 3,
+      "raw": {
+        "Symbol": "SOLUSDT.P",
+        "Description": "SOL USDT PERPETUAL",
+        "Fast EMA": "80.6204805849679",
+        "Medium EMA": "82.39688973125246",
+        "Slow EMA": "86.986633875124",
+        "Simple Support": "",
+        "Simple Resistance": "",
+        "01 Signal Dir": "0",
+        "02 Best Setup Code": "-2",
+        "03 Best Score": "73.76149670440279",
+        "04 Final Long Score": "36.60408386370832",
+        "05 Final Short Score": "73.76149670440279",
+        "06 Long Continuation": "37.16502260582532",
+        "07 Short Continuation": "79.76149670440279",
+        "08 Long MeanRev": "62.60408386370832",
+        "09 Short MeanRev": "52.89591613629168",
+        "10 Conviction State": "3",
+        "11 Trend Dir": "-1",
+        "12 Macro Dir 1D": "-1",
+        "13 Position State": "0",
+        "14 Breakout Dir": "0",
+        "15 Retest Dir": "0",
+        "16 ADX": "27.908140837220202",
+        "17 Rel Volume": "0.00039210336557278947",
+        "18 Dist Fast EMA ATR": "0.3636039282881243",
+        "19 Tactical Long": "37.36318902496078",
+        "20 Tactical Short": "72.42686614711954",
+        "21 Macro Long 1D": "25",
+        "22 Macro Short 1D": "85",
+        "23 Tactical Trend Score": "-90.45085178916023",
+        "24 Tactical Breakout Score": "-12.56559337447872",
+        "25 Tactical MeanRev Score": "21.290309685625058"
+      }
+    }
+  ]
+}

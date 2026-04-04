@@ -34,6 +34,12 @@
       "candidate": "EURGBP",
       "ticket_id": "mt5-paper-MT5_FRX-4 hours-2026-04-03T175006-813Z-eurgbp-20260403-181323-phase1-001",
       "processed_at": "2026-04-03T18:13:23Z"
+    },
+    "TRADFI|4 hours|2026-04-04T04:01:12.200Z": {
+      "status": "rejected",
+      "candidate": "SOLUSDT.P",
+      "ticket_id": "p1-solusdtp-0404061511",
+      "processed_at": "2026-04-04T06:15:15Z"
     }
   }
 }
