@@ -310,17 +310,18 @@ def row_passes(row: dict[str, Any], cfg: dict[str, Any], active_assets: dict[str
     return True, reasons, Candidate(symbol=symbol, description=desc, row=row, direction=direction, setup_label=setup_label, side=side)
 
 
-def select_candidate(report: dict[str, Any], cfg: dict[str, Any], active_assets: dict[str, Any]) -> tuple[Candidate | None, list[dict[str, Any]]]:
+def select_candidates(report: dict[str, Any], cfg: dict[str, Any], active_assets: dict[str, Any]) -> tuple[list[Candidate], list[dict[str, Any]]]:
     rows = report.get('top10') or report.get('top5') or []
     rows = rows[: int(cfg.get('candidateSearchDepth', 10))]
     audit: list[dict[str, Any]] = []
+    candidates: list[Candidate] = []
     for item in rows:
         row = item.get('raw') or item
         ok, reasons, candidate = row_passes(row, cfg, active_assets)
         audit.append({'symbol': row.get('Symbol'), 'passed': ok, 'reasons': reasons})
         if ok and candidate:
-            return candidate, audit
-    return None, audit
+            candidates.append(candidate)
+    return candidates, audit
 
 
 def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, Any], universe_rows: list[dict[str, Any]], mt5_symbol_map: dict[str, str]) -> dict[str, Any]:
@@ -895,10 +896,10 @@ def main() -> int:
         print(json.dumps(payload, indent=2))
         return 0
 
-    candidate, audit = select_candidate(report, cfg, active.get('assets', {}))
+    candidates, audit = select_candidates(report, cfg, active.get('assets', {}))
     stamp = now_utc().strftime('%Y%m%d_%H%M%S')
 
-    if candidate is None:
+    if not candidates:
         result = {
             'result': 'no_trade',
             'reason': 'no candidate passed the predefined criteria',
@@ -914,9 +915,36 @@ def main() -> int:
         print(json.dumps(result, indent=2))
         return 0
 
+    candidate = None
+    plan = None
     source = make_market_source(cfg['analysisDataSource'])
     try:
-        plan = analyze_candidate(candidate, report, cfg, source)
+        for maybe_candidate in candidates:
+            try:
+                plan = analyze_candidate(maybe_candidate, report, cfg, source)
+                candidate = maybe_candidate
+                break
+            except KeyError as exc:
+                for item in audit:
+                    if str(item.get('symbol') or '').upper() == maybe_candidate.symbol.upper():
+                        item['passed'] = False
+                        item.setdefault('reasons', []).append(f'mt5 symbol resolution failed: {exc}')
+                        break
+        if candidate is None or plan is None:
+            result = {
+                'result': 'no_trade',
+                'reason': 'no candidate passed the predefined criteria or MT5 symbol resolution',
+                'session_key': sess_key,
+                'audit': audit,
+                'report_path': str(report_path),
+                'report_resolution': report_resolution
+            }
+            save_json(reports_out / f'mt5_phase1_session_{stamp}.json', result)
+            save_json(reports_out / 'mt5_phase1_latest.json', result)
+            sessions['sessions'][sess_key] = {'status': 'no_trade', 'reason': result['reason'], 'processed_at': iso_z(now_utc())}
+            save_state(state_dir, sessions, active)
+            print(json.dumps(result, indent=2))
+            return 0
     finally:
         shutdown = getattr(source, 'shutdown', None)
         if callable(shutdown):
