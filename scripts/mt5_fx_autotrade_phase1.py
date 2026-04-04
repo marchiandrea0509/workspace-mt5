@@ -115,6 +115,10 @@ def normalize_broker_symbol(symbol: str) -> str:
     symbol = symbol.strip().upper()
     if symbol.endswith('.PRO'):
         symbol = symbol[:-4]
+    if symbol.endswith('.P'):
+        symbol = symbol[:-2]
+    if symbol.endswith('USDT'):
+        symbol = symbol[:-4] + 'USD'
     return symbol
 
 
@@ -127,10 +131,11 @@ def load_mt5_symbol_map(path: Path) -> dict[str, str]:
             continue
         path_value = str(row.get('Path') or '').strip()
         calc_mode = str(row.get('CalcMode') or '').strip().upper()
+        asset_class_guess = str(row.get('AssetClassGuess') or '').strip().upper()
         trade_mode = str(row.get('TradeMode') or '').strip().upper()
         visible = str(row.get('Visible') or '').strip().lower() == 'true'
         selected = str(row.get('Selected') or '').strip().lower() == 'true'
-        if not (path_value.startswith('Forex\\') or calc_mode == 'FOREX'):
+        if not (path_value.startswith('Forex\\') or path_value.startswith('Crypto\\') or calc_mode == 'FOREX' or asset_class_guess == 'FOREX_LIKE'):
             continue
         root = normalize_broker_symbol(raw_symbol)
         score = 0
@@ -378,7 +383,7 @@ def compute_plan(candidate: Candidate, report: dict[str, Any], cfg: dict[str, An
     rr1 = abs(tp1 - entry) / risk_per_unit
     rr2 = abs(tp2 - entry) / risk_per_unit
 
-    execution_symbol = mt5_symbol_map.get(candidate.symbol, candidate.symbol)
+    execution_symbol = mt5_symbol_map.get(normalize_broker_symbol(candidate.symbol), candidate.symbol)
     proxy_source = str((cfg.get('proxySymbols') or {}).get(candidate.symbol) or '').strip()
     is_proxy_symbol = bool(proxy_source)
 

@@ -194,6 +194,10 @@ class MT5PythonSource:
         sym = symbol.strip().upper()
         if sym.endswith('.PRO'):
             sym = sym[:-4]
+        if sym.endswith('.P'):
+            sym = sym[:-2]
+        if sym.endswith('USDT'):
+            sym = sym[:-4] + 'USD'
         return sym
 
     def _timeframe_code(self, timeframe: str) -> int:
