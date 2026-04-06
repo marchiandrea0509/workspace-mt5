@@ -36,16 +36,21 @@ Confirmed from `mt5_bridge/GrayPaperBridgeEA.mq5` and `scripts/emit_mt5_bridge_t
 
 ## Current status
 - Structured winner + MT5 data pack generation is implemented
+- Expanded screener dashboard parity is implemented for the exported fields currently available in TradingView
 - A shadow bundle can now be generated for a given report/symbol:
   - planner input pack JSON
   - deterministic baseline script plan JSON
   - planner prompt markdown with the full input pack embedded
-- Script-vs-LLM comparison is implemented once an LLM planner JSON exists
+- The LLM-shadow workflow is now defined and tool-supported:
+  - save raw planner markdown
+  - extract fenced planner JSON
+  - validate planner JSON deterministically
+  - compare planner output vs script baseline
 
 ## Recommended next implementation steps
-1. Build exact dashboard parity for all fields needed by the planner
-2. Add the actual planner invocation layer that consumes `planner_prompt_*.md` / `llm_pack_*.json` and saves planner JSON + markdown report
-3. Add deterministic validator that converts planner JSON into current bridge ticket schema
+1. Run the first real LLM planner shadow turn against a fresh winner pack
+2. Review planner validation + comparison output manually
+3. Add deterministic conversion from validated planner JSON into the current bridge ticket schema
 4. Compare script vs LLM outputs during paper trading before promoting LLM planning to primary
 
 ## Likely user-side action needed
