@@ -1,0 +1,52 @@
+{
+  "bridge_version": "mt5.paper.v1",
+  "ticket_id": "p1-eurgbp-0406051413",
+  "created_at": "2026-04-06T05:14:13Z",
+  "mode": "paper",
+  "symbol": "EURGBP.pro",
+  "side": "buy",
+  "order_plan": "limit_ladder",
+  "entries": [
+    {
+      "client_entry_id": "eurgbp-phase1-ladder-1",
+      "entry_type": "limit",
+      "price": 0.86106,
+      "volume_lots": 0.13,
+      "comment": "EURGBP -> EURGBP.pro phase1 ladder limit entry 1"
+    },
+    {
+      "client_entry_id": "eurgbp-phase1-ladder-2",
+      "entry_type": "limit",
+      "price": 0.86139,
+      "volume_lots": 0.13,
+      "comment": "EURGBP -> EURGBP.pro phase1 ladder limit entry 2"
+    }
+  ],
+  "stop_loss": {
+    "price": 0.86081
+  },
+  "take_profit": {
+    "price": 0.86199
+  },
+  "max_risk_usdt": 100.0,
+  "strategy_context": {
+    "source": "Phase1 MT5 FX autotrade deep analysis for EURGBP",
+    "watchlist": "MT5_FRX",
+    "timeframe": "4 hours",
+    "tv_root_symbol": "EURGBP",
+    "mt5_execution_symbol": "EURGBP.pro",
+    "is_proxy_symbol": false,
+    "proxy_source": null,
+    "orderability_decision": "placeable_conditional_only",
+    "execution_template": "ladder_limit_2",
+    "setup": "LONG_CONTINUATION",
+    "planned_tp1": 0.86165,
+    "planned_tp2": 0.86199,
+    "planned_rr_tp1": 1.0,
+    "planned_rr_tp2": 1.81,
+    "planned_total_notional_usd": 29594.47,
+    "modeled_margin_usd": 1479.72,
+    "bridge_tp_note": "Bridge v1 supports one live TP for the package; TP2 is used as executable TP while TP1 remains a management level."
+  },
+  "note": "EURGBP phase1 autotrade via EURGBP.pro. Default risk budget 100 USD. Execution template: ladder_limit_2."
+}
