@@ -31,13 +31,20 @@ Confirmed from `mt5_bridge/GrayPaperBridgeEA.mq5` and `scripts/emit_mt5_bridge_t
 ## New artifacts
 - Prompt: `prompts/phase1_llm_trade_planner.md`
 - Pack builder: `scripts/build_mt5_phase1_llm_pack.py`
+- Shadow bundle preparer: `scripts/phase1_llm_shadow.py`
+- Deterministic comparator: `scripts/compare_mt5_phase1_plans.py`
+
+## Current status
+- Structured winner + MT5 data pack generation is implemented
+- A shadow bundle can now be generated for a given report/symbol:
+  - planner input pack JSON
+  - deterministic baseline script plan JSON
+  - planner prompt markdown with the full input pack embedded
+- Script-vs-LLM comparison is implemented once an LLM planner JSON exists
 
 ## Recommended next implementation steps
 1. Build exact dashboard parity for all fields needed by the planner
-2. Add `phase1_llm_shadow.py` that:
-   - builds the pack
-   - calls the planner prompt
-   - saves planner JSON + markdown report
+2. Add the actual planner invocation layer that consumes `planner_prompt_*.md` / `llm_pack_*.json` and saves planner JSON + markdown report
 3. Add deterministic validator that converts planner JSON into current bridge ticket schema
 4. Compare script vs LLM outputs during paper trading before promoting LLM planning to primary
 
