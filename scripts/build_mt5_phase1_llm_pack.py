@@ -174,6 +174,20 @@ def main() -> int:
         'screener_dashboard': {
             'raw_row': row,
             'top_list_headers': report.get('headers') or [],
+            'reproducible_dashboard_fields': [
+                '01 Signal Dir', '02 Best Setup Code', '03 Best Score', '04 Final Long Score', '05 Final Short Score',
+                '06 Long Continuation', '07 Short Continuation', '08 Long MeanRev', '09 Short MeanRev', '10 Conviction State',
+                '11 Trend Dir', '12 Macro Dir 1D', '13 Position State', '14 Breakout Dir', '15 Retest Dir', '16 ADX',
+                '17 Rel Volume', '18 Dist Fast EMA ATR', '19 Sweep Dir', '20 Displacement Dir', '21 PD State',
+                '22 FVG State', '23 Tactical Trend Score', '24 Tactical Breakout Score', '25 Tactical MeanRev Score',
+                '26 Fresh Struct Shift', '27 Verdict State', '28 Momentum State', '29 Signed Conviction', '30 Break Fresh State',
+                '31 Retest Stage', '32 Short MR Struct', '33 Dist To Resistance %', '34 Zone Count', '35 EMA Trend State',
+                '36 VWAP20', '37 Dist To Support %', '38 Lifecycle Long Score', '39 R1 Above', '40 R2 Above',
+                '41 S1 Below', '42 S2 Below', '43 Cnt Res Above', '44 Cnt Sup Below', '45 Cnt Res All', '46 Cnt Sup All',
+                '47 Lifecycle Short Score', '48 Winner Dir', '49 Winner Family Code', '50 Winner Margin', '51 Winner Base Score',
+                '52 Winner Penalty', '53 Winner Tactical', '54 Winner Macro', '55 Winner Structure', '56 Winner ADX Fit',
+                '57 Winner Lifecycle', '58 Winner Context Boost', '59 Winner Family Edge'
+            ],
             'legend': {
                 'best_setup': '+1/-1 mean reversion, +2/-2 continuation, +3/-3 breakout-led, 0 no valid setup',
                 'conviction': '0 weak, 1 decent, 2 strong, 3 very strong',
@@ -184,6 +198,8 @@ def main() -> int:
                 'break_fresh': 'recent breakout memory state, not breakout on current bar; +2/-2 very fresh, +1/-1 fresh, 0 none',
                 'retest_stage': 'signed post-break lifecycle; +1/-1 waiting retest, +2/-2 retest touched, +3/-3 retest confirmed, +4/-4 retest failed, 0 none',
                 'short_mr_struct': 'structural quality for short mean reversion; higher = better nearby resistance for short fade',
+                'winner_family_code': '0 none, 1 mean reversion, 2 continuation, 3 breakout-led',
+                'winner_attribution': 'Winner Dir / Margin / Base / Penalty / Tactical / Macro / Structure / ADX Fit / Lifecycle / Context Boost / Family Edge explain why the final winner side-family combination won the screener comparison',
             },
         },
         'chart_data': {
