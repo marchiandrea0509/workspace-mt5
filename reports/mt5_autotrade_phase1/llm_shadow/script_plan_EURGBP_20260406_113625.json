@@ -1,0 +1,158 @@
+{
+  "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
+  "generated_at_utc": "2026-04-06T11:36:25Z",
+  "symbol": "EURGBP",
+  "description": "EUR/GBP",
+  "source_context": {
+    "watchlist": "MT5_FRX",
+    "indicator": "OC Hybrid Edge Screener v6",
+    "timeframe": "4 hours",
+    "best_score": 73.5711307148426,
+    "best_setup_code": 2,
+    "conviction_state": null,
+    "screener_rank_top5": 1,
+    "tv_root_symbol": "EURGBP",
+    "analysis_source_kind": "mt5_python",
+    "analysis_symbol": "EURGBP.pro",
+    "mt5_execution_symbol": "EURGBP.pro",
+    "is_proxy_symbol": false,
+    "proxy_source": null
+  },
+  "bias": {
+    "direction": "LONG",
+    "setup": "LONG_CONTINUATION",
+    "quality_call": "broker-feed MT5 structure validated",
+    "final_trader_call": "Ready for bridge fallback execution"
+  },
+  "market_source": {
+    "kind": "mt5_python",
+    "analysis_symbol": "EURGBP.pro",
+    "execution_symbol": "EURGBP.pro",
+    "trade_mode": "FULL",
+    "path": "PRO\\FX\\Major\\EURGBP.pro",
+    "digits": 5,
+    "volume_min": 0.01,
+    "volume_step": 0.01
+  },
+  "metrics": {
+    "close_h4": 0.87208,
+    "fast_ema_h4": 0.8718730050133947,
+    "medium_ema_h4": 0.8701685240222489,
+    "slow_ema_h4": 0.8682795864505951,
+    "atr_h4": 0.0011811754877297765,
+    "rsi_h4": 53.75755409387902,
+    "adx_h4": 24.03002898219632,
+    "plus_di_h4": 21.492445936368547,
+    "minus_di_h4": 15.78966354521444,
+    "macd_hist_h4": -0.0002423488305369002,
+    "rel_volume_h4": 0.40033980792213214,
+    "dist_fast_ema_atr": 0.17524490539767545,
+    "ema_spread_atr": 3.04223936250672,
+    "d1_close": 0.87208,
+    "d1_ema50": 0.8688861707730187,
+    "d1_ema200": 0.8678925490231219,
+    "d1_rsi": 57.76821389867298,
+    "d1_adx": 18.357999383191146,
+    "d1_plus_di": 24.43046072713187,
+    "d1_minus_di": 16.582604135150667
+  },
+  "lifecycle": {
+    "trend_dir_h4": 1,
+    "macro_dir_d1": 1,
+    "fresh_structure_shift": 0,
+    "breakout_dir": 0,
+    "breakout_fresh": false,
+    "retest_state": 0,
+    "retest_label": "none",
+    "fake_breakout_risk": false,
+    "overextended": false
+  },
+  "key_levels": {
+    "analysis_price_reference": 0.87208,
+    "price_reference": 0.87208,
+    "support_zone_level": 0.86139,
+    "support_zone_lower": 0.86109,
+    "support_zone_upper": 0.86168,
+    "resistance_zone_level": 0.87462,
+    "resistance_zone_lower": 0.87433,
+    "resistance_zone_upper": 0.87492,
+    "selected_zone_touches": 3,
+    "selected_zone_age_bars": 74,
+    "selected_zone_quality_score": 0.4483,
+    "analysis_ladder_entries": [
+      0.86168,
+      0.86139,
+      0.86109
+    ],
+    "ladder_entries": [
+      0.86109,
+      0.86139
+    ],
+    "ema_pullback_zone_from": 0.86109,
+    "ema_pullback_zone_to": 0.86139,
+    "slow_ema_invalidation_anchor": 0.86828,
+    "breakout_trigger": 0.87381,
+    "breakout_limit": 0.87393,
+    "entry": 0.86124,
+    "stop_loss": 0.86086,
+    "tp1": 0.86162,
+    "tp2": 0.86192,
+    "level_selection_notes": [
+      "reduced ladder_limit_3 to ladder_limit_2 because fewer than 3 executable ladder levels survived"
+    ]
+  },
+  "orderability_decision": {
+    "decision": "placeable_conditional_only",
+    "execution_template": "ladder_limit_2",
+    "bridge_supported_now": true,
+    "market_order_now": false,
+    "ladder_limit_orders": true,
+    "stop_entry_orders": false,
+    "allowed_order_types": [
+      "LIMIT"
+    ],
+    "why": "Continuation quality is good but current location is better handled as a pullback ladder after execution-aware level selection."
+  },
+  "risk_plan": {
+    "risk_budget_usdt": 100.0,
+    "risk_budget_max_usdt": 150.0,
+    "preferred_max_margin_usdt": 1000.0,
+    "max_margin_usdt": 1500.0,
+    "model_leverage": 20,
+    "max_model_leverage": 20.0,
+    "quote_to_usd": 1.3237450000000002,
+    "contract_size": 100000.0,
+    "volume_lots": 0.26,
+    "total_risk_usdt": 13.08,
+    "total_notional_usdt": 29641.62,
+    "total_margin_usdt": 1482.08,
+    "binding_constraint": "margin_cap_or_symbol_value_kept_risk_far_below_target",
+    "rr_tp1": 1.0,
+    "rr_tp2": 1.79
+  },
+  "trade_ticket_preview": {
+    "side": "buy",
+    "tv_root_symbol": "EURGBP",
+    "analysis_symbol": "EURGBP.pro",
+    "mt5_execution_symbol": "EURGBP.pro",
+    "is_proxy_symbol": false,
+    "proxy_source": null,
+    "order_plan": "limit_ladder",
+    "entry_type": "limit",
+    "entry": 0.86124,
+    "sl": 0.86086,
+    "tp_live": 0.86192,
+    "planned_tp1": 0.86162,
+    "planned_tp2": 0.86192,
+    "volume_lots": 0.26,
+    "max_risk_usdt": 100.0,
+    "bridge_fallback_reason": null
+  },
+  "notes": [
+    "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
+    "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
+    "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop.",
+    "Selected support zone quality=0.45, touches=3, age_bars=74.",
+    "reduced ladder_limit_3 to ladder_limit_2 because fewer than 3 executable ladder levels survived"
+  ]
+}

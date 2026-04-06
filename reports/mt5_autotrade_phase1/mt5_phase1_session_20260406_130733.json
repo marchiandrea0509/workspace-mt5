@@ -1,0 +1,276 @@
+{
+  "result": "trade_review",
+  "session_key": "MT5_FRX|4 hours|2026-04-06T13:06:25.256Z",
+  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-06T13-05-12-009Z.json",
+  "report_resolution": "latest",
+  "candidate": "EURCAD",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260406_130733.md",
+  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_EURCAD_20260406_130733.json",
+  "execution": {
+    "result_file": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge\\outbox\\20260406_150735__p1-eurcad-0406130733__result.json",
+    "status": "accepted",
+    "message": "Pending order package accepted by GrayPaperBridgeEA",
+    "symbol": "EURCAD.pro",
+    "side": "buy",
+    "retcode": 10009,
+    "retcode_text": "TRADE_RETCODE_DONE",
+    "mt5_order_ids": [
+      142085464,
+      142085465
+    ],
+    "timestamp": "2026-04-06T15:07:35",
+    "returncode": 0,
+    "preflight": {
+      "mode": "applied",
+      "symbol": "EURCAD.pro",
+      "valid_entries": 2,
+      "rejected_entries": [],
+      "original_entries": 2,
+      "adjusted_order_plan": "limit_ladder"
+    }
+  },
+  "audit": [
+    {
+      "symbol": "EURGBP",
+      "passed": false,
+      "reasons": [
+        "asset already marked active from a prior autotrade"
+      ]
+    },
+    {
+      "symbol": "EURCAD",
+      "passed": true,
+      "reasons": []
+    },
+    {
+      "symbol": "AUDNZD",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "EURPLN",
+      "passed": false,
+      "reasons": [
+        "setup code not in allowed continuation set",
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "GBPNZD",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "GBPAUD",
+      "passed": false,
+      "reasons": [
+        "setup code not in allowed continuation set",
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "EURNZD",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "EURZAR",
+      "passed": false,
+      "reasons": [
+        "setup code not in allowed continuation set",
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "USDJPY",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "USDNOK",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    }
+  ],
+  "plan": {
+    "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
+    "generated_at_utc": "2026-04-06T13:07:33Z",
+    "symbol": "EURCAD",
+    "description": "EUR/CAD",
+    "source_context": {
+      "watchlist": "MT5_FRX",
+      "indicator": "OC Hybrid Edge Screener v6",
+      "timeframe": "4 hours",
+      "best_score": 73.12989784066511,
+      "best_setup_code": 2,
+      "conviction_state": 3,
+      "screener_rank_top5": 2,
+      "tv_root_symbol": "EURCAD",
+      "analysis_source_kind": "mt5_python",
+      "analysis_symbol": "EURCAD.pro",
+      "mt5_execution_symbol": "EURCAD.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null
+    },
+    "bias": {
+      "direction": "LONG",
+      "setup": "LONG_CONTINUATION",
+      "quality_call": "broker-feed MT5 structure validated",
+      "final_trader_call": "Ready for bridge fallback execution"
+    },
+    "market_source": {
+      "kind": "mt5_python",
+      "analysis_symbol": "EURCAD.pro",
+      "execution_symbol": "EURCAD.pro",
+      "trade_mode": "FULL",
+      "path": "PRO\\FX\\Major\\EURCAD.pro",
+      "digits": 5,
+      "volume_min": 0.01,
+      "volume_step": 0.01
+    },
+    "metrics": {
+      "close_h4": 1.60782,
+      "fast_ema_h4": 1.6056283466852197,
+      "medium_ema_h4": 1.6017818948179334,
+      "slow_ema_h4": 1.596867563115199,
+      "atr_h4": 0.0025275529167641075,
+      "rsi_h4": 59.278127459399265,
+      "adx_h4": 28.253056418637012,
+      "plus_di_h4": 26.717213832417634,
+      "minus_di_h4": 14.408107312601027,
+      "macd_hist_h4": -0.0003041168482108079,
+      "rel_volume_h4": 0.38388252775107073,
+      "dist_fast_ema_atr": 0.8671048191490236,
+      "ema_spread_atr": 3.466112820789808,
+      "d1_close": 1.60782,
+      "d1_ema50": 1.5989159270165012,
+      "d1_ema200": 1.6049201101916757,
+      "d1_rsi": 61.720746438291584,
+      "d1_adx": 31.012279660118423,
+      "d1_plus_di": 30.69307438393462,
+      "d1_minus_di": 13.375573985248225
+    },
+    "lifecycle": {
+      "trend_dir_h4": 1,
+      "macro_dir_d1": 0,
+      "fresh_structure_shift": 0,
+      "breakout_dir": 0,
+      "breakout_fresh": false,
+      "retest_state": 0,
+      "retest_label": "none",
+      "fake_breakout_risk": false,
+      "overextended": false
+    },
+    "key_levels": {
+      "analysis_price_reference": 1.60782,
+      "price_reference": 1.60782,
+      "support_zone_level": 1.60231,
+      "support_zone_lower": 1.60168,
+      "support_zone_upper": 1.60294,
+      "resistance_zone_level": 1.61828,
+      "resistance_zone_lower": 1.61764,
+      "resistance_zone_upper": 1.61891,
+      "selected_zone_touches": 1,
+      "selected_zone_age_bars": 12,
+      "selected_zone_quality_score": 0.27,
+      "analysis_ladder_entries": [
+        1.60294,
+        1.60231,
+        1.60168
+      ],
+      "ladder_entries": [
+        1.60168,
+        1.60294
+      ],
+      "ema_pullback_zone_from": 1.60168,
+      "ema_pullback_zone_to": 1.60294,
+      "slow_ema_invalidation_anchor": 1.59687,
+      "breakout_trigger": 1.60847,
+      "breakout_limit": 1.60872,
+      "entry": 1.60231,
+      "stop_loss": 1.60117,
+      "tp1": 1.60345,
+      "tp2": 1.60436,
+      "level_selection_notes": []
+    },
+    "orderability_decision": {
+      "decision": "placeable_conditional_only",
+      "execution_template": "ladder_limit_2",
+      "bridge_supported_now": true,
+      "market_order_now": false,
+      "ladder_limit_orders": true,
+      "stop_entry_orders": false,
+      "allowed_order_types": [
+        "LIMIT"
+      ],
+      "why": "Continuation quality is good but current location is better handled as a pullback ladder after execution-aware level selection."
+    },
+    "risk_plan": {
+      "risk_budget_usdt": 100.0,
+      "risk_budget_max_usdt": 150.0,
+      "preferred_max_margin_usdt": 1000.0,
+      "max_margin_usdt": 1500.0,
+      "model_leverage": 20,
+      "max_model_leverage": 20.0,
+      "quote_to_usd": 0.7188478306969589,
+      "contract_size": 100000.0,
+      "volume_lots": 0.26,
+      "total_risk_usdt": 21.31,
+      "total_notional_usdt": 29947.24,
+      "total_margin_usdt": 1497.36,
+      "binding_constraint": "margin_cap_or_symbol_value_kept_risk_far_below_target",
+      "rr_tp1": 1.0,
+      "rr_tp2": 1.8
+    },
+    "trade_ticket_preview": {
+      "side": "buy",
+      "tv_root_symbol": "EURCAD",
+      "analysis_symbol": "EURCAD.pro",
+      "mt5_execution_symbol": "EURCAD.pro",
+      "is_proxy_symbol": false,
+      "proxy_source": null,
+      "order_plan": "limit_ladder",
+      "entry_type": "limit",
+      "entry": 1.60231,
+      "sl": 1.60117,
+      "tp_live": 1.60436,
+      "planned_tp1": 1.60345,
+      "planned_tp2": 1.60436,
+      "volume_lots": 0.26,
+      "max_risk_usdt": 100.0,
+      "bridge_fallback_reason": null
+    },
+    "notes": [
+      "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
+      "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
+      "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop.",
+      "Selected support zone quality=0.27, touches=1, age_bars=12."
+    ]
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "screener_read": {
+    "winner_side": "LONG",
+    "winner_family": "CONTINUATION",
+    "dashboard_summary": "Strong bullish continuation winner driven by high tactical trend score, strong macro alignment, strong ADX fit, positive FVG/context, and very strong conviction.",
+    "main_scoring_components": {
+      "best_score": 75.82907699439424,
+      "conviction_state": 3,
+      "trend_dir": 1,
+      "macro_dir_1d": 1,
+      "tactical_trend_score": 83.4251462268375,
+      "winner_margin": 44.04186812839956,
+      "winner_base_score": 79.82907699439424,
+      "winner_penalty": 4.0,
+      "winner_tactical": 72.06131988334191,
+      "winner_macro": 93.0,
+      "winner_structure": 70.0,
+      "winner_adx_fit": 93.0,
+      "winner_lifecycle": 50.0,
+      "winner_context_boost": 3.0,
+      "winner_family_edge": 14.416285860388925
+    },
+    "chart_agreement": "mostly_agrees",
+    "chart_agreement_note": "MT5 D1/H4 structure supports the bullish continuation winner, but current price location is too close to local resistance for a clean market entry."
+  },
+  "market_state": {
+    "trend_1d": "bullish",
+    "trend_4h": "bullish",
+    "alignment": "aligned",
+    "volatility_regime": "normal",
+    "setup_type": "continuation",
+    "location_comment": "Bullish trend intact, but current price is closer to nearby resistance than to the best pullback support."
+  },
+  "key_levels": {
+    "current_price_area": 0.87201,
+    "tactical_support_levels": [
+      0.87175,
+      0.87028,
+      0.8685,
+      0.86145
+    ],
+    "tactical_resistance_levels": [
+      0.87367,
+      0.87427,
+      0.87479
+    ],
+    "higher_timeframe_support_levels": [
+      0.86118
+    ],
+    "higher_timeframe_resistance_levels": [
+      0.87895,
+      0.8797
+    ]
+  },
+  "trade_quality": {
+    "classification": "GOOD MARKET + BAD ENTRY",
+    "why": [
+      "Bullish trend and macro alignment are strong.",
+      "Winner attribution confirms continuation dominance.",
+      "Current price is sitting too close to nearby resistance for a clean market chase.",
+      "A pullback entry offers materially better asymmetry than an immediate entry."
+    ]
+  },
+  "primary_plan": {
+    "symbol": "EURGBP",
+    "bias": "LONG",
+    "entry_method": "ladder_limits",
+    "execution_style": "DIP_LADDER",
+    "entry_zone": "0.87030 then 0.86860",
+    "entry_zone_low": 0.8686,
+    "entry_zone_high": 0.8703,
+    "stop_loss_price": 0.86695,
+    "take_profit_price": 0.8747,
+    "rr_comment": "Blended package is about 2.1R with better asymmetry on the deeper leg.",
+    "trailing_plan_note": "Disabled in the base executable package; reconsider ATR trailing only after a clean H4 breakout above 0.87480."
+  },
+  "orderability": {
+    "classification": "PLACEABLE_CONDITIONAL_ONLY",
+    "market_order_now": "NO",
+    "ladder_limit_orders_allowed_now": "YES",
+    "stop_entry_orders_allowed_now": "NO",
+    "allowed_entry_logic": "Rest buy limits at 0.87030 and 0.86860 with shared SL 0.86695 and shared TP 0.87470.",
+    "no_resting_order_yet": false
+  },
+  "backup_plan": {
+    "valid": true,
+    "bias": "LONG",
+    "execution_style": "BREAKOUT",
+    "trigger_logic": "Only if H4 closes above 0.87430 and then retest holds above 0.87360; breakout stop-entry above 0.87485.",
+    "stop_loss_price": 0.8732,
+    "note": "This is secondary and not preferred while the market remains under the current resistance shelf."
+  },
+  "risk_sizing": {
+    "risk_budget_usd": 100.0,
+    "effective_risk_budget_used_usd": 79.5,
+    "total_risk_usd": 79.5,
+    "total_margin_usd_estimate": 1385.4,
+    "within_budget": true,
+    "within_margin_cap": true,
+    "sizing_note": "Kept below the margin cap; did not use full risk budget because margin is the tighter practical constraint for this package."
+  },
+  "trade_plan_ticket": {
+    "legs": [
+      {
+        "level": 1,
+        "order_type": "BUY_LIMIT",
+        "entry_price": 0.8703,
+        "lots": 0.12,
+        "units_estimate": 12000,
+        "notional_usd_estimate": 13854.06,
+        "estimated_loss_at_stop_usd": 53.2,
+        "estimated_profit_at_tp_usd": 69.9,
+        "estimated_rr": 1.31,
+        "trigger": "resting order at first tactical support"
+      },
+      {
+        "level": 2,
+        "order_type": "BUY_LIMIT",
+        "entry_price": 0.8686,
+        "lots": 0.12,
+        "units_estimate": 12000,
+        "notional_usd_estimate": 13854.06,
+        "estimated_loss_at_stop_usd": 26.2,
+        "estimated_profit_at_tp_usd": 96.9,
+        "estimated_rr": 3.7,
+        "trigger": "resting order at deeper pullback support"
+      }
+    ],
+    "shared_stop_loss_price": 0.86695,
+    "shared_take_profit_price": 0.8747,
+    "total_planned_risk_usd": 79.5,
+    "total_margin_usd_estimate": 1385.4,
+    "trailing": {
+      "enabled": false,
+      "trigger_price": null,
+      "distance_mode": null,
+      "distance_value": null,
+      "step_price": null,
+      "note": "Base executable package keeps trailing disabled; optional later manual conversion only after confirmed breakout."
+    }
+  },
+  "final_verdict": {
+    "symbol": "EURGBP",
+    "bias": "LONG",
+    "best_setup": "Pullback continuation buy ladder into 0.87030 / 0.86860",
+    "orderability": "PLACEABLE_CONDITIONAL_ONLY",
+    "confidence": 74,
+    "what_would_invalidate_the_idea": "Acceptance below 0.86695 or repeated H4 failure that hardens 0.8737-0.8748 as a lasting ceiling.",
+    "what_i_should_do_now": "Do not buy market here; only place the dip ladder if you want exposure."
+  },
+  "validator_hints": {
+    "symbol": "EURGBP",
+    "shared_package_constraints_respected": true,
+    "uses_shared_live_sl_tp_trailing_rules": true,
+    "planner_safe_for_manual_review": true,
+    "notes": [
+      "Two-leg package uses one shared SL and one shared TP.",
+      "Trailing is intentionally disabled in the base executable package.",
+      "Total planned risk and margin remain inside pack limits."
+    ]
+  }
+}

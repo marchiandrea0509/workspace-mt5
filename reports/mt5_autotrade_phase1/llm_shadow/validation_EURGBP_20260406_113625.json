@@ -1,0 +1,13 @@
+{
+  "valid": true,
+  "errors": [],
+  "warnings": [],
+  "summary": {
+    "legs_count": 0,
+    "bias": "WAIT",
+    "entry_method": "ladder_limits",
+    "orderability": "NOT_PLACEABLE_YET",
+    "total_risk_usd": 0.0,
+    "total_margin_usd_estimate": 0.0
+  }
+}
