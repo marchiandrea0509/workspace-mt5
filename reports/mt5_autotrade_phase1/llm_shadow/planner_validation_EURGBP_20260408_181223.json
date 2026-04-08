@@ -1,0 +1,13 @@
+{
+  "valid": true,
+  "errors": [],
+  "warnings": [],
+  "summary": {
+    "legs_count": 2,
+    "bias": "LONG",
+    "entry_method": "ladder_limits",
+    "orderability": "PLACEABLE_CONDITIONAL_ONLY",
+    "total_risk_usd": 93.6,
+    "total_margin_usd_estimate": 1458.0
+  }
+}
