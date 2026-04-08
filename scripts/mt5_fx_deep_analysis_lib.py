@@ -574,7 +574,8 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
         ladder, level_selection_notes = select_executable_ladder_levels(analysis_ladder, close, atr_now, profile.point, profile.digits, direction, desired_ladder_levels)
         breakout_trigger = round(max(highs[-5:]) + 0.20 * atr_now, profile.digits)
         breakout_limit = round(breakout_trigger + 0.10 * atr_now, profile.digits)
-        structural_sl = round(min((support_zone['lower'] if support_zone else slow), min(lows[-20:])) - 0.20 * atr_now, profile.digits)
+        first_meaningful_support = support_zone['lower'] if support_zone else min(lows[-10:])
+        structural_sl = round(first_meaningful_support - 0.30 * atr_now, profile.digits)
     else:
         if resistance_zone:
             analysis_ladder = [resistance_zone['lower'], resistance_zone['level'], resistance_zone['upper']]
@@ -586,7 +587,8 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
         ladder, level_selection_notes = select_executable_ladder_levels(analysis_ladder, close, atr_now, profile.point, profile.digits, direction, desired_ladder_levels)
         breakout_trigger = round(min(lows[-5:]) - 0.20 * atr_now, profile.digits)
         breakout_limit = round(breakout_trigger - 0.10 * atr_now, profile.digits)
-        structural_sl = round(max((resistance_zone['upper'] if resistance_zone else slow), max(highs[-20:])) + 0.20 * atr_now, profile.digits)
+        first_meaningful_resistance = resistance_zone['upper'] if resistance_zone else max(highs[-10:])
+        structural_sl = round(first_meaningful_resistance + 0.30 * atr_now, profile.digits)
 
     if execution_template == 'ladder_limit_3' and len(ladder) < 3:
         level_selection_notes.append('reduced ladder_limit_3 to ladder_limit_2 because fewer than 3 executable ladder levels survived')
@@ -627,6 +629,7 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
     if selected_zone is not None:
         notes.append(f"Selected {'support' if direction == 'LONG' else 'resistance'} zone quality={selected_zone_quality:.2f}, touches={selected_zone_touches}, age_bars={selected_zone_age}.")
     notes.extend(level_selection_notes)
+    notes.append('Phase1 stop-loss is anchored to the first meaningful 4H support/resistance invalidation level with a 0.30 ATR buffer.')
     if is_proxy_symbol:
         notes.append(f'Proxy symbol: screener selection for {root_symbol} came from {proxy_source}, but deep analysis now uses MT5 symbol {profile.analysis_symbol}.')
     if execution_template == 'hybrid_ladder_breakout':

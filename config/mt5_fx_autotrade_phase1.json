@@ -24,7 +24,7 @@
   "preferredMaxMarginUsdt": 1000.0,
   "maxMarginUsdt": 1500.0,
   "modelLeverage": 10.0,
-  "maxModelLeverage": 20.0,
+  "maxModelLeverage": 30.0,
   "contractSizeFx": 100000.0,
   "defaultMinLot": 0.01,
   "defaultLotStep": 0.01,
