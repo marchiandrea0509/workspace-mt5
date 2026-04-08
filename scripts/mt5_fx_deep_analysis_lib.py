@@ -248,6 +248,23 @@ def select_executable_ladder_levels(analysis_levels: list[float], close: float, 
     return (sorted(selected) if direction == 'LONG' else sorted(selected, reverse=True)), notes
 
 
+def screener_tactical_levels(row: dict[str, Any], direction: str, close: float, digits: int) -> list[float]:
+    if direction == 'LONG':
+        candidates = [safe_float(row.get('41 S1 Below')), safe_float(row.get('42 S2 Below'))]
+        levels = [round(float(x), digits) for x in candidates if x is not None and x < close]
+    else:
+        candidates = [safe_float(row.get('39 R1 Above')), safe_float(row.get('40 R2 Above'))]
+        levels = [round(float(x), digits) for x in candidates if x is not None and x > close]
+    deduped = []
+    seen = set()
+    for lvl in levels:
+        if lvl in seen:
+            continue
+        seen.add(lvl)
+        deduped.append(lvl)
+    return deduped
+
+
 def pick_recent_breakout(closes: list[float], highs: list[float], lows: list[float], resistance: dict[str, Any] | None, support: dict[str, Any] | None, atr_value: float) -> tuple[int, int | None]:
     margin = atr_value * 0.15
     breakout_dir = 0
@@ -563,32 +580,43 @@ def analyze_candidate(candidate: Any, report: dict[str, Any], cfg: dict[str, Any
 
     desired_ladder_levels = 3 if execution_template == 'ladder_limit_3' else 2
     level_selection_notes: list[str] = []
+    tactical_levels = screener_tactical_levels(row, direction, close, profile.digits)
     if direction == 'LONG':
         if support_zone:
-            analysis_ladder = [support_zone['upper'], support_zone['level'], support_zone['lower']]
+            analysis_ladder = tactical_levels + [support_zone['upper'], support_zone['level'], support_zone['lower']]
+            if tactical_levels:
+                level_selection_notes.append('included screener tactical support levels (S1/S2 Below) in ladder construction')
         else:
             support_anchor = min(med, slow)
-            analysis_ladder = [min(fast, close - 0.10 * atr_now), support_anchor, min(slow, support_anchor - 0.35 * atr_now)]
+            analysis_ladder = tactical_levels + [min(fast, close - 0.10 * atr_now), support_anchor, min(slow, support_anchor - 0.35 * atr_now)]
+            if tactical_levels:
+                level_selection_notes.append('included screener tactical support levels (S1/S2 Below) in ladder construction')
         analysis_ladder = [round(float(x), profile.digits) for x in analysis_ladder if x is not None and x < close - 2 * profile.point]
         analysis_ladder = list(dict.fromkeys(analysis_ladder))
-        ladder, level_selection_notes = select_executable_ladder_levels(analysis_ladder, close, atr_now, profile.point, profile.digits, direction, desired_ladder_levels)
+        ladder, level_selection_notes_extra = select_executable_ladder_levels(analysis_ladder, close, atr_now, profile.point, profile.digits, direction, desired_ladder_levels)
+        level_selection_notes.extend(level_selection_notes_extra)
         breakout_trigger = round(max(highs[-5:]) + 0.20 * atr_now, profile.digits)
         breakout_limit = round(breakout_trigger + 0.10 * atr_now, profile.digits)
-        first_meaningful_support = support_zone['lower'] if support_zone else min(lows[-10:])
-        structural_sl = round(first_meaningful_support - 0.30 * atr_now, profile.digits)
+        shared_support_anchor = min(ladder) if ladder else (support_zone['lower'] if support_zone else min(lows[-10:]))
+        structural_sl = round(shared_support_anchor - 0.30 * atr_now, profile.digits)
     else:
         if resistance_zone:
-            analysis_ladder = [resistance_zone['lower'], resistance_zone['level'], resistance_zone['upper']]
+            analysis_ladder = tactical_levels + [resistance_zone['lower'], resistance_zone['level'], resistance_zone['upper']]
+            if tactical_levels:
+                level_selection_notes.append('included screener tactical resistance levels (R1/R2 Above) in ladder construction')
         else:
             resistance_anchor = max(med, slow)
-            analysis_ladder = [max(fast, close + 0.10 * atr_now), resistance_anchor, max(slow, resistance_anchor + 0.35 * atr_now)]
+            analysis_ladder = tactical_levels + [max(fast, close + 0.10 * atr_now), resistance_anchor, max(slow, resistance_anchor + 0.35 * atr_now)]
+            if tactical_levels:
+                level_selection_notes.append('included screener tactical resistance levels (R1/R2 Above) in ladder construction')
         analysis_ladder = [round(float(x), profile.digits) for x in analysis_ladder if x is not None and x > close + 2 * profile.point]
         analysis_ladder = list(dict.fromkeys(analysis_ladder))
-        ladder, level_selection_notes = select_executable_ladder_levels(analysis_ladder, close, atr_now, profile.point, profile.digits, direction, desired_ladder_levels)
+        ladder, level_selection_notes_extra = select_executable_ladder_levels(analysis_ladder, close, atr_now, profile.point, profile.digits, direction, desired_ladder_levels)
+        level_selection_notes.extend(level_selection_notes_extra)
         breakout_trigger = round(min(lows[-5:]) - 0.20 * atr_now, profile.digits)
         breakout_limit = round(breakout_trigger - 0.10 * atr_now, profile.digits)
-        first_meaningful_resistance = resistance_zone['upper'] if resistance_zone else max(highs[-10:])
-        structural_sl = round(first_meaningful_resistance + 0.30 * atr_now, profile.digits)
+        shared_resistance_anchor = max(ladder) if ladder else (resistance_zone['upper'] if resistance_zone else max(highs[-10:]))
+        structural_sl = round(shared_resistance_anchor + 0.30 * atr_now, profile.digits)
 
     if execution_template == 'ladder_limit_3' and len(ladder) < 3:
         level_selection_notes.append('reduced ladder_limit_3 to ladder_limit_2 because fewer than 3 executable ladder levels survived')
