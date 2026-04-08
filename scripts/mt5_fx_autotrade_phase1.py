@@ -88,6 +88,44 @@ def latest_report(reports_dir: Path) -> Path:
     return candidates[0]
 
 
+def parse_iso_utc(value: str) -> datetime:
+    return datetime.fromisoformat(value.replace('Z', '+00:00')).astimezone(timezone.utc)
+
+
+def validate_phase1_report(report: dict[str, Any], report_path: Path, cfg: dict[str, Any], *, require_fresh: bool) -> None:
+    if report.get('ok') is False:
+        err = str(report.get('error') or 'screener export failed')
+        raise SystemExit(f'Latest screener report is invalid: {err}')
+
+    watchlist = str(report.get('watchlist') or '').strip()
+    indicator = str(report.get('indicator') or '').strip()
+    timeframe = str(report.get('timeframe') or '').strip()
+    expected_watchlist = str(cfg.get('watchlist') or '').strip()
+    expected_indicator = str(cfg.get('indicator') or '').strip()
+    expected_timeframe = str(cfg.get('timeframe') or '').strip()
+
+    if expected_watchlist and watchlist != expected_watchlist:
+        raise SystemExit(f'Latest screener report watchlist mismatch: expected {expected_watchlist}, got {watchlist or "<missing>"}')
+    if expected_indicator and indicator != expected_indicator:
+        raise SystemExit(f'Latest screener report indicator mismatch: expected {expected_indicator}, got {indicator or "<missing>"}')
+    if expected_timeframe and timeframe != expected_timeframe:
+        raise SystemExit(f'Latest screener report timeframe mismatch: expected {expected_timeframe}, got {timeframe or "<missing>"}')
+
+    rows = report.get('top10') or report.get('top5') or []
+    if not rows:
+        raise SystemExit(f'Latest screener report has no top candidates: {report_path.name}')
+
+    generated_at = str(report.get('generatedAt') or '').strip()
+    if not generated_at:
+        raise SystemExit(f'Latest screener report missing generatedAt: {report_path.name}')
+
+    if require_fresh:
+        age_minutes = (now_utc() - parse_iso_utc(generated_at)).total_seconds() / 60.0
+        max_age = float(cfg.get('latestReportMaxAgeMinutes') or 0)
+        if max_age > 0 and age_minutes > max_age:
+            raise SystemExit(f'Latest screener report is stale: age {age_minutes:.1f}m exceeds limit {max_age:.1f}m ({report_path.name})')
+
+
 def load_csv_rows(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
@@ -874,9 +912,9 @@ def main() -> int:
     report_path = Path(args.report_json) if args.report_json else latest_report(reports_dir)
     report_resolution = 'explicit' if args.report_json else 'latest'
     if args.report_json and not report_path.exists():
-        report_path = latest_report(reports_dir)
-        report_resolution = 'fallback_latest_missing_explicit'
+        raise SystemExit(f'Explicit screener report not found: {report_path}')
     report = load_json(report_path)
+    validate_phase1_report(report, report_path, cfg, require_fresh=not bool(args.report_json))
 
     state_dir = Path(cfg['stateDir'])
     reports_out = Path(cfg['reportsDir'])
