@@ -57,6 +57,12 @@
       "candidate": "EURGBP",
       "ticket_id": "p1-eurgbp-0408181020",
       "processed_at": "2026-04-08T18:11:50Z"
+    },
+    "MT5_FRX|4 hours|2026-04-09T05:06:23.091Z": {
+      "status": "accepted",
+      "candidate": "AUDCAD",
+      "ticket_id": "p1-audcad-0409050728",
+      "processed_at": "2026-04-09T05:07:33Z"
     }
   }
 }

@@ -1,0 +1,161 @@
+{
+  "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
+  "generated_at_utc": "2026-04-09T05:07:44Z",
+  "symbol": "AUDCAD",
+  "description": "AUD/CAD",
+  "source_context": {
+    "watchlist": "MT5_FRX",
+    "indicator": "OC Hybrid Edge Screener v7",
+    "timeframe": "4 hours",
+    "best_score": 74.88617627105984,
+    "best_setup_code": 2,
+    "conviction_state": 3,
+    "screener_rank_top5": 1,
+    "tv_root_symbol": "AUDCAD",
+    "analysis_source_kind": "mt5_python",
+    "analysis_symbol": "AUDCAD.pro",
+    "mt5_execution_symbol": "AUDCAD.pro",
+    "is_proxy_symbol": false,
+    "proxy_source": null
+  },
+  "bias": {
+    "direction": "LONG",
+    "setup": "LONG_CONTINUATION",
+    "quality_call": "broker-feed MT5 structure validated",
+    "final_trader_call": "Ready for bridge fallback execution"
+  },
+  "market_source": {
+    "kind": "mt5_python",
+    "analysis_symbol": "AUDCAD.pro",
+    "execution_symbol": "AUDCAD.pro",
+    "trade_mode": "FULL",
+    "path": "PRO\\FX\\Non-Major\\AUDCAD.pro",
+    "digits": 5,
+    "volume_min": 0.01,
+    "volume_step": 0.01
+  },
+  "metrics": {
+    "close_h4": 0.97522,
+    "fast_ema_h4": 0.9700203849392619,
+    "medium_ema_h4": 0.9654548319278867,
+    "slow_ema_h4": 0.9620294367557934,
+    "atr_h4": 0.0033577909102969726,
+    "rsi_h4": 65.0583516512499,
+    "adx_h4": 42.04025976714097,
+    "plus_di_h4": 28.554960147197487,
+    "minus_di_h4": 9.181385207749344,
+    "macd_hist_h4": 0.0005102578406924242,
+    "rel_volume_h4": 0.5718497514922548,
+    "dist_fast_ema_atr": 1.5485225851296986,
+    "ema_spread_atr": 2.379823043466908,
+    "d1_close": 0.97522,
+    "d1_ema50": 0.9600452364760692,
+    "d1_ema200": 0.9352874573945948,
+    "d1_rsi": 63.15045193688494,
+    "d1_adx": 19.209132760498047,
+    "d1_plus_di": 33.59303393514308,
+    "d1_minus_di": 14.251718711438384
+  },
+  "lifecycle": {
+    "trend_dir_h4": 0,
+    "macro_dir_d1": 1,
+    "fresh_structure_shift": 0,
+    "breakout_dir": 1,
+    "breakout_fresh": false,
+    "retest_state": 1,
+    "retest_label": "waiting_retest",
+    "fake_breakout_risk": false,
+    "overextended": false
+  },
+  "key_levels": {
+    "analysis_price_reference": 0.97522,
+    "price_reference": 0.97522,
+    "support_zone_level": 0.95819,
+    "support_zone_lower": 0.95735,
+    "support_zone_upper": 0.95903,
+    "resistance_zone_level": 0.97575,
+    "resistance_zone_lower": 0.97491,
+    "resistance_zone_upper": 0.97659,
+    "selected_zone_touches": 5,
+    "selected_zone_age_bars": 29,
+    "selected_zone_quality_score": 0.7275,
+    "analysis_ladder_entries": [
+      0.96275,
+      0.95588,
+      0.95903
+    ],
+    "ladder_entries": [
+      0.95903,
+      0.96275
+    ],
+    "ema_pullback_zone_from": 0.95903,
+    "ema_pullback_zone_to": 0.96275,
+    "slow_ema_invalidation_anchor": 0.96203,
+    "breakout_trigger": 0.98024,
+    "breakout_limit": 0.98058,
+    "entry": 0.96089,
+    "stop_loss": 0.95802,
+    "tp1": 0.96376,
+    "tp2": 0.96606,
+    "level_selection_notes": [
+      "included screener tactical support levels (S1/S2 Below) in ladder construction"
+    ]
+  },
+  "orderability_decision": {
+    "decision": "placeable_conditional_only",
+    "execution_template": "hybrid_ladder_breakout",
+    "bridge_supported_now": false,
+    "market_order_now": false,
+    "ladder_limit_orders": true,
+    "stop_entry_orders": true,
+    "allowed_order_types": [
+      "LIMIT",
+      "STOP-LIMIT"
+    ],
+    "why": "Both pullback and breakout continuation paths are valid on MT5 structure; ideal package is ladder + breakout, but bridge still needs linked-leg support."
+  },
+  "risk_plan": {
+    "risk_budget_usdt": 100.0,
+    "risk_budget_max_usdt": 150.0,
+    "preferred_max_margin_usdt": 1000.0,
+    "max_margin_usdt": 1500.0,
+    "model_leverage": 30,
+    "max_model_leverage": 30.0,
+    "quote_to_usd": 0.7220998664115248,
+    "contract_size": 100000.0,
+    "volume_lots": 0.48,
+    "total_risk_usdt": 99.48,
+    "total_notional_usdt": 33305.21,
+    "total_margin_usdt": 1110.17,
+    "binding_constraint": "risk_budget",
+    "rr_tp1": 1.0,
+    "rr_tp2": 1.8
+  },
+  "trade_ticket_preview": {
+    "side": "buy",
+    "tv_root_symbol": "AUDCAD",
+    "analysis_symbol": "AUDCAD.pro",
+    "mt5_execution_symbol": "AUDCAD.pro",
+    "is_proxy_symbol": false,
+    "proxy_source": null,
+    "order_plan": "limit_ladder",
+    "entry_type": "limit",
+    "entry": 0.96089,
+    "sl": 0.95802,
+    "tp_live": 0.96606,
+    "planned_tp1": 0.96376,
+    "planned_tp2": 0.96606,
+    "volume_lots": 0.48,
+    "max_risk_usdt": 100.0,
+    "bridge_fallback_reason": "Hybrid execution still uses one live TP across all legs; branch-level TP/SL separation is not yet implemented."
+  },
+  "notes": [
+    "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
+    "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
+    "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop.",
+    "Selected support zone quality=0.73, touches=5, age_bars=29.",
+    "included screener tactical support levels (S1/S2 Below) in ladder construction",
+    "Phase1 stop-loss is anchored to the first meaningful 4H support/resistance invalidation level with a 0.30 ATR buffer.",
+    "Hybrid template detected: recommended package is ladder + breakout stop, with EA-managed cancel-on-fill for the opposite branch."
+  ]
+}

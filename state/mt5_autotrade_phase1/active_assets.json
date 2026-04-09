@@ -1,3 +1,11 @@
 {
-  "assets": {}
+  "assets": {
+    "AUDCAD": {
+      "session_key": "MT5_FRX|4 hours|2026-04-09T05:06:23.091Z",
+      "ticket_id": "p1-audcad-0409050728",
+      "placed_at": "2026-04-09T05:07:32Z",
+      "status": "accepted",
+      "result_file": "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge\\outbox\\20260409_070732__p1-audcad-0409050728__result.json"
+    }
+  }
 }

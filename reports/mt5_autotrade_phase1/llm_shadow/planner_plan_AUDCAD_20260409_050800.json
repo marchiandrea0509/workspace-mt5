@@ -1,0 +1,123 @@
+{
+  "screener_read": {
+    "winner_side": "LONG",
+    "winner_family": "CONTINUATION",
+    "dashboard_summary": "Strong continuation profile with positive macro/trend context and high ADX fit; not a fresh breakout state.",
+    "main_scoring_drivers": [
+      "best_score 74.89",
+      "long_continuation 78.89",
+      "conviction_state 3",
+      "winner_macro 85",
+      "winner_adx_fit 93"
+    ],
+    "mt5_agreement": "mostly_agrees"
+  },
+  "market_state": {
+    "trend_1d": "bullish",
+    "trend_4h": "bullish",
+    "alignment": "aligned",
+    "volatility_regime": "high",
+    "setup_type": "pullback"
+  },
+  "key_levels": {
+    "current_price_area": 0.97522,
+    "tactical_support_near_to_far": [
+      0.97491,
+      0.97342,
+      0.96275,
+      0.95903
+    ],
+    "tactical_resistance_near_to_far": [
+      0.97659,
+      0.98024,
+      0.9835
+    ],
+    "htf_support": [
+      0.96203,
+      0.96005,
+      0.95588
+    ],
+    "htf_resistance": [
+      0.98024,
+      0.985
+    ]
+  },
+  "trade_quality": {
+    "classification": "GOOD MARKET + BAD ENTRY",
+    "why": "Trend quality is good, but current location is extended and less attractive for market entry; conditional pullback execution offers better risk efficiency."
+  },
+  "primary_plan": {
+    "bias": "LONG",
+    "entry_method": "ladder_limits",
+    "execution_style": "DIP_LADDER",
+    "entry_zone_or_trigger": "buy limits at 0.96275 and 0.95903",
+    "stop_loss_invalidation": 0.95802,
+    "take_profit": 0.96606,
+    "trailing_logic": "activate after +0.8R, trail by 0.00190 with 0.00050 step",
+    "rr_comment": "Blended package acceptable; deeper leg materially improves expected R:R."
+  },
+  "orderability": {
+    "classification": "PLACEABLE_CONDITIONAL_ONLY",
+    "market_order_now": "NO",
+    "ladder_limit_orders_allowed_now": "YES",
+    "stop_entry_orders_allowed_now": "YES",
+    "entry_or_trigger_logic": "resting buy limits at 0.96275 and 0.95903; optional breakout stop-entry above 0.98024"
+  },
+  "backup_plan": {
+    "bias": "LONG",
+    "condition": "H4 close above 0.98024 then successful retest",
+    "entry_method": "stop_entry",
+    "execution_style": "BREAKOUT"
+  },
+  "risk_sizing": {
+    "risk_budget_usd": 100.0,
+    "total_risk_usd": 99.48,
+    "total_margin_usd_estimate": 1110.17,
+    "sizing_basis": "stop_distance",
+    "within_margin_cap": true
+  },
+  "trade_plan_ticket": {
+    "legs": [
+      {
+        "level": "L1",
+        "order_type": "BUY_LIMIT",
+        "entry_price": 0.96275,
+        "lots": 0.24,
+        "units_estimate": 24000,
+        "notional_usd_estimate": 16652
+      },
+      {
+        "level": "L2",
+        "order_type": "BUY_LIMIT",
+        "entry_price": 0.95903,
+        "lots": 0.24,
+        "units_estimate": 24000,
+        "notional_usd_estimate": 16652
+      }
+    ],
+    "shared_stop_loss_price": 0.95802,
+    "shared_take_profit_price": 0.96606,
+    "trailing": {
+      "enabled": true,
+      "distance_mode": "price",
+      "distance_value": 0.0019,
+      "trigger_price": 0.9632,
+      "step": 0.0005,
+      "activation_rule": "after +0.8R"
+    },
+    "effective_risk_budget_used_usd": 99.48,
+    "total_margin_usd_estimate": 1110.17
+  },
+  "final_verdict": {
+    "bias": "LONG",
+    "best_setup": "DIP_LADDER pullback continuation",
+    "orderability": "PLACEABLE_CONDITIONAL_ONLY",
+    "confidence": 72,
+    "invalidates_if": "H4 acceptance below 0.95802 or bearish structure shift on D1",
+    "action_now": "Place conditional ladder limits only; no market chase"
+  },
+  "validator_hints": {
+    "shared_package_constraints_respected": true,
+    "notes": "All legs share one live SL/TP and one trailing rule set; leg count within max_legs; risk and margin within caps."
+  }
+}
