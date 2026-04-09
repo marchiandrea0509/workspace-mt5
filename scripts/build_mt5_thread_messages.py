@@ -32,20 +32,35 @@ def fmt(x: Any) -> str:
 
 def build_phase1_summary(o: dict[str, Any]) -> str:
     e = o.get('execution', {}) or {}
-    p = o.get('plan', {}) or {}
-    bias = p.get('bias', {}) or {}
-    risk = p.get('risk_plan', {}) or {}
-    ordy = p.get('orderability_decision', {}) or {}
     pre = e.get('preflight', {}) or {}
     lines = []
     lines.append('MT5 Phase1 execution summary')
     lines.append(f"Session: {o.get('session_key')}")
     lines.append(f"Candidate: {o.get('candidate')}")
-    lines.append(f"Setup: {bias.get('setup')}")
-    lines.append(f"Orderability: {ordy.get('decision')}")
-    lines.append(f"Execution template: {ordy.get('execution_template')}")
-    lines.append(f"Risk modeled: {fmt(risk.get('total_risk_usdt'))} USD / target {fmt(risk.get('risk_budget_usdt'))} USD")
-    lines.append(f"Margin: {fmt(risk.get('total_margin_usdt'))} USD")
+
+    if o.get('plan_source') == 'llm' and o.get('planner_plan'):
+        planner = o.get('planner_plan') or {}
+        primary = planner.get('primary_plan') or {}
+        risk = planner.get('risk_sizing') or {}
+        ordy = planner.get('orderability') or {}
+        lines.append('Plan source: LLM')
+        lines.append(f"Setup: {primary.get('execution_style')}")
+        lines.append(f"Orderability: {ordy.get('classification')}")
+        lines.append(f"Execution template: {primary.get('entry_method')}")
+        lines.append(f"Risk modeled: {fmt(risk.get('total_risk_usd'))} USD / target {fmt(risk.get('risk_budget_usd'))} USD")
+        lines.append(f"Margin: {fmt(risk.get('total_margin_usd_estimate'))} USD")
+    else:
+        p = o.get('plan', {}) or {}
+        bias = p.get('bias', {}) or {}
+        risk = p.get('risk_plan', {}) or {}
+        ordy = p.get('orderability_decision', {}) or {}
+        lines.append('Plan source: deterministic script')
+        lines.append(f"Setup: {bias.get('setup')}")
+        lines.append(f"Orderability: {ordy.get('decision')}")
+        lines.append(f"Execution template: {ordy.get('execution_template')}")
+        lines.append(f"Risk modeled: {fmt(risk.get('total_risk_usdt'))} USD / target {fmt(risk.get('risk_budget_usdt'))} USD")
+        lines.append(f"Margin: {fmt(risk.get('total_margin_usdt'))} USD")
+
     lines.append(f"Execution: {fmt(e.get('status'))} | {fmt(e.get('retcode'))} ({fmt(e.get('retcode_text'))})")
     lines.append(f"Message: {fmt(e.get('message'))}")
     if pre:
