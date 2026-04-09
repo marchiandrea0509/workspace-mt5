@@ -1,0 +1,15 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Local scratch
+tmp/
+
+# Generated MT5 Phase1 runtime artifacts
+reports/mt5_autotrade_phase1/*.json
+reports/mt5_autotrade_phase1/*.md
+reports/mt5_autotrade_phase1/llm_shadow/*.json
+reports/mt5_autotrade_phase1/llm_shadow/*.md
+
+# Runtime state noise
+state/mt5_autotrade_phase1/*.json

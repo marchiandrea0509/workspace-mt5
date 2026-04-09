@@ -87,27 +87,29 @@ def main() -> int:
         if not isinstance(leg, dict):
             errors.append(f'leg {idx} must be an object')
             continue
-        for field in ['level', 'order_type', 'entry_price', 'lots', 'units_estimate', 'notional_usd_estimate']:
+        for field in ['level', 'order_type', 'entry_price', 'lots', 'units_estimate', 'notional_usd_estimate', 'stop_loss_price', 'take_profit_price', 'trailing']:
             if field not in leg:
                 errors.append(f'leg {idx} missing {field}')
         if as_float(leg.get('lots')) is None or as_float(leg.get('lots')) <= 0:
             errors.append(f'leg {idx} lots must be > 0')
-
-    if legs:
-        if as_float(ticket.get('shared_stop_loss_price')) is None:
-            errors.append('trade_plan_ticket.shared_stop_loss_price required when legs exist')
-        if as_float(ticket.get('shared_take_profit_price')) is None:
-            errors.append('trade_plan_ticket.shared_take_profit_price required when legs exist')
-        if not isinstance(trailing, dict):
-            errors.append('trade_plan_ticket.trailing must be an object')
+        if as_float(leg.get('stop_loss_price')) is None:
+            errors.append(f'leg {idx} stop_loss_price required')
+        if as_float(leg.get('take_profit_price')) is None:
+            errors.append(f'leg {idx} take_profit_price required')
+        leg_trailing = leg.get('trailing')
+        if not isinstance(leg_trailing, dict):
+            errors.append(f'leg {idx} trailing must be an object')
         else:
-            if trailing.get('enabled'):
-                if trailing.get('distance_mode') not in VALID_TRAILING_MODES:
-                    errors.append('trailing.distance_mode must be price, percent, or atr when trailing is enabled')
-                if as_float(trailing.get('distance_value')) is None or as_float(trailing.get('distance_value')) <= 0:
-                    errors.append('trailing.distance_value must be > 0 when trailing is enabled')
-                if as_float(trailing.get('trigger_price')) is None or as_float(trailing.get('trigger_price')) <= 0:
-                    errors.append('trailing.trigger_price must be > 0 when trailing is enabled')
+            if leg_trailing.get('enabled'):
+                if leg_trailing.get('distance_mode') not in VALID_TRAILING_MODES:
+                    errors.append(f'leg {idx} trailing.distance_mode must be price, percent, or atr when trailing is enabled')
+                if as_float(leg_trailing.get('distance_value')) is None or as_float(leg_trailing.get('distance_value')) <= 0:
+                    errors.append(f'leg {idx} trailing.distance_value must be > 0 when trailing is enabled')
+                if as_float(leg_trailing.get('trigger_price')) is None or as_float(leg_trailing.get('trigger_price')) <= 0:
+                    errors.append(f'leg {idx} trailing.trigger_price must be > 0 when trailing is enabled')
+
+    if legs and not isinstance(trailing, dict):
+        warnings.append('trade_plan_ticket.trailing omitted or non-object; per-leg trailing is used instead')
 
     total_risk = as_float(risk.get('total_risk_usd'))
     total_margin = as_float(risk.get('total_margin_usd_estimate'))
@@ -134,6 +136,7 @@ def main() -> int:
             'orderability': orderability.get('classification'),
             'total_risk_usd': total_risk,
             'total_margin_usd_estimate': total_margin,
+            'per_leg_execution_model': True,
         },
     }
 

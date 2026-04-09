@@ -27,7 +27,7 @@ Run the phase-1 MT5 FX pipeline once, using the deterministic script only as bas
    - `python scripts\validate_mt5_llm_plan.py --plan <planner_json> --pack <pack_path> --out <validation_json>`
 8. Compare planner vs script:
    - `python scripts\compare_mt5_phase1_plans.py --script-plan <script_plan_path> --llm-plan <planner_json> --out <comparison_json>`
-9. Execute the **validated LLM plan** live:
+9. Execute the **validated LLM plan** live as **independent per-leg orders**:
    - `python scripts\execute_mt5_llm_live.py --baseline-json reports\mt5_autotrade_phase1\mt5_phase1_latest.json --planner-json <planner_json> --pack-json <pack_path> --validation-json <validation_json> --planner-md <planner_response_md> --comparison-json <comparison_json>`
 10. Build Discord-safe thread messages from the LLM-live result:
    - `python scripts\build_mt5_thread_messages.py --phase1-json reports\mt5_autotrade_phase1\mt5_phase1_llm_live_latest.json --planner-md <planner_response_md> --comparison-json <comparison_json> --validation-json <validation_json> --out <thread_messages_json>`

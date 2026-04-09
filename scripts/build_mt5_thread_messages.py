@@ -65,6 +65,12 @@ def build_phase1_summary(o: dict[str, Any]) -> str:
     lines.append(f"Message: {fmt(e.get('message'))}")
     if pre:
         lines.append(f"Preflight: valid {fmt(pre.get('valid_entries'))}/{fmt(pre.get('original_entries'))} | adjusted plan {fmt(pre.get('adjusted_order_plan'))}")
+    legs = e.get('legs') or []
+    if isinstance(legs, list) and legs:
+        lines.append(f"Independent live leg tickets: {len(legs)}")
+        for leg in legs[:6]:
+            le = leg.get('execution') or {}
+            lines.append(f"- leg {fmt(leg.get('leg_index'))}: {fmt(leg.get('entry_price'))} | {fmt(leg.get('lots'))} lots | {fmt(le.get('status'))} | {fmt(le.get('retcode'))} ({fmt(le.get('retcode_text'))})")
     return '\n'.join(lines)
 
 

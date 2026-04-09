@@ -23,10 +23,11 @@ You will receive exactly one JSON object with these top-level keys:
 ## Hard execution constraints
 Treat these as hard constraints, not suggestions:
 - Multi-leg orders are allowed.
-- Max legs per package: **8**.
+- Max legs per plan: **8**.
 - Trailing is supported by the current EA/bridge.
-- One live TP per leg is allowed, but the current MT5 bridge package uses **shared live TP/SL/trailing rules across all legs in the package**.
-- Therefore, if you output a multi-leg ticket, all legs must share the same live stop-loss, live take-profit, and trailing rule set.
+- Ladder execution should now be modeled as **independent live orders per leg**, not one shared package.
+- Therefore, each leg should carry its own live stop-loss, live take-profit, and trailing rule set.
+- A common stop location across legs is allowed if that is the best structural invalidation, but it does not have to be shared by schema.
 - Size from stop distance.
 - Do not exceed the total risk budget.
 - Do not exceed the total margin cap.
@@ -137,14 +138,14 @@ Provide a table with:
 - quantity / units estimate
 - lots
 - stop loss
-- effective loss at stop $ (sum across the package)
+- effective loss at stop $
 - TP with estimated profit $ and R:R
 - trailing stop logic
 - trigger
 - trailing distance
 Also state:
 - effective risk budget used
-- total planned risk
+- total planned risk across all legs
 - total margin implication
 - short note if margin is too tight
 
@@ -185,12 +186,10 @@ Use this exact top-level structure:
 - `primary_plan.execution_style`: `AUTO` | `DIP_LADDER` | `BREAKOUT` | `SELL_RALLY` | `BREAKDOWN`
 - `orderability.classification`: `PLACEABLE_NOW` | `PLACEABLE_CONDITIONAL_ONLY` | `NOT_PLACEABLE_YET`
 - `trade_plan_ticket.legs` must be an array of 0..8 legs
-- each leg must include: `level`, `order_type`, `entry_price`, `lots`, `units_estimate`, `notional_usd_estimate`
-- `trade_plan_ticket.shared_stop_loss_price` is required if any legs exist
-- `trade_plan_ticket.shared_take_profit_price` is required if any legs exist
-- `trade_plan_ticket.trailing` must describe one shared trailing rule set for the package
+- each leg must include: `level`, `order_type`, `entry_price`, `lots`, `units_estimate`, `notional_usd_estimate`, `stop_loss_price`, `take_profit_price`, `trailing`
+- each leg `trailing` object must include: `enabled`, `trigger_price`, `distance_mode`, `distance_value`; optional `step_price`, `atr_period`, `atr_timeframe`
 - `risk_sizing.total_risk_usd` and `risk_sizing.total_margin_usd_estimate` are required
-- `validator_hints` should state whether the plan is executable under the shared TP/SL/trailing package constraint
+- `validator_hints` should state whether the plan is executable as independent per-leg live orders
 
 ## Style rules
 - Be concise, practical, and decision-oriented.
@@ -198,3 +197,4 @@ Use this exact top-level structure:
 - Do not overload with theory.
 - If the setup is weak, say so directly.
 - If waiting is best, say **WAIT** clearly.
+- For ladder plans, assume each leg can be emitted as a separate live order with its own TP/SL/trailing.
