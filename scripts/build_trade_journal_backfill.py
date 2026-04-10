@@ -132,8 +132,11 @@ def build_llm_group_rows(result: dict[str, Any], path: Path) -> tuple[dict[str, 
     })
 
     leg_rows: list[dict[str, Any]] = []
-    for leg in execution.get('legs') or []:
+    planner_legs = list((planner.get('trade_plan_ticket') or {}).get('legs') or [])
+    for idx, leg in enumerate(execution.get('legs') or [], start=1):
         ex = leg.get('execution') or {}
+        plan_leg = planner_legs[idx - 1] if idx - 1 < len(planner_legs) else {}
+        trailing = leg.get('trailing') or plan_leg.get('trailing') or {}
         leg_rows.append({
             'trade_group_id': trade_group_id,
             'leg_id': leg.get('ticket_id'),
@@ -142,20 +145,20 @@ def build_llm_group_rows(result: dict[str, Any], path: Path) -> tuple[dict[str, 
             'ticket_id': leg.get('ticket_id'),
             'symbol': result.get('candidate'),
             'side': primary.get('bias'),
-            'order_type': leg.get('order_type') or '',
-            'entry_price_planned': leg.get('entry_price'),
+            'order_type': leg.get('order_type') or plan_leg.get('order_type') or '',
+            'entry_price_planned': leg.get('entry_price') if leg.get('entry_price') not in (None, '') else plan_leg.get('entry_price'),
             'entry_price_filled': '',
-            'stop_loss_planned': leg.get('stop_loss_price'),
-            'take_profit_planned': leg.get('take_profit_price'),
-            'trailing_enabled': '',
-            'trailing_trigger': '',
-            'trailing_mode': '',
-            'trailing_distance': '',
-            'trailing_step_price': '',
-            'lots': leg.get('lots'),
-            'units_estimate': '',
-            'notional_usd_estimate': '',
-            'planned_risk_usd': '',
+            'stop_loss_planned': leg.get('stop_loss_price') if leg.get('stop_loss_price') not in (None, '') else plan_leg.get('stop_loss_price'),
+            'take_profit_planned': leg.get('take_profit_price') if leg.get('take_profit_price') not in (None, '') else plan_leg.get('take_profit_price'),
+            'trailing_enabled': trailing.get('enabled') if isinstance(trailing, dict) else '',
+            'trailing_trigger': trailing.get('trigger_price') if isinstance(trailing, dict) else '',
+            'trailing_mode': trailing.get('distance_mode') if isinstance(trailing, dict) else '',
+            'trailing_distance': trailing.get('distance_value') if isinstance(trailing, dict) else '',
+            'trailing_step_price': trailing.get('step_price') if isinstance(trailing, dict) else '',
+            'lots': leg.get('lots') if leg.get('lots') not in (None, '') else plan_leg.get('lots'),
+            'units_estimate': leg.get('units_estimate') if leg.get('units_estimate') not in (None, '') else plan_leg.get('units_estimate'),
+            'notional_usd_estimate': leg.get('notional_usd_estimate') if leg.get('notional_usd_estimate') not in (None, '') else plan_leg.get('notional_usd_estimate'),
+            'planned_risk_usd': plan_leg.get('estimated_loss_at_stop_usd') or '',
             'realized_pnl_usd': '',
             'realized_r': '',
             'status': ex.get('status'),

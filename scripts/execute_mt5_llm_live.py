@@ -194,10 +194,14 @@ def main() -> int:
             'leg_index': idx,
             'ticket_id': ticket['ticket_id'],
             'ticket_path': str(ticket_path),
+            'order_type': leg.get('order_type'),
+            'units_estimate': leg.get('units_estimate'),
+            'notional_usd_estimate': leg.get('notional_usd_estimate'),
             'entry_price': leg.get('entry_price'),
             'lots': leg.get('lots'),
             'stop_loss_price': leg.get('stop_loss_price'),
             'take_profit_price': leg.get('take_profit_price'),
+            'trailing': leg.get('trailing'),
             'execution': execution,
         })
 
