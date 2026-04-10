@@ -34,8 +34,14 @@ Run the phase-1 MT5 FX pipeline once, using the deterministic script only as bas
 11. Read `<thread_messages_json>` and send **each** message in order with the `message` tool to:
    - channel: `discord`
    - to: `channel:1489519869962752000`
-12. No extra commentary.
-13. After successful send, reply `NO_REPLY`.
+12. Build the versioned local Excel trade journal:
+   - `python scripts\build_trade_journal_excel.py`
+13. Read `reports\mt5_autotrade_phase1\excel\MT5_trade_journal_latest.json` and note the workbook path + row counts.
+14. Check whether a usable logged-in Google browser session is available.
+15. If Google session is available, upload `reports\mt5_autotrade_phase1\excel\MT5_trade_journal_latest.xlsx` to Google Drive as a convenience copy.
+16. If Google session is not available, treat that as a warning only and do **not** fail the MT5 cycle.
+17. No extra commentary.
+18. After successful send, reply `NO_REPLY`.
 
 ## Model / efficiency rules
 - Use deterministic scripts for prep, extraction, validation, comparison, and formatting.
@@ -46,4 +52,6 @@ Run the phase-1 MT5 FX pipeline once, using the deterministic script only as bas
 - If the deterministic baseline fails because the expected screener report is missing/not fresh, send a short failure note to the same thread saying the screener report was not ready and investigation is required.
 - If the LLM shadow / extraction / validation step fails, do **not** place a live trade; send a short note that the baseline ran but the LLM live path failed and needs inspection.
 - If the validated LLM plan is not executable, do **not** place a live trade; still send the built thread output.
+- If the local Excel journal build fails, report that as a pipeline issue.
+- If the optional Google Drive upload cannot run because browser auth/session is unavailable, do **not** fail the trade cycle; send the MT5 trades thread output normally and mention that Drive upload was skipped.
 - Then reply `NO_REPLY`.

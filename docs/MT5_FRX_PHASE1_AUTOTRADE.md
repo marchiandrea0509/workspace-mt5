@@ -14,6 +14,8 @@
 - Cron prompt: `prompts/cron_mt5_fx_phase1.md`
 - Runtime reports: `reports/mt5_autotrade_phase1/`
 - Runtime state: `state/mt5_autotrade_phase1/`
+- Excel journal builder: `scripts/build_trade_journal_excel.py`
+- Excel journal workflow: `docs/MT5_TRADE_JOURNAL_EXCEL_WORKFLOW.md`
 
 ## Predefined criteria
 - Best Score >= 70
