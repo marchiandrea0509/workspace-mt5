@@ -35,18 +35,16 @@ This will:
 - LLM_Review
 - Daily_Equity
 
-## Google Drive upload policy
-If a logged-in Google browser session is available, the latest workbook may be uploaded to Drive as a convenience copy.
+## Current rollout stage
+Current stage is **Option A only**:
+- build/update the local Excel workbook automatically
+- keep the workbook local as the source of truth
+- do **not** perform any Google Drive/browser upload as part of the MT5 cycle yet
 
-If Google session/browser access is **not** available:
-- treat it as a **warning only**
-- do **not** fail the MT5 cycle
-- keep the local Excel workbook as the successful output
+Google Drive upload and later credentialed sync are deferred to later rollout stages.
 
 ## Recommended automation behavior
 After each completed MT5 cycle:
 1. build/update thread output
 2. build/update local Excel workbook
-3. check whether a Google browser session is available
-4. if available, upload the latest workbook to Drive
-5. if not available, report a warning but keep the cycle successful
+3. stop there
