@@ -409,6 +409,106 @@ def choose_mt5_terminal() -> str:
     return terminal
 
 
+def choose_bridge_root() -> Path | None:
+    instances_path = WORKSPACE / 'config' / 'mt5_instances.json'
+    if instances_path.exists():
+        try:
+            payload = load_json(instances_path)
+            default_instance = str(payload.get('defaultInstance') or '').strip()
+            instances = payload.get('instances') or {}
+            bridge_root = str((instances.get(default_instance) or {}).get('bridgeRoot') or '').strip()
+            if bridge_root:
+                p = Path(bridge_root)
+                if p.exists():
+                    return p
+        except Exception:
+            pass
+    terminal = choose_mt5_terminal()
+    if terminal:
+        candidate = Path(terminal).resolve().parent / 'MQL5' / 'Files' / 'gray_bridge'
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def normalize_symbol_root(symbol: str | None) -> str:
+    sym = str(symbol or '').strip().upper()
+    if sym.endswith('.PRO'):
+        sym = sym[:-4]
+    if sym.endswith('.P'):
+        sym = sym[:-2]
+    return sym
+
+
+def symbol_quote_currency(symbol: str | None) -> str:
+    root = normalize_symbol_root(symbol)
+    if len(root) >= 6 and root[:6].isalpha():
+        return root[3:6]
+    return ''
+
+
+def load_fx_to_usd_map(currencies: set[str]) -> dict[str, float | None]:
+    wanted = {str(x).upper() for x in currencies if str(x or '').strip()}
+    if not wanted:
+        return {}
+    out: dict[str, float | None] = {cur: (1.0 if cur == 'USD' else None) for cur in wanted}
+    terminal = choose_mt5_terminal()
+    if not terminal or not Path(terminal).exists():
+        return out
+    try:
+        import MetaTrader5 as mt5
+    except Exception:
+        return out
+
+    if not mt5.initialize(path=terminal):
+        return out
+    try:
+        symbols = list(mt5.symbols_get() or [])
+        symbol_names_by_root: dict[str, list[str]] = defaultdict(list)
+        for sym in symbols:
+            symbol_names_by_root[normalize_symbol_root(sym.name)].append(sym.name)
+
+        def best_name(root: str) -> str | None:
+            names = list(symbol_names_by_root.get(root, []))
+            if not names:
+                return None
+            names.sort(key=lambda n: (not n.upper().endswith('.PRO'), len(n)))
+            return names[0]
+
+        def latest_mid(name: str) -> float | None:
+            mt5.symbol_select(name, True)
+            tick = mt5.symbol_info_tick(name)
+            if tick and getattr(tick, 'bid', 0) and getattr(tick, 'ask', 0):
+                return (float(tick.bid) + float(tick.ask)) / 2.0
+            rates = mt5.copy_rates_from_pos(name, mt5.TIMEFRAME_H1, 0, 1)
+            if rates is None or len(rates) == 0:
+                return None
+            row = rates[-1]
+            try:
+                return float(row['close'])
+            except Exception:
+                return None
+
+        for cur in sorted(wanted):
+            if cur == 'USD':
+                out[cur] = 1.0
+                continue
+            direct = best_name(cur + 'USD')
+            if direct:
+                out[cur] = latest_mid(direct)
+                continue
+            inverse = best_name('USD' + cur)
+            if inverse:
+                mid = latest_mid(inverse)
+                out[cur] = (1.0 / mid) if mid else None
+    finally:
+        try:
+            mt5.shutdown()
+        except Exception:
+            pass
+    return out
+
+
 def unique_deals(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     seen: set[int] = set()
     out: list[dict[str, Any]] = []
@@ -479,8 +579,8 @@ def load_mt5_snapshots(order_ids: list[int], since_hints: list[str]) -> dict[int
         if position_id:
             deals.extend(deals_by_position.get(position_id) or [])
         deals = unique_deals(deals)
-        entry_deals = [d for d in deals if int(d.get('entry') or -1) in {MT5_DEAL_ENTRY_IN, MT5_DEAL_ENTRY_INOUT}]
-        exit_deals = [d for d in deals if int(d.get('entry') or -1) in {MT5_DEAL_ENTRY_OUT, MT5_DEAL_ENTRY_OUT_BY}]
+        entry_deals = [d for d in deals if int(d.get('entry') if d.get('entry') is not None else -1) in {MT5_DEAL_ENTRY_IN, MT5_DEAL_ENTRY_INOUT}]
+        exit_deals = [d for d in deals if int(d.get('entry') if d.get('entry') is not None else -1) in {MT5_DEAL_ENTRY_OUT, MT5_DEAL_ENTRY_OUT_BY}]
         out[order_id] = MT5OrderSnapshot(
             order_id=order_id,
             open_order=open_order,
@@ -699,6 +799,188 @@ def reconcile_trade_groups(trade_groups: list[dict[str, Any]], legs: list[dict[s
         leg.pop('_is_filled', None)
 
 
+def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    bridge_root = choose_bridge_root()
+    if not bridge_root:
+        return [], [], []
+    outbox = bridge_root / 'outbox'
+    if not outbox.exists():
+        return [], [], []
+
+    existing_order_ids: set[int] = set()
+    for leg in existing_leg_rows:
+        for part in str(leg.get('mt5_order_id') or '').split(','):
+            part = part.strip()
+            if not part:
+                continue
+            try:
+                existing_order_ids.add(int(part))
+            except Exception:
+                continue
+
+    candidates: list[tuple[dict[str, Any], dict[str, Any], Path]] = []
+    currencies: set[str] = set()
+    for result_path in sorted(outbox.glob('*__result.json')):
+        try:
+            result = load_json(result_path)
+        except Exception:
+            continue
+        if str(result.get('status') or '').lower() != 'accepted':
+            continue
+        order_ids = []
+        for value in result.get('mt5_order_ids') or []:
+            try:
+                order_ids.append(int(value))
+            except Exception:
+                continue
+        if not order_ids or set(order_ids) & existing_order_ids:
+            continue
+        archive_rel = str(result.get('archive_file') or '').strip()
+        if not archive_rel:
+            continue
+        archive_rel_norm = archive_rel.replace('\\', '/').lstrip('./')
+        if archive_rel_norm.lower().startswith('gray_bridge/'):
+            archive_rel_norm = archive_rel_norm[len('gray_bridge/'):]
+        archive_path = bridge_root / Path(archive_rel_norm)
+        if not archive_path.exists():
+            continue
+        try:
+            ticket = load_json(archive_path)
+        except Exception:
+            continue
+        strategy = ticket.get('strategy_context') or {}
+        if str(strategy.get('watchlist') or '').strip() != 'MT5_FRX':
+            continue
+        root_symbol = str(strategy.get('tv_root_symbol') or normalize_symbol_root(ticket.get('symbol') or result.get('symbol')))
+        currencies.add(symbol_quote_currency(root_symbol))
+        candidates.append((result, ticket, archive_path))
+        existing_order_ids.update(order_ids)
+
+    quote_to_usd_map = load_fx_to_usd_map(currencies)
+    trade_group_rows: list[dict[str, Any]] = []
+    leg_rows: list[dict[str, Any]] = []
+    review_rows: list[dict[str, Any]] = []
+
+    for result, ticket, archive_path in candidates:
+        strategy = ticket.get('strategy_context') or {}
+        root_symbol = str(strategy.get('tv_root_symbol') or normalize_symbol_root(ticket.get('symbol') or result.get('symbol')))
+        quote_to_usd = quote_to_usd_map.get(symbol_quote_currency(root_symbol)) or 1.0
+        side = str(result.get('side') or ticket.get('side') or '').strip().upper()
+        trailing = result.get('trailing') if isinstance(result.get('trailing'), dict) else (ticket.get('trailing') or {})
+        stop_loss = safe_float((ticket.get('stop_loss') or {}).get('price'))
+        take_profit = safe_float((ticket.get('take_profit') or {}).get('price'))
+        trade_group_id = str(result.get('ticket_id') or archive_path.stem)
+        order_ids = [str(x) for x in (result.get('mt5_order_ids') or [])]
+
+        package_risk = 0.0
+        have_package_risk = False
+        package_notional = 0.0
+        have_package_notional = False
+        bridge_leg_rows: list[dict[str, Any]] = []
+        for idx, entry in enumerate(ticket.get('entries') or [], start=1):
+            lots = safe_float(entry.get('volume_lots'))
+            entry_price = safe_float(entry.get('price'))
+            units = compute_units(lots, 100000.0)
+            notional = ''
+            planned_risk = ''
+            if isinstance(units, int) and entry_price is not None:
+                notional = round(units * entry_price * quote_to_usd, 2)
+                have_package_notional = True
+                package_notional += float(notional)
+                if stop_loss is not None:
+                    planned_risk = round(units * abs(entry_price - stop_loss) * quote_to_usd, 2)
+                    have_package_risk = True
+                    package_risk += float(planned_risk)
+            bridge_leg_rows.append({
+                'trade_group_id': trade_group_id,
+                'leg_id': str(entry.get('client_entry_id') or f'{trade_group_id}-leg{idx}'),
+                'leg_index': idx,
+                'mt5_order_id': order_ids[idx - 1] if idx - 1 < len(order_ids) else '',
+                'ticket_id': str(entry.get('client_entry_id') or f'{trade_group_id}-leg{idx}'),
+                'symbol': root_symbol,
+                'side': 'LONG' if side == 'BUY' else 'SHORT' if side == 'SELL' else side,
+                'order_type': normalize_order_type(side, entry.get('entry_type')),
+                'entry_price_planned': entry_price if entry_price is not None else '',
+                'entry_price_filled': '',
+                'stop_loss_planned': stop_loss if stop_loss is not None else '',
+                'take_profit_planned': take_profit if take_profit is not None else '',
+                'trailing_enabled': trailing.get('enabled') if isinstance(trailing, dict) else '',
+                'trailing_trigger': trailing.get('trigger_price') if isinstance(trailing, dict) else '',
+                'trailing_mode': trailing.get('distance_mode') if isinstance(trailing, dict) else '',
+                'trailing_distance': trailing.get('distance_value') if isinstance(trailing, dict) else '',
+                'trailing_step_price': trailing.get('step_price') if isinstance(trailing, dict) else '',
+                'lots': lots if lots is not None else '',
+                'units_estimate': units,
+                'notional_usd_estimate': notional,
+                'planned_risk_usd': planned_risk,
+                'realized_pnl_usd': '',
+                'realized_r': '',
+                'status': result.get('status'),
+                'opened_at_utc': result.get('timestamp') or ticket.get('created_at') or '',
+                'closed_at_utc': '',
+                'broker_retcode': result.get('retcode'),
+                'broker_message': result.get('message'),
+                'parent_group_id': trade_group_id,
+            })
+
+        source_text = str(strategy.get('source') or ticket.get('note') or '').lower()
+        plan_source = 'MANUAL' if 'manual' in source_text else 'SCRIPT'
+        trade_group_rows.append({
+            'trade_group_id': trade_group_id,
+            'cycle_id': trade_group_id,
+            'opened_at_utc': result.get('timestamp') or ticket.get('created_at') or '',
+            'closed_at_utc': '',
+            'status': result.get('status'),
+            'symbol': root_symbol,
+            'watchlist': strategy.get('watchlist'),
+            'timeframe': strategy.get('timeframe'),
+            'screener_version': '',
+            'report_generated_at_utc': ticket.get('created_at') or '',
+            'report_path': '',
+            'candidate_rank': '',
+            'winner_side': 'LONG' if side == 'BUY' else 'SHORT' if side == 'SELL' else side,
+            'winner_family': strategy.get('setup'),
+            'setup_family_text': strategy.get('setup'),
+            'orderability': strategy.get('orderability_decision'),
+            'execution_style': strategy.get('execution_template'),
+            'plan_source': plan_source,
+            'llm_confidence': '',
+            'deterministic_orderability': strategy.get('orderability_decision'),
+            'llm_orderability': '',
+            'planned_total_risk_usd': round(package_risk, 2) if have_package_risk else ticket.get('max_risk_usdt') or '',
+            'planned_total_margin_usd': strategy.get('modeled_margin_usd') or strategy.get('planned_total_margin_usd') or '',
+            'realized_pnl_usd': '',
+            'realized_r_multiple': '',
+            'max_favorable_excursion_usd': '',
+            'max_adverse_excursion_usd': '',
+            'filled_legs': len(bridge_leg_rows),
+            'closed_legs': 0,
+            'cancelled_legs': 0,
+            'result_class': 'open',
+            'review_status': 'pending',
+            'note': f"Recovered from gray_bridge outbox: {result.get('message') or ticket.get('note') or ''}".strip(),
+        })
+        leg_rows.extend(bridge_leg_rows)
+        review_rows.append({
+            'trade_group_id': trade_group_id,
+            'review_date_utc': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+            'llm_pre_trade_rationale': '',
+            'why_trade_made_sense': '',
+            'what_went_well': '',
+            'what_went_wrong': '',
+            'mistakes': '',
+            'lesson_learned': '',
+            'was_llm_better_than_script': '',
+            'was_script_better_than_llm': '',
+            'discrepancy_type': '',
+            'should_script_be_updated': '',
+            'update_priority': '',
+            'confidence_in_lesson': '',
+            'free_text_review': f"Recovered orphan bridge execution from {archive_path.name}",
+        })
+    return trade_group_rows, leg_rows, review_rows
+
+
 def build_daily_equity(trade_groups: list[dict[str, Any]]) -> list[list[Any]]:
     daily_map: dict[str, dict[str, Any]] = defaultdict(lambda: {
         'realized_pnl_usd': 0.0,
@@ -774,6 +1056,11 @@ def main() -> int:
         if snap:
             screener_rows.append({'trade_group_id': row['trade_group_id'], **snap})
         review_rows.append(review)
+
+    recovered_groups, recovered_legs, recovered_reviews = build_bridge_recovered_rows(leg_rows)
+    trade_group_rows.extend(recovered_groups)
+    leg_rows.extend(recovered_legs)
+    review_rows.extend(recovered_reviews)
 
     reconcile_trade_groups(trade_group_rows, leg_rows)
 
