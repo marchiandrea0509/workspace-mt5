@@ -63,6 +63,12 @@
       "candidate": "AUDCAD",
       "ticket_id": "p1-audcad-0409050728",
       "processed_at": "2026-04-09T05:07:33Z"
+    },
+    "MT5_FRX|4 hours|2026-04-10T16:07:10.050Z": {
+      "status": "dry_run",
+      "candidate": "USDHUF",
+      "ticket_id": "p1-usdhuf-0410160830",
+      "processed_at": "2026-04-10T16:08:30Z"
     }
   }
 }
