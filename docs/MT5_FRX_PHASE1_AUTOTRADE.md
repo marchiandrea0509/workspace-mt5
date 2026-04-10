@@ -15,7 +15,9 @@
 - Runtime reports: `reports/mt5_autotrade_phase1/`
 - Runtime state: `state/mt5_autotrade_phase1/`
 - Excel journal builder: `scripts/build_trade_journal_excel.py`
+- Excel upload staging helper: `scripts/stage_trade_journal_for_browser_upload.py`
 - Excel journal workflow: `docs/MT5_TRADE_JOURNAL_EXCEL_WORKFLOW.md`
+- Best-effort Drive upload prompt: `prompts/upload_mt5_excel_to_gdrive_best_effort.md`
 
 ## Predefined criteria
 - Best Score >= 70

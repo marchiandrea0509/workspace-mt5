@@ -36,15 +36,25 @@ This will:
 - Daily_Equity
 
 ## Current rollout stage
-Current stage is **Option A only**:
+Current stage is **Option B**:
 - build/update the local Excel workbook automatically
 - keep the workbook local as the source of truth
-- do **not** perform any Google Drive/browser upload as part of the MT5 cycle yet
+- stage the latest versioned workbook into the OpenClaw browser uploads directory
+- attempt a single best-effort Google Drive upload only when the expected Drive tab/session is already available
+- never fail the MT5 cycle because of Drive upload issues
 
-Google Drive upload and later credentialed sync are deferred to later rollout stages.
+Later credentialed sync is deferred to Option C.
+
+## Browser-upload helper
+- Staging script:
+  - `scripts/stage_trade_journal_for_browser_upload.py`
+- Best-effort browser prompt:
+  - `prompts/upload_mt5_excel_to_gdrive_best_effort.md`
 
 ## Recommended automation behavior
 After each completed MT5 cycle:
 1. build/update thread output
 2. build/update local Excel workbook
-3. stop there
+3. stage the versioned workbook for browser upload
+4. if the connected Drive tab is available, attempt one best-effort upload
+5. otherwise skip quietly and keep the local workbook as success

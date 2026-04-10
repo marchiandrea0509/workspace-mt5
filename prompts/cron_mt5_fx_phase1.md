@@ -37,9 +37,12 @@ Run the phase-1 MT5 FX pipeline once, using the deterministic script only as bas
 12. Build the versioned local Excel trade journal:
    - `python scripts\build_trade_journal_excel.py`
 13. Read `reports\mt5_autotrade_phase1\excel\MT5_trade_journal_latest.json` and note the workbook path + row counts.
-14. Do **not** attempt any Google Drive or browser upload in this workflow stage.
-15. No extra commentary.
-16. After successful send, reply `NO_REPLY`.
+14. Stage the versioned workbook for browser upload:
+   - `python scripts\stage_trade_journal_for_browser_upload.py`
+15. Follow:
+   - `C:\Users\anmar\.openclaw\workspace-mt5\prompts\upload_mt5_excel_to_gdrive_best_effort.md`
+16. No extra commentary.
+17. After successful send, reply `NO_REPLY`.
 
 ## Model / efficiency rules
 - Use deterministic scripts for prep, extraction, validation, comparison, and formatting.
@@ -51,5 +54,6 @@ Run the phase-1 MT5 FX pipeline once, using the deterministic script only as bas
 - If the LLM shadow / extraction / validation step fails, do **not** place a live trade; send a short note that the baseline ran but the LLM live path failed and needs inspection.
 - If the validated LLM plan is not executable, do **not** place a live trade; still send the built thread output.
 - If the local Excel journal build fails, report that as a pipeline issue.
-- Do not attempt Google Drive/browser upload in this workflow stage; that belongs to a later rollout.
+- If the staging step fails, report that as a journal-upload-prep issue but do not place any browser retries.
+- If the best-effort Google Drive upload is skipped, unavailable, or verification is inconclusive, do **not** fail the MT5 cycle.
 - Then reply `NO_REPLY`.
