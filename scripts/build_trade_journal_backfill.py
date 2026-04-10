@@ -55,10 +55,21 @@ def parse_report_candidate(report_path: str | None, candidate: str | None) -> di
     for idx, item in enumerate(rows, start=1):
         raw = item.get('raw') or item
         if str(raw.get('Symbol') or '').upper() == str(candidate).upper():
-            out = {'candidate_rank': idx, 'watchlist': d.get('watchlist'), 'indicator': d.get('indicator'), 'report_generated_at_utc': d.get('generatedAt')}
+            out = {
+                'candidate_rank': idx,
+                'symbol': raw.get('Symbol') or candidate,
+                'watchlist': d.get('watchlist'),
+                'indicator': d.get('indicator'),
+                'report_generated_at_utc': d.get('generatedAt'),
+            }
             out.update(raw)
             return out
-    return {'watchlist': d.get('watchlist'), 'indicator': d.get('indicator'), 'report_generated_at_utc': d.get('generatedAt')}
+    return {
+        'symbol': candidate or '',
+        'watchlist': d.get('watchlist'),
+        'indicator': d.get('indicator'),
+        'report_generated_at_utc': d.get('generatedAt'),
+    }
 
 
 def planner_text_without_json(path: Path) -> str:
@@ -87,7 +98,7 @@ def build_llm_group_rows(result: dict[str, Any], path: Path) -> tuple[dict[str, 
     row.update({
         'trade_group_id': trade_group_id,
         'cycle_id': result.get('session_key') or path.stem,
-        'opened_at_utc': execution.get('legs', [{}])[0].get('execution', {}).get('received_at') or '',
+        'opened_at_utc': execution.get('legs', [{}])[0].get('execution', {}).get('timestamp') or execution.get('legs', [{}])[0].get('execution', {}).get('received_at') or '',
         'closed_at_utc': '',
         'status': execution.get('status'),
         'symbol': result.get('candidate'),
@@ -148,7 +159,7 @@ def build_llm_group_rows(result: dict[str, Any], path: Path) -> tuple[dict[str, 
             'realized_pnl_usd': '',
             'realized_r': '',
             'status': ex.get('status'),
-            'opened_at_utc': '',
+            'opened_at_utc': ex.get('timestamp') or '',
             'closed_at_utc': '',
             'broker_retcode': ex.get('retcode'),
             'broker_message': ex.get('message'),
