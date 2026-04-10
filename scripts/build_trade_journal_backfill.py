@@ -509,6 +509,130 @@ def load_fx_to_usd_map(currencies: set[str]) -> dict[str, float | None]:
     return out
 
 
+
+def reference_status_rank(execution: dict[str, Any]) -> int:
+    status = str(execution.get('status') or '').lower()
+    result = str(execution.get('result') or '').lower()
+    if status == 'accepted':
+        return 5
+    if status in {'partial', 'filled', 'closed'}:
+        return 4
+    if result == 'timeout':
+        return 3
+    if status in {'rejected', 'cancelled', 'expired'}:
+        return 2
+    if status == 'dry_run':
+        return 1
+    return 0
+
+
+def build_recovery_reference_index() -> dict[str, list[dict[str, Any]]]:
+    index: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    source_paths = list(sorted(REPORTS.glob('mt5_phase1_session_*.json'))) + list(sorted(REPORTS.glob('mt5_phase1_llm_live_*.json')))
+    for path in source_paths:
+        if path.name.endswith('latest.json'):
+            continue
+        try:
+            payload = load_json(path)
+        except Exception:
+            continue
+        execution = payload.get('execution') or {}
+        ticket_id = str(execution.get('ticket_id') or payload.get('ticket_id') or '').strip()
+        ticket_path_obj = Path(str(payload.get('ticket_path') or '')) if payload.get('ticket_path') else None
+        if (not ticket_id) and ticket_path_obj and ticket_path_obj.exists():
+            try:
+                ticket_payload = load_json(ticket_path_obj)
+                ticket_id = str(ticket_payload.get('ticket_id') or '').strip()
+            except Exception:
+                pass
+        result_file_name = ''
+        if execution.get('result_file'):
+            try:
+                result_file_name = Path(str(execution.get('result_file'))).name
+            except Exception:
+                result_file_name = ''
+        if not ticket_id and not result_file_name:
+            continue
+
+        plan = payload.get('plan') or {}
+        planner = payload.get('planner_plan') or {}
+        snap = parse_report_candidate(payload.get('report_path'), payload.get('candidate'))
+        primary = planner.get('primary_plan') or {}
+        script_bias = plan.get('bias') or {}
+        ref = {
+            'session_key': payload.get('session_key') or path.stem,
+            'report_path': payload.get('report_path') or '',
+            'analysis_path': payload.get('analysis_path') or '',
+            'ticket_path': payload.get('ticket_path') or '',
+            'candidate': payload.get('candidate') or '',
+            'candidate_rank': snap.get('candidate_rank') or '',
+            'watchlist': snap.get('watchlist') or (plan.get('source_context') or {}).get('watchlist') or '',
+            'timeframe': (plan.get('source_context') or {}).get('timeframe') or '',
+            'screener_version': snap.get('indicator') or '',
+            'report_generated_at_utc': snap.get('report_generated_at_utc') or plan.get('generated_at_utc') or '',
+            'winner_side': primary.get('bias') or script_bias.get('direction') or '',
+            'winner_family': (planner.get('screener_read') or {}).get('winner_family') or script_bias.get('setup') or '',
+            'setup_family_text': primary.get('execution_style') or script_bias.get('setup') or '',
+            'orderability': (planner.get('orderability') or {}).get('classification') or (plan.get('orderability_decision') or {}).get('decision') or '',
+            'execution_style': primary.get('execution_style') or (plan.get('orderability_decision') or {}).get('execution_template') or '',
+            'plan_source': 'LLM' if planner else 'SCRIPT',
+            'llm_confidence': (planner.get('final_verdict') or {}).get('confidence') or '',
+            'deterministic_orderability': (plan.get('orderability_decision') or {}).get('decision') or '',
+            'llm_orderability': (planner.get('orderability') or {}).get('classification') or '',
+            'why_trade_made_sense': (planner.get('screener_read') or {}).get('dashboard_summary') or '',
+            'llm_pre_trade_rationale': planner_text_without_json(Path(payload['analysis_path'])) if payload.get('analysis_path') and Path(payload['analysis_path']).exists() else '',
+            'status_rank': reference_status_rank(execution),
+            'generated_dt': parse_dt(snap.get('report_generated_at_utc') or plan.get('generated_at_utc') or ''),
+            'source_json': str(path),
+            'snap': snap,
+        }
+        if ticket_id:
+            index[f'ticket:{ticket_id}'].append(ref)
+        if result_file_name:
+            index[f'result:{result_file_name}'].append(ref)
+    return index
+
+
+def choose_recovery_reference(reference_index: dict[str, list[dict[str, Any]]], result: dict[str, Any], ticket: dict[str, Any], archive_path: Path, result_path: Path) -> dict[str, Any]:
+    keys: list[str] = []
+    ticket_id = str(result.get('ticket_id') or ticket.get('ticket_id') or archive_path.stem).strip()
+    if ticket_id:
+        keys.append(f'ticket:{ticket_id}')
+    keys.append(f'result:{result_path.name}')
+
+    merged: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for key in keys:
+        for ref in reference_index.get(key, []):
+            marker = str(ref.get('source_json') or '')
+            if marker in seen:
+                continue
+            seen.add(marker)
+            merged.append(ref)
+    if not merged:
+        return {}
+
+    root_symbol = normalize_symbol_root((ticket.get('strategy_context') or {}).get('tv_root_symbol') or ticket.get('symbol') or result.get('symbol'))
+    result_time = parse_dt(result.get('timestamp') or ticket.get('created_at') or '')
+
+    def score(ref: dict[str, Any]) -> tuple[float, float]:
+        primary = float(ref.get('status_rank') or 0) * 100.0
+        if normalize_symbol_root(ref.get('candidate')) == root_symbol:
+            primary += 20.0
+        if ref.get('report_path'):
+            primary += 8.0
+        if ref.get('analysis_path'):
+            primary += 4.0
+        if ref.get('candidate_rank') not in ('', None):
+            primary += 2.0
+        ref_dt = ref.get('generated_dt')
+        closeness = 0.0
+        if result_time and ref_dt:
+            closeness = -abs((ref_dt - result_time).total_seconds())
+        return (primary, closeness)
+
+    return max(merged, key=score)
+
 def unique_deals(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     seen: set[int] = set()
     out: list[dict[str, Any]] = []
@@ -799,13 +923,13 @@ def reconcile_trade_groups(trade_groups: list[dict[str, Any]], legs: list[dict[s
         leg.pop('_is_filled', None)
 
 
-def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     bridge_root = choose_bridge_root()
     if not bridge_root:
-        return [], [], []
+        return [], [], [], []
     outbox = bridge_root / 'outbox'
     if not outbox.exists():
-        return [], [], []
+        return [], [], [], []
 
     existing_order_ids: set[int] = set()
     for leg in existing_leg_rows:
@@ -818,7 +942,7 @@ def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tupl
             except Exception:
                 continue
 
-    candidates: list[tuple[dict[str, Any], dict[str, Any], Path]] = []
+    candidates: list[tuple[dict[str, Any], dict[str, Any], Path, Path]] = []
     currencies: set[str] = set()
     for result_path in sorted(outbox.glob('*__result.json')):
         try:
@@ -853,15 +977,17 @@ def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tupl
             continue
         root_symbol = str(strategy.get('tv_root_symbol') or normalize_symbol_root(ticket.get('symbol') or result.get('symbol')))
         currencies.add(symbol_quote_currency(root_symbol))
-        candidates.append((result, ticket, archive_path))
+        candidates.append((result, ticket, archive_path, result_path))
         existing_order_ids.update(order_ids)
 
     quote_to_usd_map = load_fx_to_usd_map(currencies)
+    reference_index = build_recovery_reference_index()
     trade_group_rows: list[dict[str, Any]] = []
     leg_rows: list[dict[str, Any]] = []
     review_rows: list[dict[str, Any]] = []
+    screener_rows: list[dict[str, Any]] = []
 
-    for result, ticket, archive_path in candidates:
+    for result, ticket, archive_path, result_path in candidates:
         strategy = ticket.get('strategy_context') or {}
         root_symbol = str(strategy.get('tv_root_symbol') or normalize_symbol_root(ticket.get('symbol') or result.get('symbol')))
         quote_to_usd = quote_to_usd_map.get(symbol_quote_currency(root_symbol)) or 1.0
@@ -871,11 +997,11 @@ def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tupl
         take_profit = safe_float((ticket.get('take_profit') or {}).get('price'))
         trade_group_id = str(result.get('ticket_id') or archive_path.stem)
         order_ids = [str(x) for x in (result.get('mt5_order_ids') or [])]
+        ref = choose_recovery_reference(reference_index, result, ticket, archive_path, result_path)
+        snap = ref.get('snap') or {}
 
         package_risk = 0.0
         have_package_risk = False
-        package_notional = 0.0
-        have_package_notional = False
         bridge_leg_rows: list[dict[str, Any]] = []
         for idx, entry in enumerate(ticket.get('entries') or [], start=1):
             lots = safe_float(entry.get('volume_lots'))
@@ -885,8 +1011,6 @@ def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tupl
             planned_risk = ''
             if isinstance(units, int) and entry_price is not None:
                 notional = round(units * entry_price * quote_to_usd, 2)
-                have_package_notional = True
-                package_notional += float(notional)
                 if stop_loss is not None:
                     planned_risk = round(units * abs(entry_price - stop_loss) * quote_to_usd, 2)
                     have_package_risk = True
@@ -924,29 +1048,29 @@ def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tupl
             })
 
         source_text = str(strategy.get('source') or ticket.get('note') or '').lower()
-        plan_source = 'MANUAL' if 'manual' in source_text else 'SCRIPT'
+        plan_source = str(ref.get('plan_source') or ('MANUAL' if 'manual' in source_text else 'SCRIPT'))
         trade_group_rows.append({
             'trade_group_id': trade_group_id,
-            'cycle_id': trade_group_id,
+            'cycle_id': ref.get('session_key') or trade_group_id,
             'opened_at_utc': result.get('timestamp') or ticket.get('created_at') or '',
             'closed_at_utc': '',
             'status': result.get('status'),
             'symbol': root_symbol,
-            'watchlist': strategy.get('watchlist'),
-            'timeframe': strategy.get('timeframe'),
-            'screener_version': '',
-            'report_generated_at_utc': ticket.get('created_at') or '',
-            'report_path': '',
-            'candidate_rank': '',
-            'winner_side': 'LONG' if side == 'BUY' else 'SHORT' if side == 'SELL' else side,
-            'winner_family': strategy.get('setup'),
-            'setup_family_text': strategy.get('setup'),
-            'orderability': strategy.get('orderability_decision'),
-            'execution_style': strategy.get('execution_template'),
+            'watchlist': ref.get('watchlist') or strategy.get('watchlist'),
+            'timeframe': ref.get('timeframe') or strategy.get('timeframe'),
+            'screener_version': ref.get('screener_version') or '',
+            'report_generated_at_utc': ref.get('report_generated_at_utc') or ticket.get('created_at') or '',
+            'report_path': ref.get('report_path') or '',
+            'candidate_rank': ref.get('candidate_rank') or '',
+            'winner_side': ref.get('winner_side') or ('LONG' if side == 'BUY' else 'SHORT' if side == 'SELL' else side),
+            'winner_family': ref.get('winner_family') or strategy.get('setup'),
+            'setup_family_text': ref.get('setup_family_text') or strategy.get('setup'),
+            'orderability': ref.get('orderability') or strategy.get('orderability_decision'),
+            'execution_style': ref.get('execution_style') or strategy.get('execution_template'),
             'plan_source': plan_source,
-            'llm_confidence': '',
-            'deterministic_orderability': strategy.get('orderability_decision'),
-            'llm_orderability': '',
+            'llm_confidence': ref.get('llm_confidence') or '',
+            'deterministic_orderability': ref.get('deterministic_orderability') or strategy.get('orderability_decision'),
+            'llm_orderability': ref.get('llm_orderability') or '',
             'planned_total_risk_usd': round(package_risk, 2) if have_package_risk else ticket.get('max_risk_usdt') or '',
             'planned_total_margin_usd': strategy.get('modeled_margin_usd') or strategy.get('planned_total_margin_usd') or '',
             'realized_pnl_usd': '',
@@ -960,12 +1084,14 @@ def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tupl
             'review_status': 'pending',
             'note': f"Recovered from gray_bridge outbox: {result.get('message') or ticket.get('note') or ''}".strip(),
         })
+        if snap:
+            screener_rows.append({'trade_group_id': trade_group_id, **snap})
         leg_rows.extend(bridge_leg_rows)
         review_rows.append({
             'trade_group_id': trade_group_id,
             'review_date_utc': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
-            'llm_pre_trade_rationale': '',
-            'why_trade_made_sense': '',
+            'llm_pre_trade_rationale': ref.get('llm_pre_trade_rationale') or '',
+            'why_trade_made_sense': ref.get('why_trade_made_sense') or '',
             'what_went_well': '',
             'what_went_wrong': '',
             'mistakes': '',
@@ -976,10 +1102,91 @@ def build_bridge_recovered_rows(existing_leg_rows: list[dict[str, Any]]) -> tupl
             'should_script_be_updated': '',
             'update_priority': '',
             'confidence_in_lesson': '',
-            'free_text_review': f"Recovered orphan bridge execution from {archive_path.name}",
+            'free_text_review': f"Recovered orphan bridge execution from {archive_path.name}" + (f" | linked source: {Path(str(ref.get('source_json'))).name}" if ref.get('source_json') else ''),
         })
-    return trade_group_rows, leg_rows, review_rows
+    return trade_group_rows, leg_rows, review_rows, screener_rows
 
+
+def compute_group_excursions(trade_groups: list[dict[str, Any]], legs: list[dict[str, Any]]) -> None:
+    closed_groups = {str(row.get('trade_group_id') or ''): row for row in trade_groups if str(row.get('status') or '') == 'closed' and row.get('closed_at_utc')}
+    if not closed_groups:
+        return
+
+    legs_by_group: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for leg in legs:
+        legs_by_group[str(leg.get('trade_group_id') or '')].append(leg)
+
+    terminal = choose_mt5_terminal()
+    if not terminal or not Path(terminal).exists():
+        return
+    try:
+        import MetaTrader5 as mt5
+    except Exception:
+        return
+
+    if not mt5.initialize(path=terminal):
+        return
+    try:
+        symbols = list(mt5.symbols_get() or [])
+        symbol_names_by_root: dict[str, list[str]] = defaultdict(list)
+        for sym in symbols:
+            symbol_names_by_root[normalize_symbol_root(sym.name)].append(sym.name)
+
+        def best_name(root: str) -> str | None:
+            names = list(symbol_names_by_root.get(normalize_symbol_root(root), []))
+            if not names:
+                return None
+            names.sort(key=lambda n: (not n.upper().endswith('.PRO'), len(n)))
+            return names[0]
+
+        for group_id, row in closed_groups.items():
+            total_mfe = 0.0
+            total_mae = 0.0
+            have = False
+            for leg in legs_by_group.get(group_id, []):
+                if str(leg.get('status') or '') != 'closed':
+                    continue
+                entry_dt = parse_dt(leg.get('opened_at_utc'))
+                close_dt = parse_dt(leg.get('closed_at_utc'))
+                entry_price = safe_float(leg.get('entry_price_filled')) or safe_float(leg.get('entry_price_planned'))
+                stop_price = safe_float(leg.get('stop_loss_planned'))
+                planned_risk = safe_float(leg.get('planned_risk_usd'))
+                if not entry_dt or not close_dt or entry_price is None or stop_price is None or planned_risk in (None, 0):
+                    continue
+                stop_dist = abs(entry_price - stop_price)
+                if stop_dist <= 0:
+                    continue
+                symbol_name = best_name(str(leg.get('symbol') or ''))
+                if not symbol_name:
+                    continue
+                start = entry_dt.replace(second=0, microsecond=0)
+                end = (close_dt + timedelta(minutes=1)).replace(second=0, microsecond=0)
+                rates = mt5.copy_rates_range(symbol_name, mt5.TIMEFRAME_M1, start, end)
+                if rates is None or len(rates) == 0:
+                    rates = mt5.copy_rates_range(symbol_name, mt5.TIMEFRAME_H1, start - timedelta(hours=1), end + timedelta(hours=1))
+                if rates is None or len(rates) == 0:
+                    continue
+                max_high = max(float(bar['high']) for bar in rates)
+                min_low = min(float(bar['low']) for bar in rates)
+                side = str(leg.get('side') or '').upper()
+                is_long = side in {'LONG', 'BUY'}
+                if is_long:
+                    favorable_move = max(0.0, max_high - entry_price)
+                    adverse_move = max(0.0, entry_price - min_low)
+                else:
+                    favorable_move = max(0.0, entry_price - min_low)
+                    adverse_move = max(0.0, max_high - entry_price)
+                total_mfe += planned_risk * favorable_move / stop_dist
+                total_mae += planned_risk * adverse_move / stop_dist
+                have = True
+            if have:
+                row['max_favorable_excursion_usd'] = round(total_mfe, 2)
+                row['max_adverse_excursion_usd'] = round(total_mae, 2)
+    finally:
+        try:
+            mt5.shutdown()
+        except Exception:
+            pass
 
 def build_daily_equity(trade_groups: list[dict[str, Any]]) -> list[list[Any]]:
     daily_map: dict[str, dict[str, Any]] = defaultdict(lambda: {
@@ -1057,12 +1264,14 @@ def main() -> int:
             screener_rows.append({'trade_group_id': row['trade_group_id'], **snap})
         review_rows.append(review)
 
-    recovered_groups, recovered_legs, recovered_reviews = build_bridge_recovered_rows(leg_rows)
+    recovered_groups, recovered_legs, recovered_reviews, recovered_screener_rows = build_bridge_recovered_rows(leg_rows)
     trade_group_rows.extend(recovered_groups)
     leg_rows.extend(recovered_legs)
     review_rows.extend(recovered_reviews)
+    screener_rows.extend(recovered_screener_rows)
 
     reconcile_trade_groups(trade_group_rows, leg_rows)
+    compute_group_excursions(trade_group_rows, leg_rows)
 
     trade_groups: list[list[Any]] = [TRADE_GROUP_HEADERS]
     for row in trade_group_rows:
