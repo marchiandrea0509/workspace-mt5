@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-11T04:58:17.858385+00:00",
+  "roomLabel": "mt5",
+  "channelId": "1487602981418303719",
+  "priorSessionId": "c518cc52-cd14-429a-82d8-deebf4ada557",
+  "transcriptPath": "C:\\Users\\anmar\\.openclaw\\agents\\mt5-fresh\\sessions\\c518cc52-cd14-429a-82d8-deebf4ada557.jsonl",
+  "entryPath": null,
+  "failureCounts": {
+    "prompt_error": 0,
+    "assistant_error": 0,
+    "usage_limit": 2,
+    "tab_not_found": 5,
+    "rate_limit": 0,
+    "aborted": 0
+  },
+  "bundlePath": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\state\\session_recovery\\mt5_1487602981418303719_2026-04-11_045817UTC\\recovery_bundle.md",
+  "resumeMessagePath": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\state\\session_recovery\\mt5_1487602981418303719_2026-04-11_045817UTC\\resume_message.md"
+}
