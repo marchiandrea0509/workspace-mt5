@@ -94,8 +94,27 @@ function Get-CompileSummary {
     return $null
 }
 
+function Get-LogLineTimestamp {
+    param(
+        [string]$Line,
+        [datetime]$ReferenceDate
+    )
+    if (-not $Line) { return $null }
+    if ($Line -match "`t(?<time>\d{2}:\d{2}:\d{2}\.\d{3})`t") {
+        return [datetime]::ParseExact(
+            ('{0} {1}' -f $ReferenceDate.ToString('yyyy-MM-dd'), $Matches.time),
+            'yyyy-MM-dd HH:mm:ss.fff',
+            [System.Globalization.CultureInfo]::InvariantCulture
+        )
+    }
+    return $null
+}
+
 function Get-BridgeHealth {
-    param([object]$Resolved)
+    param(
+        [object]$Resolved,
+        [string]$Since
+    )
 
     $today = Get-Date -Format 'yyyyMMdd'
     $tradeLog = Join-Path $Resolved.DataRoot ("Logs\$today.log")
@@ -116,6 +135,20 @@ function Get-BridgeHealth {
     $processedLine = Get-LatestMatchLine -Path $expertLog -Pattern 'GrayPaperBridgeEA processed ticket '
     $authLine = Get-LatestMatchLine -Path $tradeLog -Pattern "'\d+': authorized on"
     $syncLine = Get-LatestMatchLine -Path $tradeLog -Pattern "'\d+': terminal synchronized with"
+    $sinceTime = $null
+    if ($Since) {
+        $sinceTime = [datetime]::Parse($Since, [System.Globalization.CultureInfo]::InvariantCulture)
+    }
+    $referenceDate = Get-Date
+    $authAt = Get-LogLineTimestamp -Line $authLine -ReferenceDate $referenceDate
+    $syncAt = Get-LogLineTimestamp -Line $syncLine -ReferenceDate $referenceDate
+    $loadAt = Get-LogLineTimestamp -Line $loadLine -ReferenceDate $referenceDate
+    $initAt = Get-LogLineTimestamp -Line $initLine -ReferenceDate $referenceDate
+    $processedAt = Get-LogLineTimestamp -Line $processedLine -ReferenceDate $referenceDate
+    $freshAuthorizedObserved = if ($sinceTime) { [bool]($authAt -and $authAt -ge $sinceTime.AddSeconds(-2)) } else { [bool]$authLine }
+    $freshSynchronizedObserved = if ($sinceTime) { [bool]($syncAt -and $syncAt -ge $sinceTime.AddSeconds(-2)) } else { [bool]$syncLine }
+    $freshLoadObserved = if ($sinceTime) { [bool]($loadAt -and $loadAt -ge $sinceTime.AddSeconds(-2)) } else { [bool]$loadLine }
+    $freshInitObserved = if ($sinceTime) { [bool]($initAt -and $initAt -ge $sinceTime.AddSeconds(-2)) } else { [bool]$initLine }
 
     [pscustomobject]@{
         instanceName = $Resolved.Name
@@ -133,19 +166,30 @@ function Get-BridgeHealth {
         terminalPid = if ($running.Count -gt 0) { $running[0].Id } else { $null }
         terminalStartTime = if ($running.Count -gt 0) { $running[0].StartTime.ToString('s') } else { $null }
         latestCompileResult = Get-CompileSummary -CompileLog $compileLog
+        since = if ($sinceTime) { $sinceTime.ToString('s') } else { $null }
         latestAuthorizedLine = $authLine
         latestSyncLine = $syncLine
         latestLoadLine = $loadLine
         latestInitLine = $initLine
         latestProcessedLine = $processedLine
+        latestAuthorizedAt = if ($authAt) { $authAt.ToString('s') } else { $null }
+        latestSyncAt = if ($syncAt) { $syncAt.ToString('s') } else { $null }
+        latestLoadAt = if ($loadAt) { $loadAt.ToString('s') } else { $null }
+        latestInitAt = if ($initAt) { $initAt.ToString('s') } else { $null }
+        latestProcessedAt = if ($processedAt) { $processedAt.ToString('s') } else { $null }
         authorizedObserved = [bool]$authLine
         synchronizedObserved = [bool]$syncLine
         loadObserved = [bool]$loadLine
         initObserved = [bool]$initLine
+        freshAuthorizedObserved = $freshAuthorizedObserved
+        freshSynchronizedObserved = $freshSynchronizedObserved
+        freshLoadObserved = $freshLoadObserved
+        freshInitObserved = $freshInitObserved
         trailingConfigCount = if (Test-Path $trailingDir) { @(Get-ChildItem $trailingDir -File).Count } else { 0 }
         inboxCount = if (Test-Path $inboxDir) { @(Get-ChildItem $inboxDir -File).Count } else { 0 }
         outboxCount = if (Test-Path $outboxDir) { @(Get-ChildItem $outboxDir -File).Count } else { 0 }
         healthy = (($running.Count -gt 0) -and [bool]$authLine -and [bool]$syncLine -and [bool]$loadLine -and [bool]$initLine)
+        healthySince = if ($sinceTime) { (($running.Count -gt 0) -and $freshAuthorizedObserved -and $freshSynchronizedObserved -and $freshLoadObserved -and $freshInitObserved) } else { $null }
     }
 }
 
@@ -328,6 +372,7 @@ $pointer = Get-PointerInfo -PointerPath $PointerPath -ExpectedMql5Root $resolved
 $baseline = Get-LatestBaselineInfo -BaselineRoot $BaselineRoot -InstanceName $resolved.Name
 $beforeInventory = Get-ProcessInventory -Resolved $resolved -Config $config
 $initialHealth = Get-BridgeHealth -Resolved $resolved
+$healthReferenceSince = $null
 
 $actions = [ordered]@{
     restartAttempted = $false
@@ -356,12 +401,15 @@ if (-not $initialHealth.terminalRunning) {
         $reload = Invoke-BridgeReload -Resolved $resolved -ConfigPath $ConfigPath -TimeoutSeconds $TimeoutSeconds -SkipCompile:$SkipCompile.IsPresent
         $actions.restartSucceeded = $true
         $actions.restartDetails = if ($reload.json) { $reload.json } else { $reload.raw }
+        if ($reload.json -and $reload.json.startedAt) {
+            $healthReferenceSince = [string]$reload.json.startedAt
+        }
     }
     catch {
         $actions.restartError = $_.Exception.Message
     }
 
-    $healthAfterRestart = Get-BridgeHealth -Resolved $resolved
+    $healthAfterRestart = Get-BridgeHealth -Resolved $resolved -Since $healthReferenceSince
 }
 
 $healthBeforeCleanup = $healthAfterRestart
@@ -371,12 +419,15 @@ if ($TryRestoreBaselineOnMissingEa -and -not $healthBeforeCleanup.healthy -and $
         $restore = Invoke-BaselineRestore -Resolved $resolved -ConfigPath $ConfigPath -BaselineRoot $BaselineRoot -TimeoutSeconds $TimeoutSeconds -SkipCompile:$SkipCompile.IsPresent
         $actions.baselineRestoreSucceeded = $true
         $actions.baselineRestoreDetails = if ($restore.json) { $restore.json } else { $restore.raw }
+        if ($restore.json -and $restore.json.restartResult -and $restore.json.restartResult.startedAt) {
+            $healthReferenceSince = [string]$restore.json.restartResult.startedAt
+        }
     }
     catch {
         $actions.baselineRestoreError = $_.Exception.Message
     }
 
-    $healthBeforeCleanup = Get-BridgeHealth -Resolved $resolved
+    $healthBeforeCleanup = Get-BridgeHealth -Resolved $resolved -Since $healthReferenceSince
 }
 
 if ($NoCleanup) {
@@ -410,7 +461,7 @@ else {
 }
 
 $afterInventory = Get-ProcessInventory -Resolved $resolved -Config $config
-$finalHealth = Get-BridgeHealth -Resolved $resolved
+$finalHealth = Get-BridgeHealth -Resolved $resolved -Since $healthReferenceSince
 $finalTargetCount = @($afterInventory | Where-Object { $_.isTarget }).Count
 $finalFallbackCount = @($afterInventory | Where-Object { $_.classification -eq 'fallback' }).Count
 

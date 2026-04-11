@@ -15,10 +15,19 @@ $ErrorActionPreference = 'Stop'
 function Invoke-BridgeHealth {
     param(
         [string]$InstanceName,
-        [string]$ConfigPath
+        [string]$ConfigPath,
+        [string]$Since
     )
 
-    $raw = & (Join-Path $PSScriptRoot 'check_mt5_bridge_health.ps1') -InstanceName $InstanceName -ConfigPath $ConfigPath 2>&1 | Out-String
+    $params = @{
+        InstanceName = $InstanceName
+        ConfigPath = $ConfigPath
+    }
+    if ($Since) {
+        $params.Since = $Since
+    }
+
+    $raw = & (Join-Path $PSScriptRoot 'check_mt5_bridge_health.ps1') @params 2>&1 | Out-String
     try {
         return ($raw | ConvertFrom-Json -ErrorAction Stop)
     }
@@ -209,7 +218,7 @@ $restartResult = $null
 $healthAfterRestart = $null
 if (-not $NoRestart) {
     $restartResult = Invoke-BridgeReload -InstanceName $resolved.Name -ConfigPath $ConfigPath -TimeoutSeconds $RestartTimeoutSeconds -SkipCompile:$SkipCompile.IsPresent
-    $healthAfterRestart = Invoke-BridgeHealth -InstanceName $resolved.Name -ConfigPath $ConfigPath
+    $healthAfterRestart = Invoke-BridgeHealth -InstanceName $resolved.Name -ConfigPath $ConfigPath -Since $restartResult.startedAt
 }
 
 $result = [pscustomobject]@{

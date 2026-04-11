@@ -3,7 +3,8 @@ param(
     [string]$ConfigPath = (Join-Path $PSScriptRoot '..\config\mt5_instances.json'),
     [string]$TerminalExe,
     [string]$DataRoot,
-    [string]$EaSource
+    [string]$EaSource,
+    [string]$Since
 )
 
 $ErrorActionPreference = 'Stop'
@@ -50,6 +51,22 @@ function Get-LatestMatchLine {
     return $lines[-1]
 }
 
+function Get-LogLineTimestamp {
+    param(
+        [string]$Line,
+        [datetime]$ReferenceDate
+    )
+    if (-not $Line) { return $null }
+    if ($Line -match "`t(?<time>\d{2}:\d{2}:\d{2}\.\d{3})`t") {
+        return [datetime]::ParseExact(
+            ('{0} {1}' -f $ReferenceDate.ToString('yyyy-MM-dd'), $Matches.time),
+            'yyyy-MM-dd HH:mm:ss.fff',
+            [System.Globalization.CultureInfo]::InvariantCulture
+        )
+    }
+    return $null
+}
+
 $today = Get-Date -Format 'yyyyMMdd'
 $tradeLog = Join-Path $DataRoot ("Logs\$today.log")
 $expertLog = Join-Path $DataRoot ("MQL5\Logs\$today.log")
@@ -66,22 +83,61 @@ if ($compileText -match 'Result:[^\r\n]+') {
     $compileSummary = $Matches[0]
 }
 
+$authorizedLine = Get-LatestMatchLine -Path $tradeLog -Pattern "'\d+': authorized on"
+$syncLine = Get-LatestMatchLine -Path $tradeLog -Pattern "'\d+': terminal synchronized with"
+$loadLine = Get-LatestMatchLine -Path $tradeLog -Pattern 'expert GrayPaperBridgeEA .* loaded successfully'
+$initLine = Get-LatestMatchLine -Path $expertLog -Pattern 'GrayPaperBridgeEA .* initialized\. Watching gray_bridge\\inbox'
+$processedLine = Get-LatestMatchLine -Path $expertLog -Pattern 'GrayPaperBridgeEA processed ticket '
+$terminalRunning = ($running.Count -gt 0)
+$sinceTime = $null
+if ($Since) {
+    $sinceTime = [datetime]::Parse($Since, [System.Globalization.CultureInfo]::InvariantCulture)
+}
+$referenceDate = Get-Date
+$authorizedAt = Get-LogLineTimestamp -Line $authorizedLine -ReferenceDate $referenceDate
+$syncAt = Get-LogLineTimestamp -Line $syncLine -ReferenceDate $referenceDate
+$loadAt = Get-LogLineTimestamp -Line $loadLine -ReferenceDate $referenceDate
+$initAt = Get-LogLineTimestamp -Line $initLine -ReferenceDate $referenceDate
+$processedAt = Get-LogLineTimestamp -Line $processedLine -ReferenceDate $referenceDate
+$freshAuthorizedObserved = if ($sinceTime) { [bool]($authorizedAt -and $authorizedAt -ge $sinceTime.AddSeconds(-2)) } else { [bool]$authorizedLine }
+$freshSynchronizedObserved = if ($sinceTime) { [bool]($syncAt -and $syncAt -ge $sinceTime.AddSeconds(-2)) } else { [bool]$syncLine }
+$freshLoadObserved = if ($sinceTime) { [bool]($loadAt -and $loadAt -ge $sinceTime.AddSeconds(-2)) } else { [bool]$loadLine }
+$freshInitObserved = if ($sinceTime) { [bool]($initAt -and $initAt -ge $sinceTime.AddSeconds(-2)) } else { [bool]$initLine }
+
 $result = [pscustomobject]@{
     instanceName = $resolved.Name
     instanceLabel = $resolved.Label
     terminalExe = $TerminalExe
     dataRoot = $DataRoot
     eaSource = $EaSource
-    terminalRunning = ($running.Count -gt 0)
+    terminalRunning = $terminalRunning
     terminalPid = if ($running.Count -gt 0) { $running[0].Id } else { $null }
     terminalStartTime = if ($running.Count -gt 0) { $running[0].StartTime.ToString('s') } else { $null }
     latestCompileResult = $compileSummary
-    latestLoadLine = Get-LatestMatchLine -Path $tradeLog -Pattern 'expert GrayPaperBridgeEA .* loaded successfully'
-    latestInitLine = Get-LatestMatchLine -Path $expertLog -Pattern 'GrayPaperBridgeEA .* initialized\. Watching gray_bridge\\inbox'
-    latestProcessedLine = Get-LatestMatchLine -Path $expertLog -Pattern 'GrayPaperBridgeEA processed ticket '
+    since = if ($sinceTime) { $sinceTime.ToString('s') } else { $null }
+    latestAuthorizedLine = $authorizedLine
+    latestSyncLine = $syncLine
+    latestLoadLine = $loadLine
+    latestInitLine = $initLine
+    latestProcessedLine = $processedLine
+    latestAuthorizedAt = if ($authorizedAt) { $authorizedAt.ToString('s') } else { $null }
+    latestSyncAt = if ($syncAt) { $syncAt.ToString('s') } else { $null }
+    latestLoadAt = if ($loadAt) { $loadAt.ToString('s') } else { $null }
+    latestInitAt = if ($initAt) { $initAt.ToString('s') } else { $null }
+    latestProcessedAt = if ($processedAt) { $processedAt.ToString('s') } else { $null }
+    authorizedObserved = [bool]$authorizedLine
+    synchronizedObserved = [bool]$syncLine
+    loadObserved = [bool]$loadLine
+    initObserved = [bool]$initLine
+    freshAuthorizedObserved = $freshAuthorizedObserved
+    freshSynchronizedObserved = $freshSynchronizedObserved
+    freshLoadObserved = $freshLoadObserved
+    freshInitObserved = $freshInitObserved
     trailingConfigCount = if (Test-Path $trailingDir) { @(Get-ChildItem $trailingDir -File).Count } else { 0 }
     inboxCount = if (Test-Path $inboxDir) { @(Get-ChildItem $inboxDir -File).Count } else { 0 }
     outboxCount = if (Test-Path $outboxDir) { @(Get-ChildItem $outboxDir -File).Count } else { 0 }
+    healthy = ($terminalRunning -and [bool]$authorizedLine -and [bool]$syncLine -and [bool]$loadLine -and [bool]$initLine)
+    healthySince = if ($sinceTime) { ($terminalRunning -and $freshAuthorizedObserved -and $freshSynchronizedObserved -and $freshLoadObserved -and $freshInitObserved) } else { $null }
 }
 
 $result | ConvertTo-Json -Depth 4

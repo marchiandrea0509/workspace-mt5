@@ -135,9 +135,20 @@ if (-not $loaded) {
     throw 'MT5 restarted, but GrayPaperBridgeEA load confirmation was not found in terminal logs.'
 }
 
-$initialized = Wait-Until -TimeoutSeconds 10 -PollMs 1500 -Condition {
+$initialized = Wait-Until -TimeoutSeconds 15 -PollMs 1500 -Condition {
     $line = Get-LatestMatchLine -Path $expertLog -Pattern 'GrayPaperBridgeEA .* initialized\. Watching gray_bridge\\inbox'
-    return [bool]$line
+    $lineTime = Get-LogLineTimestamp -Line $line -ReferenceDate $start
+    if (-not $lineTime) { return $false }
+    return ($lineTime -ge $start.AddSeconds(-2))
+}
+
+$latestLoadLine = Get-LatestMatchLine -Path $tradeLog -Pattern 'expert GrayPaperBridgeEA .* loaded successfully'
+$latestInitLine = Get-LatestMatchLine -Path $expertLog -Pattern 'GrayPaperBridgeEA .* initialized\. Watching gray_bridge\\inbox'
+$latestLoadAt = Get-LogLineTimestamp -Line $latestLoadLine -ReferenceDate $start
+$latestInitAt = Get-LogLineTimestamp -Line $latestInitLine -ReferenceDate $start
+
+if (-not $initialized) {
+    throw 'MT5 restarted and the EA loaded, but a fresh GrayPaperBridgeEA init line was not found in expert logs.'
 }
 
 $result = [pscustomobject]@{
@@ -152,8 +163,10 @@ $result = [pscustomobject]@{
     dataRoot = $DataRoot
     tradeLog = $tradeLog
     expertLog = $expertLog
-    latestLoadLine = Get-LatestMatchLine -Path $tradeLog -Pattern 'expert GrayPaperBridgeEA .* loaded successfully'
-    latestInitLine = Get-LatestMatchLine -Path $expertLog -Pattern 'GrayPaperBridgeEA .* initialized\. Watching gray_bridge\\inbox'
+    latestLoadLine = $latestLoadLine
+    latestInitLine = $latestInitLine
+    latestLoadAt = if ($latestLoadAt) { $latestLoadAt.ToString('s') } else { $null }
+    latestInitAt = if ($latestInitAt) { $latestInitAt.ToString('s') } else { $null }
     initLineObserved = [bool]$initialized
 }
 
