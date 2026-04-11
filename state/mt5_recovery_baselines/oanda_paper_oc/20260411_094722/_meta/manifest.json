@@ -1,0 +1,54 @@
+﻿{
+    "savedAt":  "2026-04-11T09:47:26",
+    "instanceName":  "oanda_paper_oc",
+    "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+    "terminalExe":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+    "dataRoot":  "C:\\MT5_OANDA_PAPER_OC",
+    "profile":  "Default",
+    "launchArgs":  "/portable /profile:Default",
+    "snapshotDir":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\20260411_094722",
+    "copiedConfigFiles":  [
+                              "terminal.ini",
+                              "settings.ini",
+                              "common.ini"
+                          ],
+    "copiedMqlProfiles":  true,
+    "sourceOfTruth":  [
+                          "Config\\\\terminal.ini",
+                          "Config\\\\settings.ini",
+                          "Config\\\\common.ini",
+                          "MQL5\\\\Profiles\\\\**"
+                      ],
+    "note":  "Top-level portable Profiles\\\\... tree is intentionally not treated as authoritative recovery input because it appears stale versus MQL5\\\\Profiles on this installation.",
+    "healthBeforeSave":  {
+                             "instanceName":  "oanda_paper_oc",
+                             "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+                             "terminalExe":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                             "dataRoot":  "C:\\MT5_OANDA_PAPER_OC",
+                             "eaSource":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+                             "terminalRunning":  true,
+                             "terminalPid":  6220,
+                             "terminalStartTime":  "2026-04-11T09:21:33",
+                             "latestCompileResult":  "Result: 0 errors, 0 warnings, 5420 msec elapsed, cpu=\u0027X64 Regular\u0027",
+                             "latestAuthorizedLine":  "FQ\t0\t09:21:46.115\tNetwork\t\u002762970600\u0027: authorized on OANDATMS-MT5 through Access Server for clients (ping: 48.96 ms, build 5430)",
+                             "latestSyncLine":  "OP\t0\t09:21:47.154\tNetwork\t\u002762970600\u0027: terminal synchronized with OANDA TMS Brokers S.A.: 0 positions, 28 orders, 1743 symbols, 0 spreads",
+                             "latestLoadLine":  "DQ\t0\t09:41:18.129\tExperts\texpert GrayPaperBridgeEA (EURGBP.pro,H1) loaded successfully",
+                             "latestInitLine":  "CG\t0\t09:41:20.177\tGrayPaperBridgeEA (EURGBP.pro,H1)\tGrayPaperBridgeEA initialized. Watching gray_bridge\\inbox",
+                             "latestProcessedLine":  null,
+                             "authorizedObserved":  true,
+                             "synchronizedObserved":  true,
+                             "loadObserved":  true,
+                             "initObserved":  true,
+                             "trailingConfigCount":  8,
+                             "inboxCount":  0,
+                             "outboxCount":  36,
+                             "healthy":  true
+                         },
+    "chart03Info":  null,
+    "closeAttempted":  true,
+    "closedGracefully":  true,
+    "forceClosed":  false,
+    "warnings":  [
+
+                 ]
+}

@@ -1,0 +1,207 @@
+﻿[2026-04-11T11:56:12] Boot recovery starting for instance 'oanda_paper_oc'. DelaySeconds=90 TimeoutSeconds=120 SkipCompile=True
+[2026-04-11T11:56:12] Sleeping for 90 seconds to let the user session and network settle.
+[2026-04-11T11:57:43] Recovery script completed. Raw JSON/result follows.
+{
+    "ranAt":  "2026-04-11T11:57:43",
+    "instanceName":  "oanda_paper_oc",
+    "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+    "pointer":  {
+                    "path":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\mql5\\MQL5",
+                    "exists":  true,
+                    "raw":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                    "normalizedRaw":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                    "expected":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                    "normalizedExpected":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                    "matchesExpected":  true
+                },
+    "baseline":  {
+                     "available":  true,
+                     "pointerPath":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\LATEST.json",
+                     "latestSnapshot":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\20260411_094722",
+                     "savedAt":  "2026-04-11T09:47:26"
+                 },
+    "outcome":  "RECOVERED_FULLY",
+    "recommendedNextStep":  "No immediate action required. Keep only the portable MT5 terminal running and continue monitoring normally.",
+    "warnings":  [
+
+                 ],
+    "beforeInventory":  [
+                            {
+                                "pid":  10768,
+                                "executablePath":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                                "commandLine":  "\"C:\\MT5_OANDA_PAPER_OC\\terminal64.exe\" /portable /profile:Default ",
+                                "createdAt":  "04/11/2026 09:54:39",
+                                "instanceName":  "oanda_paper_oc",
+                                "classification":  "target",
+                                "isTarget":  true
+                            }
+                        ],
+    "initialHealth":  {
+                          "instanceName":  "oanda_paper_oc",
+                          "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+                          "terminalExe":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                          "dataRoot":  "C:\\MT5_OANDA_PAPER_OC",
+                          "mql5Root":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                          "bridgeRoot":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge",
+                          "eaSource":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+                          "tradeLog":  "C:\\MT5_OANDA_PAPER_OC\\Logs\\20260411.log",
+                          "expertLog":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Logs\\20260411.log",
+                          "terminalRunning":  true,
+                          "runningPidCount":  1,
+                          "targetPids":  [
+                                             10768
+                                         ],
+                          "terminalPid":  10768,
+                          "terminalStartTime":  "2026-04-11T09:54:39",
+                          "latestCompileResult":  "Result: 0 errors, 0 warnings, 5005 msec elapsed, cpu=\u0027X64 Regular\u0027",
+                          "since":  null,
+                          "latestAuthorizedLine":  "OD\t0\t09:54:42.455\tNetwork\t\u002762970600\u0027: authorized on OANDATMS-MT5 through Access Server for clients (ping: 48.96 ms, build 5430)",
+                          "latestSyncLine":  "JE\t0\t09:54:43.511\tNetwork\t\u002762970600\u0027: terminal synchronized with OANDA TMS Brokers S.A.: 0 positions, 28 orders, 1743 symbols, 0 spreads",
+                          "latestLoadLine":  "LP\t0\t09:54:41.576\tExperts\texpert GrayPaperBridgeEA (EURGBP.pro,H1) loaded successfully",
+                          "latestInitLine":  "GH\t0\t09:54:43.668\tGrayPaperBridgeEA (EURGBP.pro,H1)\tGrayPaperBridgeEA initialized. Watching gray_bridge\\inbox",
+                          "latestProcessedLine":  null,
+                          "latestAuthorizedAt":  "2026-04-11T09:54:42",
+                          "latestSyncAt":  "2026-04-11T09:54:43",
+                          "latestLoadAt":  "2026-04-11T09:54:41",
+                          "latestInitAt":  "2026-04-11T09:54:43",
+                          "latestProcessedAt":  null,
+                          "authorizedObserved":  true,
+                          "synchronizedObserved":  true,
+                          "loadObserved":  true,
+                          "initObserved":  true,
+                          "freshAuthorizedObserved":  true,
+                          "freshSynchronizedObserved":  true,
+                          "freshLoadObserved":  true,
+                          "freshInitObserved":  true,
+                          "trailingConfigCount":  8,
+                          "inboxCount":  0,
+                          "outboxCount":  36,
+                          "healthy":  true,
+                          "healthySince":  null
+                      },
+    "actions":  {
+                    "restartAttempted":  false,
+                    "restartSucceeded":  false,
+                    "restartError":  null,
+                    "restartDetails":  null,
+                    "baselineAvailable":  true,
+                    "baselinePointerPath":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\LATEST.json",
+                    "baselineSnapshotPath":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\20260411_094722",
+                    "baselineRestoreAttempted":  false,
+                    "baselineRestoreSucceeded":  false,
+                    "baselineRestoreError":  null,
+                    "baselineRestoreDetails":  null,
+                    "cleanupAttempted":  true,
+                    "cleanupSkippedReason":  null,
+                    "closedFallbackPids":  [
+
+                                           ],
+                    "closedDuplicateTargetPids":  [
+
+                                                  ],
+                    "cleanupErrors":  [
+
+                                      ],
+                    "keptTargetPid":  10768
+                },
+    "healthBeforeCleanup":  {
+                                "instanceName":  "oanda_paper_oc",
+                                "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+                                "terminalExe":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                                "dataRoot":  "C:\\MT5_OANDA_PAPER_OC",
+                                "mql5Root":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                                "bridgeRoot":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge",
+                                "eaSource":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+                                "tradeLog":  "C:\\MT5_OANDA_PAPER_OC\\Logs\\20260411.log",
+                                "expertLog":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Logs\\20260411.log",
+                                "terminalRunning":  true,
+                                "runningPidCount":  1,
+                                "targetPids":  [
+                                                   10768
+                                               ],
+                                "terminalPid":  10768,
+                                "terminalStartTime":  "2026-04-11T09:54:39",
+                                "latestCompileResult":  "Result: 0 errors, 0 warnings, 5005 msec elapsed, cpu=\u0027X64 Regular\u0027",
+                                "since":  null,
+                                "latestAuthorizedLine":  "OD\t0\t09:54:42.455\tNetwork\t\u002762970600\u0027: authorized on OANDATMS-MT5 through Access Server for clients (ping: 48.96 ms, build 5430)",
+                                "latestSyncLine":  "JE\t0\t09:54:43.511\tNetwork\t\u002762970600\u0027: terminal synchronized with OANDA TMS Brokers S.A.: 0 positions, 28 orders, 1743 symbols, 0 spreads",
+                                "latestLoadLine":  "LP\t0\t09:54:41.576\tExperts\texpert GrayPaperBridgeEA (EURGBP.pro,H1) loaded successfully",
+                                "latestInitLine":  "GH\t0\t09:54:43.668\tGrayPaperBridgeEA (EURGBP.pro,H1)\tGrayPaperBridgeEA initialized. Watching gray_bridge\\inbox",
+                                "latestProcessedLine":  null,
+                                "latestAuthorizedAt":  "2026-04-11T09:54:42",
+                                "latestSyncAt":  "2026-04-11T09:54:43",
+                                "latestLoadAt":  "2026-04-11T09:54:41",
+                                "latestInitAt":  "2026-04-11T09:54:43",
+                                "latestProcessedAt":  null,
+                                "authorizedObserved":  true,
+                                "synchronizedObserved":  true,
+                                "loadObserved":  true,
+                                "initObserved":  true,
+                                "freshAuthorizedObserved":  true,
+                                "freshSynchronizedObserved":  true,
+                                "freshLoadObserved":  true,
+                                "freshInitObserved":  true,
+                                "trailingConfigCount":  8,
+                                "inboxCount":  0,
+                                "outboxCount":  36,
+                                "healthy":  true,
+                                "healthySince":  null
+                            },
+    "afterInventory":  [
+                           {
+                               "pid":  10768,
+                               "executablePath":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                               "commandLine":  "\"C:\\MT5_OANDA_PAPER_OC\\terminal64.exe\" /portable /profile:Default ",
+                               "createdAt":  "04/11/2026 09:54:39",
+                               "instanceName":  "oanda_paper_oc",
+                               "classification":  "target",
+                               "isTarget":  true
+                           }
+                       ],
+    "finalHealth":  {
+                        "instanceName":  "oanda_paper_oc",
+                        "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+                        "terminalExe":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                        "dataRoot":  "C:\\MT5_OANDA_PAPER_OC",
+                        "mql5Root":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                        "bridgeRoot":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge",
+                        "eaSource":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+                        "tradeLog":  "C:\\MT5_OANDA_PAPER_OC\\Logs\\20260411.log",
+                        "expertLog":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Logs\\20260411.log",
+                        "terminalRunning":  true,
+                        "runningPidCount":  1,
+                        "targetPids":  [
+                                           10768
+                                       ],
+                        "terminalPid":  10768,
+                        "terminalStartTime":  "2026-04-11T09:54:39",
+                        "latestCompileResult":  "Result: 0 errors, 0 warnings, 5005 msec elapsed, cpu=\u0027X64 Regular\u0027",
+                        "since":  null,
+                        "latestAuthorizedLine":  "OD\t0\t09:54:42.455\tNetwork\t\u002762970600\u0027: authorized on OANDATMS-MT5 through Access Server for clients (ping: 48.96 ms, build 5430)",
+                        "latestSyncLine":  "JE\t0\t09:54:43.511\tNetwork\t\u002762970600\u0027: terminal synchronized with OANDA TMS Brokers S.A.: 0 positions, 28 orders, 1743 symbols, 0 spreads",
+                        "latestLoadLine":  "LP\t0\t09:54:41.576\tExperts\texpert GrayPaperBridgeEA (EURGBP.pro,H1) loaded successfully",
+                        "latestInitLine":  "GH\t0\t09:54:43.668\tGrayPaperBridgeEA (EURGBP.pro,H1)\tGrayPaperBridgeEA initialized. Watching gray_bridge\\inbox",
+                        "latestProcessedLine":  null,
+                        "latestAuthorizedAt":  "2026-04-11T09:54:42",
+                        "latestSyncAt":  "2026-04-11T09:54:43",
+                        "latestLoadAt":  "2026-04-11T09:54:41",
+                        "latestInitAt":  "2026-04-11T09:54:43",
+                        "latestProcessedAt":  null,
+                        "authorizedObserved":  true,
+                        "synchronizedObserved":  true,
+                        "loadObserved":  true,
+                        "initObserved":  true,
+                        "freshAuthorizedObserved":  true,
+                        "freshSynchronizedObserved":  true,
+                        "freshLoadObserved":  true,
+                        "freshInitObserved":  true,
+                        "trailingConfigCount":  8,
+                        "inboxCount":  0,
+                        "outboxCount":  36,
+                        "healthy":  true,
+                        "healthySince":  null
+                    }
+}
+
+[2026-04-11T11:57:43] Outcome=RECOVERED_FULLY healthy=True healthySince=
+[2026-04-11T11:57:43] Boot recovery completed successfully.
