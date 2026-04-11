@@ -72,3 +72,6 @@ Completed outcomes:
 
 ## Important caution
 Keep using the portable instance as the default automation target unless there is a deliberate rollback. Preserve the AppData-backed terminal as fallback/manual history rather than silently mixing the two again.
+
+## Hard-shutdown recovery note
+A 2026-04-11 hard-shutdown incident showed that the portable MT5 terminal can be restarted successfully while still failing to auto-restore `GrayPaperBridgeEA` on a chart. In that failure mode, broker login may look healthy even though the bridge watcher is still down, and duplicate/fallback MT5 terminals may also be running. See `docs/MT5_HARD_SHUTDOWN_RECOVERY_PLAN.md` for the tested operator recovery flow and the staged automation plan.
