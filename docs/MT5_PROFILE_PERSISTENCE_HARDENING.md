@@ -119,17 +119,38 @@ What it adds:
 2. If outcome is still partial, inspect MT5 manually and reattach `GrayPaperBridgeEA` only as the fallback step.
 3. After manual recovery, capture a fresh known-good baseline again.
 
-## What remains unproven
-As of 2026-04-11, the following still needs a controlled live test:
-- whether the current portable `Default` profile now survives a clean close/reopen with the bridge EA intact
-- whether the saved baseline restore is sufficient to auto-recover the EA without manual reattach after a simulated bad state
+## Validation result on 2026-04-11
+A controlled Saturday validation window was completed.
 
-So the tooling is in place, but the final proof step is still:
-- **capture baseline**
-- **test restore path**
+What was proven:
+- a baseline snapshot was captured successfully:
+  - `state\mt5_recovery_baselines\oanda_paper_oc\20260411_094722`
+- MT5 was restarted through the intended launch path with:
+  - `/portable /profile:Default`
+- after adding fresh-log validation to the PowerShell helpers, a controlled restart was verified with **new** post-restart evidence for all critical signals:
+  - load at `09:54:41`
+  - authorization at `09:54:42`
+  - synchronization at `09:54:43`
+  - EA init at `09:54:43`
+
+What this means:
+- the launcher path is correct
+- the baseline save path works
+- the restart verification path now distinguishes fresh evidence from stale same-day log lines
+- the portable MT5 bridge can come back healthy after a controlled restart without manual EA reattach
+
+## What remains unproven
+The main remaining proof step is narrower now:
+- whether the **restore-from-baseline** path is sufficient to recover automatically from a deliberately simulated bad profile/EA state without manual reattach
+
+So the hardening status is now:
+- **baseline save: validated**
+- **fresh restart verification: validated**
+- **baseline restore as automatic remediation: not yet validated**
 
 ## Bottom line
-The system is now better prepared for the exact shutdown failure we saw:
-- recovery already handled terminal restart + duplicate cleanup
-- persistence hardening now adds baseline save/restore tooling
-- the next high-value move is to capture a known-good baseline during a controlled restart window
+The system is materially more robust than it was before the 2026-04-11 shutdown incident:
+- recovery handles terminal restart + duplicate cleanup
+- persistence hardening adds baseline save/restore tooling
+- strict fresh-log validation now prevents false positives from stale same-day MT5 logs
+- a controlled restart has been validated end-to-end for the portable bridge path

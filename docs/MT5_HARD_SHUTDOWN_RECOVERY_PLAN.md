@@ -131,6 +131,11 @@ Partial hardening is now in place:
 - `scripts\recover_mt5_after_shutdown.ps1 -TryRestoreBaselineOnMissingEa`
 - see also `docs/MT5_PROFILE_PERSISTENCE_HARDENING.md`
 
+Validation update:
+- on 2026-04-11, a controlled restart from a healthy attached state was successfully validated with fresh post-restart load/auth/sync/init evidence after tightening the scripts to reject stale same-day log lines
+- this means the launcher + verification path is now trustworthy for controlled restart checks
+- the remaining unproven piece is baseline **restore** as an automatic remediation for a broken chart/profile state
+
 Best next steps:
 1. Verify whether the portable `Default` profile truly persists the chart with `GrayPaperBridgeEA` attached.
 2. Save a dedicated portable profile/template specifically for bridge recovery.
