@@ -80,3 +80,10 @@ Current first-pass recovery command:
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\recover_mt5_after_shutdown.ps1 -InstanceName oanda_paper_oc
 ```
+
+Baseline-aware variant:
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\recover_mt5_after_shutdown.ps1 -InstanceName oanda_paper_oc -TryRestoreBaselineOnMissingEa
+```
+
+Profile hardening notes and baseline save/restore commands live in `docs/MT5_PROFILE_PERSISTENCE_HARDENING.md`.

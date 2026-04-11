@@ -125,6 +125,12 @@ This makes Discord/agent responses much clearer during incident handling.
 ### Phase 3 - Best automation target: make EA restoration survive restart
 The biggest gap exposed on 2026-04-11 is **EA reattachment**. Restart automation already exists; chart/EA restoration does not.
 
+Partial hardening is now in place:
+- `scripts\save_mt5_recovery_baseline.ps1`
+- `scripts\restore_mt5_recovery_baseline.ps1`
+- `scripts\recover_mt5_after_shutdown.ps1 -TryRestoreBaselineOnMissingEa`
+- see also `docs/MT5_PROFILE_PERSISTENCE_HARDENING.md`
+
 Best next steps:
 1. Verify whether the portable `Default` profile truly persists the chart with `GrayPaperBridgeEA` attached.
 2. Save a dedicated portable profile/template specifically for bridge recovery.

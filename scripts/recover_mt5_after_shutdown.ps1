@@ -2,9 +2,11 @@ param(
     [string]$InstanceName,
     [string]$ConfigPath = (Join-Path $PSScriptRoot '..\config\mt5_instances.json'),
     [string]$PointerPath = (Join-Path $PSScriptRoot '..\mql5\MQL5'),
+    [string]$BaselineRoot = (Join-Path $PSScriptRoot '..\state\mt5_recovery_baselines'),
     [int]$TimeoutSeconds = 90,
     [switch]$SkipCompile,
-    [switch]$NoCleanup
+    [switch]$NoCleanup,
+    [switch]$TryRestoreBaselineOnMissingEa
 )
 
 $ErrorActionPreference = 'Stop'
@@ -262,9 +264,68 @@ function Invoke-BridgeReload {
     }
 }
 
+function Get-LatestBaselineInfo {
+    param(
+        [string]$BaselineRoot,
+        [string]$InstanceName
+    )
+
+    $pointerPath = Join-Path (Join-Path $BaselineRoot $InstanceName) 'LATEST.json'
+    if (-not (Test-Path $pointerPath)) {
+        return [pscustomobject]@{
+            available = $false
+            pointerPath = $pointerPath
+            latestSnapshot = $null
+        }
+    }
+
+    $payload = Get-Content $pointerPath -Raw | ConvertFrom-Json
+    [pscustomobject]@{
+        available = [bool]$payload.latestSnapshot
+        pointerPath = $pointerPath
+        latestSnapshot = [string]$payload.latestSnapshot
+        savedAt = [string]$payload.savedAt
+    }
+}
+
+function Invoke-BaselineRestore {
+    param(
+        [object]$Resolved,
+        [string]$ConfigPath,
+        [string]$BaselineRoot,
+        [int]$TimeoutSeconds,
+        [bool]$SkipCompile
+    )
+
+    $params = @{
+        InstanceName = $Resolved.Name
+        ConfigPath = $ConfigPath
+        BaselineRoot = $BaselineRoot
+        RestartAfterRestore = $true
+        ForceStopTarget = $true
+        RestartTimeoutSeconds = $TimeoutSeconds
+    }
+    if ($SkipCompile) {
+        $params.SkipCompile = $true
+    }
+
+    $raw = & (Join-Path $PSScriptRoot 'restore_mt5_recovery_baseline.ps1') @params 2>&1 | Out-String
+    $json = $null
+    try {
+        $json = $raw | ConvertFrom-Json -ErrorAction Stop
+    }
+    catch {}
+
+    [pscustomobject]@{
+        raw = $raw.Trim()
+        json = $json
+    }
+}
+
 $config = Get-Mt5InstancesConfig -ConfigPath $ConfigPath
 $resolved = Get-Mt5InstanceConfig -InstanceName $InstanceName -ConfigPath $ConfigPath
 $pointer = Get-PointerInfo -PointerPath $PointerPath -ExpectedMql5Root $resolved.Mql5Root
+$baseline = Get-LatestBaselineInfo -BaselineRoot $BaselineRoot -InstanceName $resolved.Name
 $beforeInventory = Get-ProcessInventory -Resolved $resolved -Config $config
 $initialHealth = Get-BridgeHealth -Resolved $resolved
 
@@ -273,6 +334,13 @@ $actions = [ordered]@{
     restartSucceeded = $false
     restartError = $null
     restartDetails = $null
+    baselineAvailable = [bool]$baseline.available
+    baselinePointerPath = $baseline.pointerPath
+    baselineSnapshotPath = $baseline.latestSnapshot
+    baselineRestoreAttempted = $false
+    baselineRestoreSucceeded = $false
+    baselineRestoreError = $null
+    baselineRestoreDetails = $null
     cleanupAttempted = $false
     cleanupSkippedReason = $null
     closedFallbackPids = @()
@@ -297,6 +365,20 @@ if (-not $initialHealth.terminalRunning) {
 }
 
 $healthBeforeCleanup = $healthAfterRestart
+if ($TryRestoreBaselineOnMissingEa -and -not $healthBeforeCleanup.healthy -and $baseline.available) {
+    $actions.baselineRestoreAttempted = $true
+    try {
+        $restore = Invoke-BaselineRestore -Resolved $resolved -ConfigPath $ConfigPath -BaselineRoot $BaselineRoot -TimeoutSeconds $TimeoutSeconds -SkipCompile:$SkipCompile.IsPresent
+        $actions.baselineRestoreSucceeded = $true
+        $actions.baselineRestoreDetails = if ($restore.json) { $restore.json } else { $restore.raw }
+    }
+    catch {
+        $actions.baselineRestoreError = $_.Exception.Message
+    }
+
+    $healthBeforeCleanup = Get-BridgeHealth -Resolved $resolved
+}
+
 if ($NoCleanup) {
     $actions.cleanupSkippedReason = 'NoCleanup switch supplied.'
 }
@@ -375,13 +457,23 @@ elseif (-not $pointer.matchesExpected) {
 if ($actions.restartError) {
     $warnings += "Restart attempt error: $($actions.restartError)"
 }
+if ($actions.baselineRestoreError) {
+    $warnings += "Baseline restore error: $($actions.baselineRestoreError)"
+}
 if ($actions.cleanupErrors.Count -gt 0) {
     $warnings += 'One or more cleanup actions failed; inspect cleanupErrors.'
 }
 
 $recommendedNextStep = switch ($outcome) {
     'RECOVERED_FULLY' { 'No immediate action required. Keep only the portable MT5 terminal running and continue monitoring normally.' }
-    'RECOVERED_PARTIAL_MANUAL_EA_ATTACH_REQUIRED' { 'Open the portable MT5 terminal, confirm File -> Open Data Folder points to C:\MT5_OANDA_PAPER_OC, attach GrayPaperBridgeEA to a chart, enable Algo Trading, then rerun this recovery script or the bridge health check.' }
+    'RECOVERED_PARTIAL_MANUAL_EA_ATTACH_REQUIRED' {
+        if ($baseline.available) {
+            'Portable MT5 is up but the EA/profile state is incomplete. Try the baseline-aware recovery path: powershell -ExecutionPolicy Bypass -File scripts\recover_mt5_after_shutdown.ps1 -InstanceName oanda_paper_oc -TryRestoreBaselineOnMissingEa. If that still fails, confirm File -> Open Data Folder points to C:\MT5_OANDA_PAPER_OC, attach GrayPaperBridgeEA to a chart, enable Algo Trading, then rerun the health check.'
+        }
+        else {
+            'Open the portable MT5 terminal, confirm File -> Open Data Folder points to C:\MT5_OANDA_PAPER_OC, attach GrayPaperBridgeEA to a chart, enable Algo Trading, then rerun this recovery script or the bridge health check.'
+        }
+    }
     'FAILED_PORTABLE_START' { 'Investigate why the portable MT5 terminal did not stay running. Check terminal launch permissions, terminal logs, and whether another MT5 process is conflicting.' }
     'FAILED_AUTH_OR_SYNC' { 'Portable MT5 started but broker authorization/synchronization was not confirmed. Inspect the portable terminal Journal and network/login state before attempting cleanup.' }
     default { 'Review MT5 process inventory and logs manually. Resolve duplicate/fallback terminals carefully, keeping the portable instance as the intended automation target.' }
@@ -392,6 +484,7 @@ $result = [pscustomobject]@{
     instanceName = $resolved.Name
     instanceLabel = $resolved.Label
     pointer = $pointer
+    baseline = $baseline
     outcome = $outcome
     recommendedNextStep = $recommendedNextStep
     warnings = @($warnings)
