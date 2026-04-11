@@ -52,8 +52,21 @@ So the recovery objective is not just "MT5 launched". The recovery objective is:
 
 ## Automated recovery plan for next hard shutdown
 
-### Phase 1 - Implement now: scripted detection + cleanup + clear escalation
-Create a new orchestrator script, e.g. `scripts\recover_mt5_after_shutdown.ps1`, that performs the following read-only / low-risk checks first:
+### Phase 1 - Implemented: scripted detection + cleanup + clear escalation
+The first-pass orchestrator now exists:
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\recover_mt5_after_shutdown.ps1 -InstanceName oanda_paper_oc
+```
+
+Current behavior:
+- verifies the intended target and workspace pointer
+- inventories all MT5 terminals
+- health-checks the portable target
+- restarts the portable target if it is down
+- safely closes AppData fallback and older duplicate portable terminals only after the portable target is confirmed healthy
+- emits a structured JSON summary with an outcome such as `RECOVERED_FULLY` or `RECOVERED_PARTIAL_MANUAL_EA_ATTACH_REQUIRED`
+
+The orchestrator performs the following read-only / low-risk checks first:
 
 1. **Resolve intended target**
    - read `config\mt5_instances.json`

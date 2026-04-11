@@ -31,7 +31,8 @@ function Get-DecodedText {
     foreach ($encoding in @([System.Text.Encoding]::Unicode, [System.Text.Encoding]::UTF8, [System.Text.Encoding]::ASCII)) {
         try {
             $text = $encoding.GetString($buffer)
-            if ($text) { return $text }
+            $clean = $text -replace "`0", ''
+            if ($clean) { return $clean }
         } catch {}
     }
     return ''
@@ -44,7 +45,7 @@ function Get-LatestMatchLine {
     )
     $text = Get-DecodedText -Path $Path
     if (-not $text) { return $null }
-    $lines = $text -split "`r?`n" | Where-Object { $_ -match $Pattern }
+    $lines = @($text -split "`r?`n" | Where-Object { $_ -match $Pattern })
     if (-not $lines -or $lines.Count -eq 0) { return $null }
     return $lines[-1]
 }

@@ -75,3 +75,8 @@ Keep using the portable instance as the default automation target unless there i
 
 ## Hard-shutdown recovery note
 A 2026-04-11 hard-shutdown incident showed that the portable MT5 terminal can be restarted successfully while still failing to auto-restore `GrayPaperBridgeEA` on a chart. In that failure mode, broker login may look healthy even though the bridge watcher is still down, and duplicate/fallback MT5 terminals may also be running. See `docs/MT5_HARD_SHUTDOWN_RECOVERY_PLAN.md` for the tested operator recovery flow and the staged automation plan.
+
+Current first-pass recovery command:
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\recover_mt5_after_shutdown.ps1 -InstanceName oanda_paper_oc
+```
