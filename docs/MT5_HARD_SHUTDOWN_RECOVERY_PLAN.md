@@ -157,6 +157,27 @@ Preferred options:
 
 Avoid placing real test orders automatically after an incident unless the workflow is explicitly approved for that use.
 
+## Boot-time auto-recovery wiring status
+As of 2026-04-11, the machine now has a scheduled task:
+- `MT5 Boot Recovery`
+
+Current behavior:
+- trigger: **AtLogOn** for user `anmar`
+- action: runs `scripts\invoke_mt5_boot_recovery.ps1`
+- delay: 90 seconds to let the session/network settle
+- recovery mode: baseline-aware recovery via `scripts\recover_mt5_after_shutdown.ps1 -TryRestoreBaselineOnMissingEa`
+- compile behavior: boot task uses `-SkipCompile` for speed/reliability; it assumes the EA was already compiled during normal maintenance
+
+Validated behavior:
+- the task was registered successfully
+- a manual test run through Task Scheduler completed with `RECOVERED_FULLY`
+- task log is written under `state\mt5_boot_recovery_logs\`
+
+Expectation caveat:
+- this is **automatic after Windows logon**, not a proven pre-login service-style boot recovery
+- so after a laptop crash/reboot, recovery should run automatically once the Windows user session is logged in
+- a true full reboot/autologon test is still worth doing later if zero-touch recovery before manual sign-in matters
+
 ## Proposed implementation tasks
 Priority order:
 1. Add `scripts\recover_mt5_after_shutdown.ps1` as an orchestrator around the existing health/reload scripts.

@@ -154,3 +154,4 @@ The system is materially more robust than it was before the 2026-04-11 shutdown 
 - persistence hardening adds baseline save/restore tooling
 - strict fresh-log validation now prevents false positives from stale same-day MT5 logs
 - a controlled restart has been validated end-to-end for the portable bridge path
+- a Windows scheduled task (`MT5 Boot Recovery`) now runs the baseline-aware recovery flow automatically **at user logon**
