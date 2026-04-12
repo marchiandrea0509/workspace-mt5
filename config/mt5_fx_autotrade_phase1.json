@@ -41,5 +41,11 @@
     "pollSeconds": 2.0
   },
   "stateDir": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\state\\mt5_autotrade_phase1",
-  "reportsDir": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1"
+  "reportsDir": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1",
+  "compactReportCleanup": {
+    "enabled": true,
+    "strategyMagic": 26032601,
+    "minOrderAgeMinutes": 60.0,
+    "maxAdverseGapFromSubmissionPct": 75.0
+  }
 }
