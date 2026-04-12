@@ -29,20 +29,22 @@ Run the phase-1 MT5 FX pipeline once, using the deterministic script only as bas
    - `python scripts\compare_mt5_phase1_plans.py --script-plan <script_plan_path> --llm-plan <planner_json> --out <comparison_json>`
 9. Execute the **validated LLM plan** live as **independent per-leg orders**:
    - `python scripts\execute_mt5_llm_live.py --baseline-json reports\mt5_autotrade_phase1\mt5_phase1_latest.json --planner-json <planner_json> --pack-json <pack_path> --validation-json <validation_json> --planner-md <planner_response_md> --comparison-json <comparison_json>`
-10. Build Discord-safe thread messages from the LLM-live result:
-   - `python scripts\build_mt5_thread_messages.py --phase1-json reports\mt5_autotrade_phase1\mt5_phase1_llm_live_latest.json --planner-md <planner_response_md> --comparison-json <comparison_json> --validation-json <validation_json> --out <thread_messages_json>`
-11. Read `<thread_messages_json>` and send **each** message in order with the `message` tool to:
+10. Build a fresh compact MT5 open report **before** thread posting, allowing the report path to cancel stale strategy-managed pending orders under the configured cleanup rule:
+   - `python scripts\mt5_open_compact_report.py --out reports\mt5_autotrade_phase1\mt5_open_compact_report_latest.txt`
+11. Build Discord-safe thread messages from the LLM-live result and include that compact report first:
+   - `python scripts\build_mt5_thread_messages.py --phase1-json reports\mt5_autotrade_phase1\mt5_phase1_llm_live_latest.json --planner-md <planner_response_md> --comparison-json <comparison_json> --validation-json <validation_json> --compact-report reports\mt5_autotrade_phase1\mt5_open_compact_report_latest.txt --out <thread_messages_json>`
+12. Read `<thread_messages_json>` and send **each** message in order with the `message` tool to:
    - channel: `discord`
    - to: `channel:1489519869962752000`
-12. Build the versioned local Excel trade journal:
+13. Build the versioned local Excel trade journal:
    - `python scripts\build_trade_journal_excel.py`
-13. Read `reports\mt5_autotrade_phase1\excel\MT5_trade_journal_latest.json` and note the workbook path + row counts.
-14. Stage the versioned workbook for browser upload:
+14. Read `reports\mt5_autotrade_phase1\excel\MT5_trade_journal_latest.json` and note the workbook path + row counts.
+15. Stage the versioned workbook for browser upload:
    - `python scripts\stage_trade_journal_for_browser_upload.py`
-15. Follow:
+16. Follow:
    - `C:\Users\anmar\.openclaw\workspace-mt5\prompts\upload_mt5_excel_to_gdrive_best_effort.md`
-16. No extra commentary.
-17. After successful send, reply `NO_REPLY`.
+17. No extra commentary.
+18. After successful send, reply `NO_REPLY`.
 
 ## Model / efficiency rules
 - Use deterministic scripts for prep, extraction, validation, comparison, and formatting.

@@ -128,6 +128,7 @@ def main() -> int:
     ap.add_argument('--planner-md', required=True)
     ap.add_argument('--comparison-json', required=True)
     ap.add_argument('--validation-json', required=True)
+    ap.add_argument('--compact-report', default='')
     ap.add_argument('--out', required=True)
     args = ap.parse_args()
 
@@ -137,6 +138,10 @@ def main() -> int:
     validation = load_json(Path(args.validation_json))
 
     messages: list[str] = []
+    if args.compact_report:
+        compact_text = load_text(Path(args.compact_report)).strip()
+        if compact_text:
+            messages.extend(chunk_text(compact_text))
     messages.append(build_phase1_summary(phase1))
     messages.extend(chunk_text(planner_md))
     messages.append(build_comparison_summary(comparison, validation))

@@ -596,8 +596,14 @@ def main() -> int:
     ap = argparse.ArgumentParser(description='Build compact MT5 open-order/open-position report with optional stale-pending cleanup.')
     ap.add_argument('--no-cleanup', action='store_true', help='Skip pending-order cleanup before building the report.')
     ap.add_argument('--dry-run-cleanup', action='store_true', help='Evaluate cleanup logic but do not actually cancel anything.')
+    ap.add_argument('--out', default='', help='Optional path to write the rendered report text.')
     args = ap.parse_args()
-    print(compact_report(enable_cleanup=not args.no_cleanup, dry_run_cleanup=args.dry_run_cleanup))
+    report = compact_report(enable_cleanup=not args.no_cleanup, dry_run_cleanup=args.dry_run_cleanup)
+    if args.out:
+        out_path = Path(args.out)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(report + '\n', encoding='utf-8')
+    print(report)
     return 0
 
 

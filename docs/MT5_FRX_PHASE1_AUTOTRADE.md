@@ -12,6 +12,8 @@
 - Config: `config/mt5_fx_autotrade_phase1.json`
 - Orchestrator: `scripts/mt5_fx_autotrade_phase1.py`
 - Cron prompt: `prompts/cron_mt5_fx_phase1.md`
+- Compact MT5 open report: `scripts/mt5_open_compact_report.py`
+- Discord thread message builder: `scripts/build_mt5_thread_messages.py`
 - Runtime reports: `reports/mt5_autotrade_phase1/`
 - Runtime state: `state/mt5_autotrade_phase1/`
 - Excel journal builder: `scripts/build_trade_journal_excel.py`
@@ -71,6 +73,8 @@ Session key:
   - `MT5_FRX Phase1 Autotrade`
   - `7 7,9,15,17 * * 1-5` (Europe/Berlin)
   - model: `openai/gpt-5.4-nano`
+  - thread output now prepends a fresh compact MT5 open report generated during the cron cycle
+  - that report can cancel stale strategy-managed pending orders before posting, using the configured cleanup thresholds in `compactReportCleanup`
 
 ## Manual run
 Dry run:
