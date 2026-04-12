@@ -1,6 +1,6 @@
 {
   "watchlist": "MT5_FRX",
-  "indicator": "OC Hybrid Edge Screener v7",
+  "indicator": "OC Hybrid Edge Screener v6",
   "timeframe": "4 hours",
   "analysisDataSource": {
     "kind": "mt5_python",
