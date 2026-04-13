@@ -295,11 +295,87 @@ def adverse_gap_delta_pct(order: dict[str, Any], snapshot: dict[str, Any], mt5: 
     return ((current_gap - submitted_gap) / denom) * 100.0
 
 
-def order_age_minutes(order: dict[str, Any]) -> float | None:
+def is_probable_forex_symbol(symbol: str | None, mt5: Any | None = None) -> bool:
+    root = normalize_symbol_root(symbol)
+    if len(root) == 6 and root.isalpha():
+        return True
+    if mt5 is not None and symbol:
+        try:
+            info = mt5.symbol_info(str(symbol))
+        except Exception:
+            info = None
+        if info is not None:
+            path = str(getattr(info, 'path', '') or '').upper()
+            if '\\FX\\' in path or path.startswith('FX\\') or path.endswith('\\FX'):
+                return True
+    return False
+
+
+def is_forex_market_open(dt: datetime) -> bool:
+    dt = dt.astimezone(timezone.utc)
+    wd = dt.weekday()
+    h = dt.hour
+    m = dt.minute
+    s = dt.second
+    since_22 = (h, m, s) >= (22, 0, 0)
+    if wd <= 3:
+        return True
+    if wd == 4:
+        return not since_22
+    if wd == 5:
+        return False
+    return since_22
+
+
+def next_forex_open(dt: datetime) -> datetime:
+    dt = dt.astimezone(timezone.utc)
+    wd = dt.weekday()
+    base = dt.replace(minute=0, second=0, microsecond=0)
+    if wd == 4 and (dt.hour, dt.minute, dt.second) >= (22, 0, 0):
+        days = 2
+    elif wd == 5:
+        days = 1
+    elif wd == 6 and (dt.hour, dt.minute, dt.second) < (22, 0, 0):
+        days = 0
+    else:
+        return dt
+    target = (base + timedelta(days=days)).replace(hour=22, minute=0, second=0, microsecond=0)
+    return target
+
+
+def next_forex_close(dt: datetime) -> datetime:
+    dt = dt.astimezone(timezone.utc)
+    wd = dt.weekday()
+    days_until_friday = 4 - wd if wd <= 4 else 5
+    return (dt + timedelta(days=days_until_friday)).replace(hour=22, minute=0, second=0, microsecond=0)
+
+
+def forex_open_age_minutes(start: datetime, end: datetime) -> float:
+    start = start.astimezone(timezone.utc)
+    end = end.astimezone(timezone.utc)
+    if end <= start:
+        return 0.0
+    total_seconds = 0.0
+    cursor = start
+    while cursor < end:
+        if is_forex_market_open(cursor):
+            seg_end = min(end, next_forex_close(cursor))
+            total_seconds += max(0.0, (seg_end - cursor).total_seconds())
+            cursor = seg_end
+        else:
+            cursor = min(end, next_forex_open(cursor))
+    return total_seconds / 60.0
+
+
+def order_age_minutes(order: dict[str, Any], mt5: Any | None = None) -> float | None:
     setup_dt = order_setup_dt(order)
     if not setup_dt:
         return None
-    return max(0.0, (utc_now() - setup_dt).total_seconds() / 60.0)
+    now = utc_now()
+    symbol = str(order.get('symbol') or '')
+    if is_probable_forex_symbol(symbol, mt5):
+        return max(0.0, forex_open_age_minutes(setup_dt, now))
+    return max(0.0, (now - setup_dt).total_seconds() / 60.0)
 
 
 def is_strategy_managed(order: dict[str, Any], strategy_magic: int) -> bool:
@@ -405,7 +481,7 @@ def cleanup_pending_orders(mt5: Any, cfg: dict[str, Any], orders: list[dict[str,
         summary['eligible'] += 1
         snap = ensure_order_snapshot(mt5, snapshots, order)
         gap_delta = adverse_gap_delta_pct(order, snap, mt5)
-        age_minutes = order_age_minutes(order)
+        age_minutes = order_age_minutes(order, mt5)
         type_name = MT5_ORDER_TYPE_NAMES.get(int(order.get('type') or -1), str(order.get('type')))
         side = side_from_order_type(type_name)
         entry = float(order.get('price_open') or 0)
@@ -537,7 +613,7 @@ def compact_report(*, enable_cleanup: bool = True, dry_run_cleanup: bool = False
             f"- Cleanup ({cleanup_mode}): checked {cleanup_summary.get('checked', 0)} pending | eligible {cleanup_summary.get('eligible', 0)} | cancelled {cleanup_summary.get('cancelled', 0)} | would cancel {cleanup_summary.get('would_cancel', 0)} | failed {cleanup_summary.get('failed', 0)}"
         )
         lines.append(
-            f"- Cleanup rule: cancel strategy-managed pending orders aged >= {fmt_num(cleanup_summary.get('min_order_age_minutes'), 0)}m when either unfilled age >= {fmt_num(cleanup_summary.get('max_unfilled_age_hours'), 0)}h or current gap-to-entry is >= {fmt_num(cleanup_summary.get('max_adverse_gap_from_submission_pct'), 0)}% farther than at submission"
+            f"- Cleanup rule: cancel strategy-managed pending orders aged >= {fmt_num(cleanup_summary.get('min_order_age_minutes'), 0)}m when either unfilled age >= {fmt_num(cleanup_summary.get('max_unfilled_age_hours'), 0)}h (open-market age for Forex, weekend skipped) or current gap-to-entry is >= {fmt_num(cleanup_summary.get('max_adverse_gap_from_submission_pct'), 0)}% farther than at submission"
         )
 
     cancelled_or_would = [d for d in (cleanup_summary.get('details') or []) if d.get('decision') in {'would_cancel', 'cancelled', 'cancel_failed'}]
