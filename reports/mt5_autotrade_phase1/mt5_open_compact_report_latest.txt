@@ -1,67 +1,14 @@
 MT5 compact open report
-- Symbols: 5
-- Open orders: 28
+- Symbols: 1
+- Open orders: 3
 - Open positions: 0
-- Cleanup (live): checked 28 pending | eligible 28 | cancelled 0 | would cancel 0 | failed 8
-- Cleanup rule: cancel strategy-managed pending orders aged >= 60m when current gap-to-entry is >= 75% farther than at submission
-- Cleanup cancel_failed: #142085464 EURCAD.pro BUY_LIMIT | age 9482m | dfrac +485% | gap_delta +253%
-- Cleanup cancel_failed: #142085465 EURCAD.pro BUY_LIMIT | age 9482m | dfrac +915% | gap_delta +336%
-- Cleanup cancel_failed: #142354567 EURGBP.pro BUY_LIMIT | age 6157m | dfrac +276% | gap_delta +75%
-- Cleanup cancel_failed: #142354572 EURGBP.pro BUY_LIMIT | age 6157m | dfrac +276% | gap_delta +75%
-- Cleanup cancel_failed: #142354586 EURGBP.pro BUY_LIMIT | age 6156m | dfrac +277% | gap_delta +75%
-- Cleanup cancel_failed: #142518645 USDHUF.pro SELL_LIMIT | age 3538m | dfrac +169% | gap_delta +194%
-- Cleanup cancel_failed: #142518653 USDHUF.pro SELL_LIMIT | age 3538m | dfrac +97% | gap_delta +137%
-- Cleanup cancel_failed: #142518669 USDHUF.pro SELL_LIMIT | age 3538m | dfrac +63% | gap_delta +110%
+- Cleanup (live): checked 3 pending | eligible 3 | cancelled 0 | would cancel 0 | failed 0
+- Cleanup rule: cancel strategy-managed pending orders aged >= 60m when either unfilled age >= 48h (open-market age for Forex, weekend skipped) or current gap-to-entry is >= 75% farther than at submission
 
 AUDCAD
-- p1-audcad-0409050728 | pending 2 | open 0
-  - #142365192 BUY_LIMIT 0.16 lots @ 0.95903 | SL 0.95802 | TP 0.96606 | now 0.97540 | pnl 0.00 (pending) | frac +233% | dfrac +2% | gap_delta +1% | age 5642m
-  - #142365193 BUY_LIMIT 0.16 lots @ 0.96275 | SL 0.95802 | TP 0.96606 | now 0.97540 | pnl 0.00 (pending) | frac +382% | dfrac +5% | gap_delta +1% | age 5642m
-
-EURCAD
-- p1-eurcad-0406130733 | pending 2 | open 0
-  - #142085464 BUY_LIMIT 0.13 lots @ 1.60168 | SL 1.60117 | TP 1.60436 | now 1.61980 | pnl 0.00 (pending) | frac +676% | dfrac +485% | gap_delta +253% | age 9482m
-  - #142085465 BUY_LIMIT 0.13 lots @ 1.60294 | SL 1.60117 | TP 1.60436 | now 1.61980 | pnl 0.00 (pending) | frac +1187% | dfrac +915% | gap_delta +336% | age 9482m
-
-EURGBP
-- p1-eurgbp-0408181020 | pending 2 | open 0
-  - #142354562 BUY_LIMIT 0.12 lots @ 0.86108 | SL 0.86084 | TP 0.86193 | now 0.87183 | pnl 0.00 (pending) | frac +1265% | dfrac +172% | gap_delta +16% | age 6157m
-  - #142354563 BUY_LIMIT 0.13 lots @ 0.86139 | SL 0.86084 | TP 0.86193 | now 0.87183 | pnl 0.00 (pending) | frac +1933% | dfrac +270% | gap_delta +16% | age 6157m
-- p1-eurgbp-0408200952 | pending 3 | open 0
-  - #142354565 BUY_LIMIT 0.08 lots @ 0.86108 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +135% | dfrac +18% | gap_delta +16% | age 6157m
-  - #142354566 BUY_LIMIT 0.08 lots @ 0.86145 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +137% | dfrac +19% | gap_delta +16% | age 6157m
-  - #142354567 BUY_LIMIT 0.09 lots @ 0.86850 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +628% | dfrac +276% | gap_delta +75% | age 6157m
-- p1-eurgbp-0408202810 | pending 3 | open 0
-  - #142354570 BUY_LIMIT 0.08 lots @ 0.86108 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +135% | dfrac +18% | gap_delta +16% | age 6157m
-  - #142354571 BUY_LIMIT 0.08 lots @ 0.86145 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +137% | dfrac +19% | gap_delta +16% | age 6157m
-  - #142354572 BUY_LIMIT 0.09 lots @ 0.86850 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +628% | dfrac +276% | gap_delta +75% | age 6157m
-- p1-eurgbp-0408203257 | pending 3 | open 0
-  - #142354584 BUY_LIMIT 0.08 lots @ 0.86108 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +135% | dfrac +18% | gap_delta +16% | age 6156m
-  - #142354585 BUY_LIMIT 0.08 lots @ 0.86145 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +137% | dfrac +19% | gap_delta +16% | age 6156m
-  - #142354586 BUY_LIMIT 0.09 lots @ 0.86850 | SL 0.86071 | TP 0.86903 | now 0.87183 | pnl 0.00 (pending) | frac +628% | dfrac +277% | gap_delta +75% | age 6156m
-
-EURJPY
-- p1-eurjpy-0409070731 | pending 2 | open 0
-  - #142370652 BUY_LIMIT 0.20 lots @ 181.90 | SL 181.81 | TP 182.18 | now 186.66 | pnl 0.00 (pending) | frac +1677% | dfrac +483% | gap_delta +40% | age 5522m
-  - #142370653 BUY_LIMIT 0.19 lots @ 181.99 | SL 181.81 | TP 182.18 | now 186.66 | pnl 0.00 (pending) | frac +2409% | dfrac +707% | gap_delta +42% | age 5522m
-
-USDHUF
-- p1llm-usdhuf-0409130924 | pending 2 | open 0
-  - #142397558 SELL_LIMIT 0.11 lots @ 339.71 | SL 346.60 | TP 338.33 | now 314.41 | pnl 0.00 (pending) | frac +1833% | dfrac +619% | gap_delta +51% | age 5160m
-  - #142397559 SELL_LIMIT 0.11 lots @ 345.32 | SL 346.60 | TP 338.33 | now 314.41 | pnl 0.00 (pending) | frac +442% | dfrac +122% | gap_delta +38% | age 5160m
-- p1llm-usdhuf-0409150937 | pending 3 | open 0
-  - #142411845 SELL_LIMIT 0.03 lots @ 339.71 | SL 346.60 | TP 338.30 | now 314.41 | pnl 0.00 (pending) | frac +1794% | dfrac +624% | gap_delta +53% | age 5040m
-  - #142411846 SELL_LIMIT 0.04 lots @ 344.75 | SL 346.60 | TP 338.30 | now 314.41 | pnl 0.00 (pending) | frac +470% | dfrac +136% | gap_delta +41% | age 5040m
-  - #142411847 SELL_LIMIT 0.04 lots @ 345.32 | SL 346.60 | TP 338.30 | now 314.41 | pnl 0.00 (pending) | frac +440% | dfrac +125% | gap_delta +40% | age 5040m
-- p1llm-usdhuf-0409162748-leg1 | pending 1 | open 0
-  - #142424278 SELL_LIMIT 0.02 lots @ 332.63 | SL 340.30 | TP 323.50 | now 314.41 | pnl 0.00 (pending) | frac +200% | dfrac +72% | gap_delta +56% | age 4961m
-- p1llm-usdhuf-0409162748-leg2 | pending 1 | open 0
-  - #142424284 SELL_LIMIT 0.02 lots @ 339.71 | SL 346.60 | TP 326.00 | now 314.41 | pnl 0.00 (pending) | frac +185% | dfrac +48% | gap_delta +35% | age 4961m
-- p1llm-usdhuf-0409162748-leg3 | pending 1 | open 0
-  - #142424294 SELL_LIMIT 0.01 lots @ 345.32 | SL 347.20 | TP 332.00 | now 314.41 | pnl 0.00 (pending) | frac +232% | dfrac +49% | gap_delta +27% | age 4961m
-- p1llm-usdhuf-0410161055-leg1 | pending 1 | open 0
-  - #142518645 SELL_LIMIT 0.03 lots @ 322.60 | SL 326.20 | TP 319.40 | now 314.41 | pnl 0.00 (pending) | frac +256% | dfrac +169% | gap_delta +194% | age 3538m
-- p1llm-usdhuf-0410161055-leg2 | pending 1 | open 0
-  - #142518653 SELL_LIMIT 0.04 lots @ 323.80 | SL 326.20 | TP 318.20 | now 314.41 | pnl 0.00 (pending) | frac +168% | dfrac +97% | gap_delta +137% | age 3538m
-- p1llm-usdhuf-0410161055-leg3 | pending 1 | open 0
-  - #142518669 SELL_LIMIT 0.05 lots @ 324.80 | SL 326.20 | TP 316.20 | now 314.41 | pnl 0.00 (pending) | frac +121% | dfrac +63% | gap_delta +110% | age 3538m
+- p1llm-audcad-0413070920-leg1 | pending 1 | open 0
+  - #142567513 BUY_LIMIT 0.10 lots @ 0.97480 | SL 0.96880 | TP 0.98020 | now 0.97665 | pnl 0.00 (pending) | frac +34% | dfrac +1% | gap_delta +2% | age 0m
+- p1llm-audcad-0413070920-leg2 | pending 1 | open 0
+  - #142567527 BUY_LIMIT 0.08 lots @ 0.97320 | SL 0.96880 | TP 0.98180 | now 0.97665 | pnl 0.00 (pending) | frac +40% | dfrac +0% | gap_delta +1% | age 0m
+- p1llm-audcad-0413070920-leg3 | pending 1 | open 0
+  - #142567543 BUY_LIMIT 0.06 lots @ 0.97160 | SL 0.96880 | TP 0.98380 | now 0.97665 | pnl 0.00 (pending) | frac +41% | dfrac +0% | gap_delta +1% | age 0m

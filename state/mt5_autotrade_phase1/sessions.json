@@ -81,6 +81,12 @@
       "candidate": "USDZAR",
       "ticket_id": null,
       "processed_at": "2026-04-13T05:07:34Z"
+    },
+    "MT5_FRX|4 hours|2026-04-13T07:06:20.006Z": {
+      "status": "dry_run",
+      "candidate": "AUDCAD",
+      "ticket_id": "p1-audcad-0413070721",
+      "processed_at": "2026-04-13T07:07:21Z"
     }
   }
 }

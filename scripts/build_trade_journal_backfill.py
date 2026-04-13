@@ -200,11 +200,13 @@ def build_llm_group_rows(result: dict[str, Any], path: Path) -> tuple[dict[str, 
     analysis_path = Path(result['analysis_path']) if result.get('analysis_path') else None
 
     trade_group_id = result.get('ticket_group_id') or path.stem
+    legs = execution.get('legs') or []
+    first_leg_execution = ((legs[0] if legs else {}).get('execution') or {})
     row = {h: '' for h in TRADE_GROUP_HEADERS}
     row.update({
         'trade_group_id': trade_group_id,
         'cycle_id': result.get('session_key') or path.stem,
-        'opened_at_utc': execution.get('legs', [{}])[0].get('execution', {}).get('timestamp') or execution.get('legs', [{}])[0].get('execution', {}).get('received_at') or execution.get('timestamp') or '',
+        'opened_at_utc': first_leg_execution.get('timestamp') or first_leg_execution.get('received_at') or execution.get('timestamp') or '',
         'closed_at_utc': '',
         'status': execution.get('status'),
         'symbol': result.get('candidate'),
