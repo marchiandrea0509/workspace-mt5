@@ -122,6 +122,27 @@ def chunk_text(text: str, max_chars: int = MAX_CHARS) -> list[str]:
     return out
 
 
+def build_cleanup_summary(compact_text: str) -> str | None:
+    lines = [line.strip() for line in compact_text.splitlines() if line.strip()]
+    cleanup_line = next((line for line in lines if line.startswith('- Cleanup (')), None)
+    rule_line = next((line for line in lines if line.startswith('- Cleanup rule:')), None)
+    if not cleanup_line:
+        return None
+    m = re.search(r'checked\s+(\d+)\s+pending\s+\|\s+eligible\s+(\d+)\s+\|\s+cancelled\s+(\d+)\s+\|\s+would cancel\s+(\d+)\s+\|\s+failed\s+(\d+)', cleanup_line)
+    if not m:
+        return cleanup_line.lstrip('- ').strip()
+    checked, eligible, cancelled, would_cancel, failed = m.groups()
+    rule_tail = ''
+    if rule_line:
+        rule_tail = rule_line.replace('- Cleanup rule: ', '').strip()
+    mode_match = re.search(r'- Cleanup \(([^)]+)\):', cleanup_line)
+    mode = mode_match.group(1) if mode_match else 'live'
+    summary = f"Cleanup summary ({mode}): checked {checked}, eligible {eligible}, cancelled {cancelled}, would-cancel {would_cancel}, failed {failed}."
+    if rule_tail:
+        summary += f" Rule: {rule_tail}"
+    return summary
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description='Build Discord-safe MT5 trades thread messages from phase1 + LLM shadow artifacts.')
     ap.add_argument('--phase1-json', default=str(LATEST_PHASE1))
@@ -141,6 +162,9 @@ def main() -> int:
     if args.compact_report:
         compact_text = load_text(Path(args.compact_report)).strip()
         if compact_text:
+            cleanup_summary = build_cleanup_summary(compact_text)
+            if cleanup_summary:
+                messages.append(cleanup_summary)
             messages.extend(chunk_text(compact_text))
     messages.append(build_phase1_summary(phase1))
     messages.extend(chunk_text(planner_md))

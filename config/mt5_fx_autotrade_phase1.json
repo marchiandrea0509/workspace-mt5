@@ -46,6 +46,7 @@
     "enabled": true,
     "strategyMagic": 26032601,
     "minOrderAgeMinutes": 60.0,
-    "maxAdverseGapFromSubmissionPct": 75.0
+    "maxAdverseGapFromSubmissionPct": 75.0,
+    "maxUnfilledAgeHours": 48.0
   }
 }

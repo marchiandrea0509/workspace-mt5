@@ -367,6 +367,8 @@ def cleanup_pending_orders(mt5: Any, cfg: dict[str, Any], orders: list[dict[str,
     strategy_magic = int(cleanup_cfg.get('strategyMagic', DEFAULT_STRATEGY_MAGIC) or DEFAULT_STRATEGY_MAGIC)
     max_adverse_gap_pct = float(cleanup_cfg.get('maxAdverseGapFromSubmissionPct', 75.0) or 75.0)
     min_age_minutes = float(cleanup_cfg.get('minOrderAgeMinutes', 60.0) or 60.0)
+    max_unfilled_age_hours = float(cleanup_cfg.get('maxUnfilledAgeHours', 48.0) or 48.0)
+    max_unfilled_age_minutes = max_unfilled_age_hours * 60.0 if max_unfilled_age_hours > 0 else 0.0
 
     snapshots = load_snapshots(state_dir)
     summary = {
@@ -375,6 +377,7 @@ def cleanup_pending_orders(mt5: Any, cfg: dict[str, Any], orders: list[dict[str,
         'strategy_magic': strategy_magic,
         'max_adverse_gap_from_submission_pct': max_adverse_gap_pct,
         'min_order_age_minutes': min_age_minutes,
+        'max_unfilled_age_hours': max_unfilled_age_hours,
         'checked': 0,
         'eligible': 0,
         'cancelled': 0,
@@ -436,12 +439,19 @@ def cleanup_pending_orders(mt5: Any, cfg: dict[str, Any], orders: list[dict[str,
             detail['decision'] = 'keep_young'
             summary['details'].append(detail)
             continue
-        if gap_delta is None or gap_delta < max_adverse_gap_pct:
+
+        reason = None
+        if max_unfilled_age_minutes > 0 and age_minutes >= max_unfilled_age_minutes:
+            reason = f'pending order remained unfilled for {age_minutes/60.0:.1f}h (hard cap {max_unfilled_age_hours:.0f}h)'
+            detail['trigger'] = 'max_unfilled_age'
+        elif gap_delta is not None and gap_delta >= max_adverse_gap_pct:
+            reason = f'pending order drifted {gap_delta:+.0f}% farther from entry vs submission after {age_minutes:.0f}m (threshold {max_adverse_gap_pct:.0f}%)'
+            detail['trigger'] = 'adverse_gap_delta'
+        else:
             detail['decision'] = 'keep'
             summary['details'].append(detail)
             continue
 
-        reason = f'pending order drifted {gap_delta:+.0f}% farther from entry vs submission after {age_minutes:.0f}m (threshold {max_adverse_gap_pct:.0f}%)'
         result = remove_pending_order(mt5, order, reason=reason, dry_run=dry_run)
         detail['decision'] = result['status']
         detail['reason'] = reason
@@ -527,7 +537,7 @@ def compact_report(*, enable_cleanup: bool = True, dry_run_cleanup: bool = False
             f"- Cleanup ({cleanup_mode}): checked {cleanup_summary.get('checked', 0)} pending | eligible {cleanup_summary.get('eligible', 0)} | cancelled {cleanup_summary.get('cancelled', 0)} | would cancel {cleanup_summary.get('would_cancel', 0)} | failed {cleanup_summary.get('failed', 0)}"
         )
         lines.append(
-            f"- Cleanup rule: cancel strategy-managed pending orders aged >= {fmt_num(cleanup_summary.get('min_order_age_minutes'), 0)}m when current gap-to-entry is >= {fmt_num(cleanup_summary.get('max_adverse_gap_from_submission_pct'), 0)}% farther than at submission"
+            f"- Cleanup rule: cancel strategy-managed pending orders aged >= {fmt_num(cleanup_summary.get('min_order_age_minutes'), 0)}m when either unfilled age >= {fmt_num(cleanup_summary.get('max_unfilled_age_hours'), 0)}h or current gap-to-entry is >= {fmt_num(cleanup_summary.get('max_adverse_gap_from_submission_pct'), 0)}% farther than at submission"
         )
 
     cancelled_or_would = [d for d in (cleanup_summary.get('details') or []) if d.get('decision') in {'would_cancel', 'cancelled', 'cancel_failed'}]
