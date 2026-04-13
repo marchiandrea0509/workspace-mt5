@@ -1,29 +1,16 @@
 {
   "result": "trade_review",
-  "session_key": "MT5_FRX|4 hours|2026-04-10T16:07:10.050Z",
-  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-10T16-05-57-502Z.json",
+  "session_key": "MT5_FRX|4 hours|2026-04-13T05:06:26.744Z",
+  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-13T05-05-11-793Z.json",
   "report_resolution": "latest",
-  "candidate": "USDHUF",
-  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260410_160830.md",
-  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_USDHUF_20260410_160830.json",
+  "candidate": "USDZAR",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260413_050729.md",
+  "ticket_path": null,
   "execution": {
-    "status": "dry_run",
-    "message": "Ticket compiled but not emitted.",
-    "preflight": {
-      "mode": "applied",
-      "symbol": "USDHUF.pro",
-      "valid_entries": 3,
-      "rejected_entries": [],
-      "original_entries": 3,
-      "adjusted_order_plan": "limit_ladder"
-    }
+    "status": "skipped",
+    "message": "Plan not executable under phase 1 rules."
   },
   "audit": [
-    {
-      "symbol": "USDHUF",
-      "passed": true,
-      "reasons": []
-    },
     {
       "symbol": "AUDCAD",
       "passed": false,
@@ -32,45 +19,71 @@
       ]
     },
     {
-      "symbol": "CADCHF",
+      "symbol": "USDZAR",
       "passed": true,
       "reasons": []
     },
     {
-      "symbol": "GBPUSD",
+      "symbol": "EURNZD",
       "passed": true,
       "reasons": []
+    },
+    {
+      "symbol": "CADJPY",
+      "passed": false,
+      "reasons": [
+        "setup code not in allowed continuation set"
+      ]
     },
     {
       "symbol": "EURCAD",
-      "passed": true,
-      "reasons": []
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
     },
     {
       "symbol": "EURUSD",
-      "passed": true,
-      "reasons": []
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
     },
     {
       "symbol": "USDNOK",
-      "passed": true,
-      "reasons": []
-    },
-    {
-      "symbol": "GBPCAD",
-      "passed": true,
-      "reasons": []
-    },
-    {
-      "symbol": "EURHUF",
-      "passed": true,
-      "reasons": []
-    },
-    {
-      "symbol": "CHFJPY",
       "passed": false,
       "reasons": [
-        "setup code not in allowed continuation set",
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final short score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "GBPUSD",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "CADCHF",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final short score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "USDCZK",
+      "passed": false,
+      "reasons": [
         "best score below threshold 70.0",
         "conviction below threshold 3",
         "final short score below threshold 70.0"
@@ -79,66 +92,66 @@
   ],
   "plan": {
     "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
-    "generated_at_utc": "2026-04-10T16:08:30Z",
-    "symbol": "USDHUF",
-    "description": "USD/HUF",
+    "generated_at_utc": "2026-04-13T05:07:34Z",
+    "symbol": "USDZAR",
+    "description": "USD/ZAR",
     "source_context": {
       "watchlist": "MT5_FRX",
-      "indicator": "OC Hybrid Edge Screener v7",
+      "indicator": "OC Hybrid Edge Screener v6",
       "timeframe": "4 hours",
-      "best_score": 84.2596407958511,
+      "best_score": 73.74684761077442,
       "best_setup_code": -2,
       "conviction_state": 3,
-      "screener_rank_top5": 1,
-      "tv_root_symbol": "USDHUF",
+      "screener_rank_top5": 2,
+      "tv_root_symbol": "USDZAR",
       "analysis_source_kind": "mt5_python",
-      "analysis_symbol": "USDHUF.pro",
-      "mt5_execution_symbol": "USDHUF.pro",
+      "analysis_symbol": "USDZAR.pro",
+      "mt5_execution_symbol": "USDZAR.pro",
       "is_proxy_symbol": false,
       "proxy_source": null
     },
     "bias": {
       "direction": "SHORT",
-      "setup": "SHORT_CONTINUATION",
-      "quality_call": "broker-feed MT5 structure validated",
-      "final_trader_call": "Ready for bridge fallback execution"
+      "setup": "UNQUALIFIED",
+      "quality_call": "screener candidate failed MT5 execution-grade validation",
+      "final_trader_call": "No trade from MT5 deep analysis"
     },
     "market_source": {
       "kind": "mt5_python",
-      "analysis_symbol": "USDHUF.pro",
-      "execution_symbol": "USDHUF.pro",
+      "analysis_symbol": "USDZAR.pro",
+      "execution_symbol": "USDZAR.pro",
       "trade_mode": "FULL",
-      "path": "PRO\\FX\\Non-Major\\USDHUF.pro",
-      "digits": 2,
+      "path": "PRO\\FX\\Non-Major\\USDZAR.pro",
+      "digits": 4,
       "volume_min": 0.01,
       "volume_step": 0.01
     },
     "metrics": {
-      "close_h4": 319.88,
-      "fast_ema_h4": 323.9347974554412,
-      "medium_ema_h4": 327.8096150838197,
-      "slow_ema_h4": 331.11440483113284,
-      "atr_h4": 2.0722896113362204,
-      "rsi_h4": 30.191292669753153,
-      "adx_h4": 32.097905961479555,
-      "plus_di_h4": 11.859517646536677,
-      "minus_di_h4": 31.233602337306053,
-      "macd_hist_h4": 0.0378350117034123,
-      "rel_volume_h4": 0.49821277222979693,
-      "dist_fast_ema_atr": 1.9566750869472536,
-      "ema_spread_atr": 3.4645772175937424,
-      "d1_close": 319.88,
-      "d1_ema50": 330.9165221547515,
-      "d1_ema200": 332.0326271609348,
-      "d1_rsi": 32.58372120166443,
-      "d1_adx": 26.053684442153155,
-      "d1_plus_di": 10.546986507087968,
-      "d1_minus_di": 33.29819912315195
+      "close_h4": 16.548000000000002,
+      "fast_ema_h4": 16.51188058055624,
+      "medium_ema_h4": 16.652796556504764,
+      "slow_ema_h4": 16.65221325774885,
+      "atr_h4": 0.10135541964504309,
+      "rsi_h4": 50.226890758478724,
+      "adx_h4": 33.29197139230259,
+      "plus_di_h4": 21.392111804327286,
+      "minus_di_h4": 20.99325784359355,
+      "macd_hist_h4": 0.03610289726847732,
+      "rel_volume_h4": 0.33086908434716805,
+      "dist_fast_ema_atr": 0.3563639672180797,
+      "ema_spread_atr": 1.3845601713659668,
+      "d1_close": 16.5481,
+      "d1_ema50": 16.63135464612937,
+      "d1_ema200": 16.841753716494715,
+      "d1_rsi": 44.7499250999226,
+      "d1_adx": 22.10919302396289,
+      "d1_plus_di": 15.880810079607803,
+      "d1_minus_di": 29.60565377059297
     },
     "lifecycle": {
-      "trend_dir_h4": -1,
+      "trend_dir_h4": 0,
       "macro_dir_d1": -1,
-      "fresh_structure_shift": -1,
+      "fresh_structure_shift": 0,
       "breakout_dir": 0,
       "breakout_fresh": false,
       "retest_state": 0,
@@ -147,84 +160,83 @@
       "overextended": false
     },
     "key_levels": {
-      "analysis_price_reference": 319.88,
-      "price_reference": 319.88,
-      "support_zone_level": 318.67,
-      "support_zone_lower": 318.15,
-      "support_zone_upper": 319.19,
-      "resistance_zone_level": 345.32,
-      "resistance_zone_lower": 344.8,
-      "resistance_zone_upper": 345.84,
-      "selected_zone_touches": 4,
-      "selected_zone_age_bars": 88,
-      "selected_zone_quality_score": 0.58,
+      "analysis_price_reference": 16.548,
+      "price_reference": 16.548,
+      "support_zone_level": 15.8563,
+      "support_zone_lower": 15.831,
+      "support_zone_upper": 15.8817,
+      "resistance_zone_level": 16.9729,
+      "resistance_zone_lower": 16.9476,
+      "resistance_zone_upper": 16.9983,
+      "selected_zone_touches": 3,
+      "selected_zone_age_bars": 32,
+      "selected_zone_quality_score": 0.5533,
       "analysis_ladder_entries": [
-        339.71,
-        344.69,
-        344.8
+        16.9408,
+        17.2421,
+        16.9476
       ],
       "ladder_entries": [
-        345.84,
-        345.32,
-        344.8
+        17.2421,
+        16.9983
       ],
-      "ema_pullback_zone_from": 345.32,
-      "ema_pullback_zone_to": 345.84,
-      "slow_ema_invalidation_anchor": 331.11,
-      "breakout_trigger": 318.92,
-      "breakout_limit": 318.71,
-      "entry": 345.32,
-      "stop_loss": 346.46,
-      "tp1": 344.18,
-      "tp2": 343.27,
+      "ema_pullback_zone_from": 16.9983,
+      "ema_pullback_zone_to": 17.2421,
+      "slow_ema_invalidation_anchor": 16.6522,
+      "breakout_trigger": 16.3094,
+      "breakout_limit": 16.2993,
+      "entry": 17.1202,
+      "stop_loss": 17.2725,
+      "tp1": 16.9679,
+      "tp2": 16.8461,
       "level_selection_notes": [
         "included screener tactical resistance levels (R1/R2 Above) in ladder construction"
       ]
     },
     "orderability_decision": {
-      "decision": "placeable_conditional_only",
-      "execution_template": "ladder_limit_3",
-      "bridge_supported_now": true,
+      "decision": "not_placeable_yet",
+      "execution_template": "no_order",
+      "bridge_supported_now": false,
       "market_order_now": false,
-      "ladder_limit_orders": true,
+      "ladder_limit_orders": false,
       "stop_entry_orders": false,
       "allowed_order_types": [
         "LIMIT"
       ],
-      "why": "Continuation quality is good and structure supports a deeper 3-level pullback ladder after execution-aware level selection."
+      "why": "MT5 structure, lifecycle, or alignment does not justify an executable order package yet."
     },
     "risk_plan": {
       "risk_budget_usdt": 100.0,
       "risk_budget_max_usdt": 150.0,
       "preferred_max_margin_usdt": 1000.0,
       "max_margin_usdt": 1500.0,
-      "model_leverage": 30,
+      "model_leverage": 12,
       "max_model_leverage": 30.0,
-      "quote_to_usd": 0.0031245117950320263,
+      "quote_to_usd": 0.06042989829648116,
       "contract_size": 100000.0,
-      "volume_lots": 0.28,
-      "total_risk_usdt": 99.73,
-      "total_notional_usdt": 30210.78,
-      "total_margin_usdt": 1007.03,
-      "binding_constraint": "risk_budget",
+      "volume_lots": 0.11,
+      "total_risk_usdt": 101.24,
+      "total_notional_usdt": 11380.29,
+      "total_margin_usdt": 948.36,
+      "binding_constraint": "volume_rounding_or_margin_extension",
       "rr_tp1": 1.0,
       "rr_tp2": 1.8
     },
     "trade_ticket_preview": {
       "side": "sell",
-      "tv_root_symbol": "USDHUF",
-      "analysis_symbol": "USDHUF.pro",
-      "mt5_execution_symbol": "USDHUF.pro",
+      "tv_root_symbol": "USDZAR",
+      "analysis_symbol": "USDZAR.pro",
+      "mt5_execution_symbol": "USDZAR.pro",
       "is_proxy_symbol": false,
       "proxy_source": null,
       "order_plan": "limit_ladder",
       "entry_type": "limit",
-      "entry": 345.32,
-      "sl": 346.46,
-      "tp_live": 343.27,
-      "planned_tp1": 344.18,
-      "planned_tp2": 343.27,
-      "volume_lots": 0.28,
+      "entry": 17.1202,
+      "sl": 17.2725,
+      "tp_live": 16.8461,
+      "planned_tp1": 16.9679,
+      "planned_tp2": 16.8461,
+      "volume_lots": 0.11,
       "max_risk_usdt": 100.0,
       "bridge_fallback_reason": null
     },
@@ -232,7 +244,7 @@
       "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
       "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
       "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop.",
-      "Selected resistance zone quality=0.58, touches=4, age_bars=88.",
+      "Selected resistance zone quality=0.55, touches=3, age_bars=32.",
       "included screener tactical resistance levels (R1/R2 Above) in ladder construction",
       "Phase1 stop-loss is anchored to the first meaningful 4H support/resistance invalidation level with a 0.30 ATR buffer."
     ]

@@ -69,6 +69,18 @@
       "candidate": "USDHUF",
       "ticket_id": "p1-usdhuf-0410160830",
       "processed_at": "2026-04-10T16:08:30Z"
+    },
+    "MT5_FRX|4 hours|2026-04-12T19:41:03.527Z": {
+      "status": "dry_run",
+      "candidate": "USDHUF",
+      "ticket_id": "p1-usdhuf-0412194114",
+      "processed_at": "2026-04-12T19:41:14Z"
+    },
+    "MT5_FRX|4 hours|2026-04-13T05:06:26.744Z": {
+      "status": "skipped",
+      "candidate": "USDZAR",
+      "ticket_id": null,
+      "processed_at": "2026-04-13T05:07:34Z"
     }
   }
 }
