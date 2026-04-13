@@ -314,11 +314,13 @@ def is_strategy_managed(order: dict[str, Any], strategy_magic: int) -> bool:
 
 def remove_pending_order(mt5: Any, order: dict[str, Any], reason: str, dry_run: bool) -> dict[str, Any]:
     ticket = int(order.get('ticket') or 0)
+    symbol = str(order.get('symbol') or '')
+    comment = str(order.get('comment') or '')
     if dry_run:
         return {
             'ticket': ticket,
-            'comment': str(order.get('comment') or ''),
-            'symbol': str(order.get('symbol') or ''),
+            'comment': comment,
+            'symbol': symbol,
             'status': 'would_cancel',
             'reason': reason,
         }
@@ -326,15 +328,17 @@ def remove_pending_order(mt5: Any, order: dict[str, Any], reason: str, dry_run: 
     req = {
         'action': mt5.TRADE_ACTION_REMOVE,
         'order': ticket,
-        'comment': 'auto_cleanup stale pending order',
+        'symbol': symbol,
+        'magic': int(order.get('magic') or DEFAULT_STRATEGY_MAGIC),
     }
     result = mt5.order_send(req)
     payload = {
         'ticket': ticket,
-        'comment': str(order.get('comment') or ''),
-        'symbol': str(order.get('symbol') or ''),
+        'comment': comment,
+        'symbol': symbol,
         'status': 'cancel_failed',
         'reason': reason,
+        'request': req,
     }
     if result is not None:
         try:
@@ -347,7 +351,12 @@ def remove_pending_order(mt5: Any, order: dict[str, Any], reason: str, dry_run: 
         except Exception:
             retcode = 0
         payload['retcode'] = retcode
-        payload['status'] = 'cancelled' if retcode == getattr(mt5, 'TRADE_RETCODE_DONE', 10009) else 'cancel_failed'
+        payload['status'] = 'cancelled' if retcode in {getattr(mt5, 'TRADE_RETCODE_DONE', 10009), getattr(mt5, 'TRADE_RETCODE_PLACED', 10008)} else 'cancel_failed'
+    else:
+        try:
+            payload['last_error'] = mt5.last_error()
+        except Exception:
+            pass
     return payload
 
 
