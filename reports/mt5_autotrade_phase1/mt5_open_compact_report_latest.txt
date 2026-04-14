@@ -1,20 +1,22 @@
 MT5 compact open report
 - Symbols: 2
-- Open orders: 5
+- Open orders: 6
 - Open positions: 0
-- Cleanup (live): checked 5 pending | eligible 5 | cancelled 0 | would cancel 0 | failed 0
+- Cleanup (live): checked 6 pending | eligible 6 | cancelled 0 | would cancel 0 | failed 0
 - Cleanup rule: cancel strategy-managed pending orders aged >= 60m when either unfilled age >= 48h (open-market age for Forex, weekend skipped) or current gap-to-entry is >= 75% farther than at submission
-
-AUDCAD
-- p1llm-audcad-0413070920-leg2 | pending 1 | open 0
-  - #142567527 BUY_LIMIT 0.08 lots @ 0.97320 | SL 0.96880 | TP 0.98180 | now 0.97663 | pnl 0.00 (pending) | frac +40% | dfrac +0% | gap_delta +1% | age 1201m
-- p1llm-audcad-0413070920-leg3 | pending 1 | open 0
-  - #142567543 BUY_LIMIT 0.06 lots @ 0.97160 | SL 0.96880 | TP 0.98380 | now 0.97663 | pnl 0.00 (pending) | frac +41% | dfrac +0% | gap_delta +1% | age 1201m
 
 CADCHF
 - p1llm-cadchf-0414050944-leg1 | pending 1 | open 0
-  - #142657876 SELL_LIMIT 0.08 lots @ 0.57570 | SL 0.57945 | TP 0.57020 | now 0.56796 | pnl 0.00 (pending) | frac +141% | dfrac +2% | gap_delta +1% | age 0m
+  - #142657876 SELL_LIMIT 0.08 lots @ 0.57570 | SL 0.57945 | TP 0.57020 | now 0.56710 | pnl 0.00 (pending) | frac +156% | dfrac +17% | gap_delta +12% | age 480m
 - p1llm-cadchf-0414050944-leg2 | pending 1 | open 0
-  - #142657877 SELL_LIMIT 0.09 lots @ 0.57675 | SL 0.57945 | TP 0.56880 | now 0.56796 | pnl 0.00 (pending) | frac +111% | dfrac +1% | gap_delta +1% | age 0m
+  - #142657877 SELL_LIMIT 0.09 lots @ 0.57675 | SL 0.57945 | TP 0.56880 | now 0.56710 | pnl 0.00 (pending) | frac +121% | dfrac +12% | gap_delta +11% | age 480m
 - p1llm-cadchf-0414050944-leg3 | pending 1 | open 0
-  - #142657884 SELL_LIMIT 0.13 lots @ 0.57760 | SL 0.57945 | TP 0.56380 | now 0.56796 | pnl 0.00 (pending) | frac +70% | dfrac +1% | gap_delta +1% | age 0m
+  - #142657884 SELL_LIMIT 0.13 lots @ 0.57760 | SL 0.57945 | TP 0.56380 | now 0.56710 | pnl 0.00 (pending) | frac +76% | dfrac +7% | gap_delta +10% | age 480m
+
+EURCAD
+- p1llm-eurcad-0414071020-leg1 | pending 1 | open 0
+  - #142666980 BUY_LIMIT 0.05 lots @ 1.61720 | SL 1.60740 | TP 1.62380 | now 1.62334 | pnl 0.00 (pending) | frac +93% | dfrac +1% | gap_delta +1% | age 359m
+- p1llm-eurcad-0414071020-leg2 | pending 1 | open 0
+  - #142666992 BUY_LIMIT 0.05 lots @ 1.61380 | SL 1.60740 | TP 1.62680 | now 1.62334 | pnl 0.00 (pending) | frac +73% | dfrac +1% | gap_delta +1% | age 359m
+- p1llm-eurcad-0414071020-leg3 | pending 1 | open 0
+  - #142667009 BUY_LIMIT 0.06 lots @ 1.61020 | SL 1.60740 | TP 1.62980 | now 1.62334 | pnl 0.00 (pending) | frac +67% | dfrac +1% | gap_delta +2% | age 359m

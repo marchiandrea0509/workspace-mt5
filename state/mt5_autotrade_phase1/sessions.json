@@ -93,6 +93,18 @@
       "candidate": "CADCHF",
       "ticket_id": "p1-cadchf-0414050746",
       "processed_at": "2026-04-14T05:07:46Z"
+    },
+    "MT5_FRX|4 hours|2026-04-14T07:06:28.057Z": {
+      "status": "dry_run",
+      "candidate": "EURCAD",
+      "ticket_id": "p1-eurcad-0414070751",
+      "processed_at": "2026-04-14T07:07:51Z"
+    },
+    "MT5_FRX|4 hours|2026-04-14T15:06:24.434Z": {
+      "status": "skipped",
+      "candidate": "USDZAR",
+      "ticket_id": null,
+      "processed_at": "2026-04-14T15:07:36Z"
     }
   }
 }
