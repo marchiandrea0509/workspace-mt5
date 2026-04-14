@@ -37,6 +37,8 @@ def build_phase1_summary(o: dict[str, Any]) -> str:
     lines.append('MT5 Phase1 execution summary')
     lines.append(f"Session: {o.get('session_key')}")
     lines.append(f"Candidate: {o.get('candidate')}")
+    lines.append('Live artifact: reports\\mt5_autotrade_phase1\\mt5_phase1_live_latest.json')
+    lines.append('Baseline artifact: reports\\mt5_autotrade_phase1\\mt5_phase1_latest.json (deterministic baseline, may be dry-run)')
 
     if o.get('plan_source') == 'llm' and o.get('planner_plan'):
         planner = o.get('planner_plan') or {}

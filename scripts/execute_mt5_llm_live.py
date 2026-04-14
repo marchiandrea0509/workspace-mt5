@@ -243,8 +243,21 @@ def main() -> int:
     }
     out_json = reports_out / f'mt5_phase1_llm_live_{stamp}.json'
     latest_json = reports_out / 'mt5_phase1_llm_live_latest.json'
+    live_alias_json = reports_out / 'mt5_phase1_live_latest.json'
+    artifacts_index_json = reports_out / 'mt5_phase1_artifacts_latest.json'
     save_json(out_json, result)
     save_json(latest_json, result)
+    save_json(live_alias_json, result)
+    save_json(artifacts_index_json, {
+        'session_key': baseline.get('session_key'),
+        'candidate': candidate,
+        'baseline_latest': str((reports_out / 'mt5_phase1_latest.json').resolve()),
+        'live_latest': str(live_alias_json.resolve()),
+        'live_latest_legacy': str(latest_json.resolve()),
+        'live_versioned': str(out_json.resolve()),
+        'compact_report_latest': str((reports_out / 'mt5_open_compact_report_latest.txt').resolve()),
+        'note': 'Use live_latest first for the actual LLM live execution result. baseline_latest is the deterministic baseline artifact and may be dry-run only.'
+    })
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
 
