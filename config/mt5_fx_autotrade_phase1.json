@@ -48,5 +48,11 @@
     "minOrderAgeMinutes": 60.0,
     "maxAdverseGapFromSubmissionPct": 75.0,
     "maxUnfilledAgeHours": 48.0
+  },
+  "liveSymbolGuard": {
+    "enabled": true,
+    "mode": "replace_pending_only",
+    "strategyMagic": 26032601,
+    "commentPrefixes": ["p1-", "p1llm-"]
   }
 }

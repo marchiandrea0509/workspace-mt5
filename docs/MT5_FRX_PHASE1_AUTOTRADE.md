@@ -75,6 +75,9 @@ Session key:
   - model: `openai/gpt-5.4-nano`
   - thread output now prepends a fresh compact MT5 open report generated during the cron cycle
   - that report can cancel stale strategy-managed pending orders before posting, using the configured cleanup thresholds in `compactReportCleanup`
+  - live LLM execution now applies a per-symbol guard before emitting new legs:
+    - if the symbol already has active strategy-managed **open positions**, block the new ladder
+    - if the symbol has only older **pending** strategy-managed orders, cancel those pending orders first and then allow the new ladder (`liveSymbolGuard.mode = replace_pending_only`)
 
 ## Manual run
 Dry run:
