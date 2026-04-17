@@ -1,0 +1,199 @@
+﻿[2026-04-17T09:29:49] Boot recovery starting for instance 'oanda_paper_oc'. DelaySeconds=90 TimeoutSeconds=120 SkipCompile=True
+[2026-04-17T09:29:49] Sleeping for 90 seconds to let the user session and network settle.
+[2026-04-17T09:32:10] Recovery script completed. Raw JSON/result follows.
+{
+    "ranAt":  "2026-04-17T09:32:10",
+    "instanceName":  "oanda_paper_oc",
+    "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+    "pointer":  {
+                    "path":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\mql5\\MQL5",
+                    "exists":  true,
+                    "raw":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                    "normalizedRaw":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                    "expected":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                    "normalizedExpected":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                    "matchesExpected":  true
+                },
+    "baseline":  {
+                     "available":  true,
+                     "pointerPath":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\LATEST.json",
+                     "latestSnapshot":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\20260411_094722",
+                     "savedAt":  "2026-04-11T09:47:26"
+                 },
+    "outcome":  "FAILED_AUTH_OR_SYNC",
+    "recommendedNextStep":  "Portable MT5 started but broker authorization/synchronization was not confirmed. Inspect the portable terminal Journal and network/login state before attempting cleanup.",
+    "warnings":  [
+                     "Restart attempt error: MT5 restarted and the EA loaded, but a fresh GrayPaperBridgeEA init line was not found in expert logs.",
+                     "Baseline restore error: MT5 restarted and the EA loaded, but a fresh GrayPaperBridgeEA init line was not found in expert logs."
+                 ],
+    "beforeInventory":  [
+
+                        ],
+    "initialHealth":  {
+                          "instanceName":  "oanda_paper_oc",
+                          "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+                          "terminalExe":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                          "dataRoot":  "C:\\MT5_OANDA_PAPER_OC",
+                          "mql5Root":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                          "bridgeRoot":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge",
+                          "eaSource":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+                          "tradeLog":  "C:\\MT5_OANDA_PAPER_OC\\Logs\\20260417.log",
+                          "expertLog":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Logs\\20260417.log",
+                          "terminalRunning":  false,
+                          "runningPidCount":  0,
+                          "targetPids":  [
+
+                                         ],
+                          "terminalPid":  null,
+                          "terminalStartTime":  null,
+                          "latestCompileResult":  "Result: 0 errors, 0 warnings, 5005 msec elapsed, cpu=\u0027X64 Regular\u0027",
+                          "since":  null,
+                          "latestAuthorizedLine":  null,
+                          "latestSyncLine":  null,
+                          "latestLoadLine":  null,
+                          "latestInitLine":  null,
+                          "latestProcessedLine":  null,
+                          "latestAuthorizedAt":  null,
+                          "latestSyncAt":  null,
+                          "latestLoadAt":  null,
+                          "latestInitAt":  null,
+                          "latestProcessedAt":  null,
+                          "authorizedObserved":  false,
+                          "synchronizedObserved":  false,
+                          "loadObserved":  false,
+                          "initObserved":  false,
+                          "freshAuthorizedObserved":  false,
+                          "freshSynchronizedObserved":  false,
+                          "freshLoadObserved":  false,
+                          "freshInitObserved":  false,
+                          "trailingConfigCount":  12,
+                          "inboxCount":  0,
+                          "outboxCount":  51,
+                          "healthy":  false,
+                          "healthySince":  null
+                      },
+    "actions":  {
+                    "restartAttempted":  true,
+                    "restartSucceeded":  false,
+                    "restartError":  "MT5 restarted and the EA loaded, but a fresh GrayPaperBridgeEA init line was not found in expert logs.",
+                    "restartDetails":  null,
+                    "baselineAvailable":  true,
+                    "baselinePointerPath":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\LATEST.json",
+                    "baselineSnapshotPath":  "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\scripts\\..\\state\\mt5_recovery_baselines\\oanda_paper_oc\\20260411_094722",
+                    "baselineRestoreAttempted":  true,
+                    "baselineRestoreSucceeded":  false,
+                    "baselineRestoreError":  "MT5 restarted and the EA loaded, but a fresh GrayPaperBridgeEA init line was not found in expert logs.",
+                    "baselineRestoreDetails":  null,
+                    "cleanupAttempted":  false,
+                    "cleanupSkippedReason":  "Portable target is not fully healthy; cleanup withheld by guardrail.",
+                    "closedFallbackPids":  [
+
+                                           ],
+                    "closedDuplicateTargetPids":  [
+
+                                                  ],
+                    "cleanupErrors":  [
+
+                                      ],
+                    "keptTargetPid":  null
+                },
+    "healthBeforeCleanup":  {
+                                "instanceName":  "oanda_paper_oc",
+                                "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+                                "terminalExe":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                                "dataRoot":  "C:\\MT5_OANDA_PAPER_OC",
+                                "mql5Root":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                                "bridgeRoot":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge",
+                                "eaSource":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+                                "tradeLog":  "C:\\MT5_OANDA_PAPER_OC\\Logs\\20260417.log",
+                                "expertLog":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Logs\\20260417.log",
+                                "terminalRunning":  true,
+                                "runningPidCount":  1,
+                                "targetPids":  [
+                                                   8
+                                               ],
+                                "terminalPid":  8,
+                                "terminalStartTime":  "2026-04-17T09:31:50",
+                                "latestCompileResult":  "Result: 0 errors, 0 warnings, 5005 msec elapsed, cpu=\u0027X64 Regular\u0027",
+                                "since":  null,
+                                "latestAuthorizedLine":  "IN\t0\t09:31:54.205\tNetwork\t\u002762970600\u0027: authorized on OANDATMS-MT5 through Access Server for clients (ping: 34.09 ms, build 5430)",
+                                "latestSyncLine":  null,
+                                "latestLoadLine":  "RN\t0\t09:31:53.354\tExperts\texpert GrayPaperBridgeEA (EURGBP.pro,H1) loaded successfully",
+                                "latestInitLine":  null,
+                                "latestProcessedLine":  null,
+                                "latestAuthorizedAt":  "2026-04-17T09:31:54",
+                                "latestSyncAt":  null,
+                                "latestLoadAt":  "2026-04-17T09:31:53",
+                                "latestInitAt":  null,
+                                "latestProcessedAt":  null,
+                                "authorizedObserved":  true,
+                                "synchronizedObserved":  false,
+                                "loadObserved":  true,
+                                "initObserved":  false,
+                                "freshAuthorizedObserved":  true,
+                                "freshSynchronizedObserved":  false,
+                                "freshLoadObserved":  true,
+                                "freshInitObserved":  false,
+                                "trailingConfigCount":  12,
+                                "inboxCount":  0,
+                                "outboxCount":  51,
+                                "healthy":  false,
+                                "healthySince":  null
+                            },
+    "afterInventory":  [
+                           {
+                               "pid":  8,
+                               "executablePath":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                               "commandLine":  "\"C:\\MT5_OANDA_PAPER_OC\\terminal64.exe\" /portable /profile:Default ",
+                               "createdAt":  "04/17/2026 09:31:50",
+                               "instanceName":  "oanda_paper_oc",
+                               "classification":  "target",
+                               "isTarget":  true
+                           }
+                       ],
+    "finalHealth":  {
+                        "instanceName":  "oanda_paper_oc",
+                        "instanceLabel":  "Dedicated portable OANDA paper / OpenClaw terminal",
+                        "terminalExe":  "C:\\MT5_OANDA_PAPER_OC\\terminal64.exe",
+                        "dataRoot":  "C:\\MT5_OANDA_PAPER_OC",
+                        "mql5Root":  "C:\\MT5_OANDA_PAPER_OC\\MQL5",
+                        "bridgeRoot":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Files\\gray_bridge",
+                        "eaSource":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Experts\\Gray\\GrayPaperBridgeEA.mq5",
+                        "tradeLog":  "C:\\MT5_OANDA_PAPER_OC\\Logs\\20260417.log",
+                        "expertLog":  "C:\\MT5_OANDA_PAPER_OC\\MQL5\\Logs\\20260417.log",
+                        "terminalRunning":  true,
+                        "runningPidCount":  1,
+                        "targetPids":  [
+                                           8
+                                       ],
+                        "terminalPid":  8,
+                        "terminalStartTime":  "2026-04-17T09:31:50",
+                        "latestCompileResult":  "Result: 0 errors, 0 warnings, 5005 msec elapsed, cpu=\u0027X64 Regular\u0027",
+                        "since":  null,
+                        "latestAuthorizedLine":  "IN\t0\t09:31:54.205\tNetwork\t\u002762970600\u0027: authorized on OANDATMS-MT5 through Access Server for clients (ping: 34.09 ms, build 5430)",
+                        "latestSyncLine":  null,
+                        "latestLoadLine":  "RN\t0\t09:31:53.354\tExperts\texpert GrayPaperBridgeEA (EURGBP.pro,H1) loaded successfully",
+                        "latestInitLine":  null,
+                        "latestProcessedLine":  null,
+                        "latestAuthorizedAt":  "2026-04-17T09:31:54",
+                        "latestSyncAt":  null,
+                        "latestLoadAt":  "2026-04-17T09:31:53",
+                        "latestInitAt":  null,
+                        "latestProcessedAt":  null,
+                        "authorizedObserved":  true,
+                        "synchronizedObserved":  false,
+                        "loadObserved":  true,
+                        "initObserved":  false,
+                        "freshAuthorizedObserved":  true,
+                        "freshSynchronizedObserved":  false,
+                        "freshLoadObserved":  true,
+                        "freshInitObserved":  false,
+                        "trailingConfigCount":  12,
+                        "inboxCount":  0,
+                        "outboxCount":  51,
+                        "healthy":  false,
+                        "healthySince":  null
+                    }
+}
+
+[2026-04-17T09:32:10] Outcome=FAILED_AUTH_OR_SYNC healthy=False healthySince=

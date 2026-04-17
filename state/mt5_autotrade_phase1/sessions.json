@@ -117,6 +117,12 @@
       "candidate": "GBPUSD",
       "ticket_id": "p1-gbpusd-0415130735",
       "processed_at": "2026-04-15T13:07:35Z"
+    },
+    "MT5_FRX|4 hours|2026-04-17T15:06:35.734Z": {
+      "status": "dry_run",
+      "candidate": "EURCAD",
+      "ticket_id": "p1-eurcad-0417150738",
+      "processed_at": "2026-04-17T15:07:38Z"
     }
   }
 }

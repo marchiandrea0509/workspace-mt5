@@ -1,36 +1,20 @@
 MT5 compact open report
-- Symbols: 3
-- Open orders: 12
-- Open positions: 0
-- Cleanup (live): checked 12 pending | eligible 12 | cancelled 0 | would cancel 0 | failed 0
+- Symbols: 1
+- Open orders: 0
+- Open positions: 2
+- Cleanup (live): checked 10 pending | eligible 10 | cancelled 10 | would cancel 0 | failed 0
 - Cleanup rule: cancel strategy-managed pending orders aged >= 60m when either unfilled age >= 48h (open-market age for Forex, weekend skipped) or current gap-to-entry is >= 75% farther than at submission
-
-CADCHF
-- p1llm-cadchf-0414050944-leg1 | pending 1 | open 0
-  - #142657876 SELL_LIMIT 0.08 lots @ 0.57570 | SL 0.57945 | TP 0.57020 | now 0.56782 | pnl 0.00 (pending) | frac +143% | dfrac +4% | gap_delta +3% | age 1800m
-- p1llm-cadchf-0414050944-leg2 | pending 1 | open 0
-  - #142657877 SELL_LIMIT 0.09 lots @ 0.57675 | SL 0.57945 | TP 0.56880 | now 0.56782 | pnl 0.00 (pending) | frac +112% | dfrac +3% | gap_delta +3% | age 1800m
-- p1llm-cadchf-0414050944-leg3 | pending 1 | open 0
-  - #142657884 SELL_LIMIT 0.13 lots @ 0.57760 | SL 0.57945 | TP 0.56380 | now 0.56782 | pnl 0.00 (pending) | frac +71% | dfrac +2% | gap_delta +3% | age 1800m
-- p1llm-cadchf-0415070948-leg1 | pending 1 | open 0
-  - #142749237 SELL_LIMIT 0.16 lots @ 0.57570 | SL 0.57805 | TP 0.57220 | now 0.56782 | pnl 0.00 (pending) | frac +225% | dfrac -11% | gap_delta -5% | age 240m
-- p1llm-cadchf-0415070948-leg2 | pending 1 | open 0
-  - #142749244 SELL_LIMIT 0.16 lots @ 0.57680 | SL 0.57805 | TP 0.57220 | now 0.56782 | pnl 0.00 (pending) | frac +195% | dfrac -8% | gap_delta -4% | age 240m
-- p1llm-cadchf-0415070948-leg3 | pending 1 | open 0
-  - #142749259 SELL_LIMIT 0.16 lots @ 0.57760 | SL 0.57805 | TP 0.57220 | now 0.56782 | pnl 0.00 (pending) | frac +181% | dfrac -7% | gap_delta -4% | age 240m
+- Cleanup cancelled: #142657876 CADCHF.pro SELL_LIMIT | age 4800m | dfrac -32% | gap_delta -23%
+- Cleanup cancelled: #142657877 CADCHF.pro SELL_LIMIT | age 4800m | dfrac -22% | gap_delta -20%
+- Cleanup cancelled: #142657884 CADCHF.pro SELL_LIMIT | age 4800m | dfrac -12% | gap_delta -18%
+- Cleanup cancelled: #142667009 EURCAD.pro BUY_LIMIT | age 4680m | dfrac -44% | gap_delta -66%
+- Cleanup cancelled: #142749237 CADCHF.pro SELL_LIMIT | age 3240m | dfrac -67% | gap_delta -28%
+- Cleanup cancelled: #142749244 CADCHF.pro SELL_LIMIT | age 3240m | dfrac -51% | gap_delta -25%
+- Cleanup cancelled: #142749259 CADCHF.pro SELL_LIMIT | age 3240m | dfrac -43% | gap_delta -23%
+- Cleanup cancelled: #142773951 GBPUSD.pro BUY_LIMIT | age 2880m | dfrac +12% | gap_delta +19%
 
 EURCAD
-- p1llm-eurcad-0414071020-leg1 | pending 1 | open 0
-  - #142666980 BUY_LIMIT 0.05 lots @ 1.61720 | SL 1.60740 | TP 1.62380 | now 1.62370 | pnl 0.00 (pending) | frac +98% | dfrac +7% | gap_delta +7% | age 1680m
-- p1llm-eurcad-0414071020-leg2 | pending 1 | open 0
-  - #142666992 BUY_LIMIT 0.05 lots @ 1.61380 | SL 1.60740 | TP 1.62680 | now 1.62370 | pnl 0.00 (pending) | frac +76% | dfrac +3% | gap_delta +5% | age 1680m
-- p1llm-eurcad-0414071020-leg3 | pending 1 | open 0
-  - #142667009 BUY_LIMIT 0.06 lots @ 1.61020 | SL 1.60740 | TP 1.62980 | now 1.62370 | pnl 0.00 (pending) | frac +69% | dfrac +3% | gap_delta +4% | age 1680m
-
-GBPUSD
-- p1llm-gbpusd-0415130950-leg1 | pending 1 | open 0
-  - #142773951 BUY_LIMIT 0.06 lots @ 1.35030 | SL 1.33480 | TP 1.35880 | now 1.35549 | pnl 0.00 (pending) | frac +61% | dfrac -3% | gap_delta -4% | age 0m
-- p1llm-gbpusd-0415130950-leg2 | pending 1 | open 0
-  - #142773953 BUY_LIMIT 0.09 lots @ 1.34590 | SL 1.33480 | TP 1.35880 | now 1.35549 | pnl 0.00 (pending) | frac +74% | dfrac -1% | gap_delta -2% | age 0m
-- p1llm-gbpusd-0415130950-leg3 | pending 1 | open 0
-  - #142773964 BUY_LIMIT 0.18 lots @ 1.34030 | SL 1.33480 | TP 1.35880 | now 1.35549 | pnl 0.00 (pending) | frac +82% | dfrac -1% | gap_delta -1% | age 0m
+- p1llm-eurcad-0414071020-leg1 | pending 0 | open 1
+  - pos#142666980 0 0.05 lots @ 1.61720 | SL 1.60740 | TP 1.62380 | now 1.61438 | pnl -8.73 | frac -43%
+- p1llm-eurcad-0414071020-leg2 | pending 0 | open 1
+  - pos#142666992 0 0.05 lots @ 1.61377 | SL 1.60740 | TP 1.62680 | now 1.61438 | pnl 1.89 | frac +10%
