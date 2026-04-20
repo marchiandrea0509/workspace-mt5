@@ -1,3 +1,12 @@
 {
-  "assets": {}
+  "assets": {
+    "AUDUSD": {
+      "session_key": "MT5_FRX|4 hours|2026-04-20T05:06:32.821Z",
+      "ticket_id": "p1llm-audusd-0420051014",
+      "placed_at": "2026-04-20T05:10:27Z",
+      "status": "accepted",
+      "source": "phase1_llm_live",
+      "execution_symbol": "AUDUSD.pro"
+    }
+  }
 }

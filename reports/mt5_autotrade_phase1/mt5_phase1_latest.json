@@ -1,17 +1,17 @@
 {
   "result": "trade_review",
-  "session_key": "MT5_FRX|4 hours|2026-04-17T15:06:35.734Z",
-  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-17T15-05-14-629Z.json",
+  "session_key": "MT5_FRX|4 hours|2026-04-20T05:06:32.821Z",
+  "report_path": "C:\\Users\\anmar\\.openclaw\\workspace\\tradingview\\reports\\pine_screener\\pine_screener_2026-04-20T05-05-16-239Z.json",
   "report_resolution": "latest",
-  "candidate": "EURCAD",
-  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260417_150738.md",
-  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_EURCAD_20260417_150738.json",
+  "candidate": "AUDUSD",
+  "analysis_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\mt5_phase1_session_20260420_050819.md",
+  "ticket_path": "C:\\Users\\anmar\\.openclaw\\workspace-mt5\\reports\\mt5_autotrade_phase1\\ticket_AUDUSD_20260420_050819.json",
   "execution": {
     "status": "dry_run",
     "message": "Ticket compiled but not emitted.",
     "preflight": {
       "mode": "applied",
-      "symbol": "EURCAD.pro",
+      "symbol": "AUDUSD.pro",
       "valid_entries": 3,
       "rejected_entries": [],
       "original_entries": 3,
@@ -20,78 +20,101 @@
   },
   "audit": [
     {
-      "symbol": "EURCAD",
+      "symbol": "AUDUSD",
       "passed": true,
       "reasons": []
     },
     {
-      "symbol": "USDCHF",
+      "symbol": "EURCZK",
       "passed": true,
       "reasons": []
     },
     {
-      "symbol": "GBPCHF",
+      "symbol": "USDCZK",
+      "passed": true,
+      "reasons": []
+    },
+    {
+      "symbol": "GBPCAD",
       "passed": false,
       "reasons": [
         "setup code not in allowed continuation set"
       ]
     },
     {
-      "symbol": "EURUSD",
-      "passed": true,
-      "reasons": []
-    },
-    {
-      "symbol": "GBPUSD",
-      "passed": true,
-      "reasons": []
-    },
-    {
-      "symbol": "USDJPY",
+      "symbol": "CADCHF",
       "passed": false,
       "reasons": [
         "setup code not in allowed continuation set",
-        "unable to determine candidate direction"
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final short score below threshold 70.0"
+      ]
+    },
+    {
+      "symbol": "EURHUF",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final short score below threshold 70.0"
       ]
     },
     {
       "symbol": "USDSEK",
-      "passed": true,
-      "reasons": []
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final short score below threshold 70.0"
+      ]
     },
     {
-      "symbol": "CADCHF",
-      "passed": true,
-      "reasons": []
+      "symbol": "AUDCAD",
+      "passed": false,
+      "reasons": [
+        "setup code not in allowed continuation set",
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
     },
     {
-      "symbol": "NZDUSD",
-      "passed": true,
-      "reasons": []
+      "symbol": "EURSEK",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final short score below threshold 70.0"
+      ]
     },
     {
-      "symbol": "AUDUSD",
-      "passed": true,
-      "reasons": []
+      "symbol": "GBPUSD",
+      "passed": false,
+      "reasons": [
+        "best score below threshold 70.0",
+        "conviction below threshold 3",
+        "final long score below threshold 70.0"
+      ]
     }
   ],
   "plan": {
     "report_type": "MT5_FX_DEEP_ANALYSIS_V2",
-    "generated_at_utc": "2026-04-17T15:07:38Z",
-    "symbol": "EURCAD",
-    "description": "EUR/CAD",
+    "generated_at_utc": "2026-04-20T05:08:21Z",
+    "symbol": "AUDUSD",
+    "description": "AUD/USD",
     "source_context": {
       "watchlist": "MT5_FRX",
       "indicator": "OC Hybrid Edge Screener v6",
       "timeframe": "4 hours",
-      "best_score": 79.21426677268897,
+      "best_score": 77.04750332973761,
       "best_setup_code": 2,
       "conviction_state": 3,
       "screener_rank_top5": 1,
-      "tv_root_symbol": "EURCAD",
+      "tv_root_symbol": "AUDUSD",
       "analysis_source_kind": "mt5_python",
-      "analysis_symbol": "EURCAD.pro",
-      "mt5_execution_symbol": "EURCAD.pro",
+      "analysis_symbol": "AUDUSD.pro",
+      "mt5_execution_symbol": "AUDUSD.pro",
       "is_proxy_symbol": false,
       "proxy_source": null
     },
@@ -103,78 +126,78 @@
     },
     "market_source": {
       "kind": "mt5_python",
-      "analysis_symbol": "EURCAD.pro",
-      "execution_symbol": "EURCAD.pro",
+      "analysis_symbol": "AUDUSD.pro",
+      "execution_symbol": "AUDUSD.pro",
       "trade_mode": "FULL",
-      "path": "PRO\\FX\\Major\\EURCAD.pro",
+      "path": "PRO\\FX\\Non-Major\\AUDUSD.pro",
       "digits": 5,
       "volume_min": 0.01,
       "volume_step": 0.01
     },
     "metrics": {
-      "close_h4": 1.6127799999999999,
-      "fast_ema_h4": 1.6168727271971806,
-      "medium_ema_h4": 1.615964461412961,
-      "slow_ema_h4": 1.6056822577895582,
-      "atr_h4": 0.002353760512046055,
-      "rsi_h4": 35.36036417721475,
-      "adx_h4": 32.415329604448544,
-      "plus_di_h4": 11.151431390261537,
-      "minus_di_h4": 29.155678755020443,
-      "macd_hist_h4": -0.0010485678416158658,
-      "rel_volume_h4": 0.3437267268362038,
-      "dist_fast_ema_atr": 1.7388035767593837,
-      "ema_spread_atr": 4.7542939693107575,
-      "d1_close": 1.6127799999999999,
-      "d1_ema50": 1.6050348740928562,
-      "d1_ema200": 1.607164474866024,
-      "d1_rsi": 55.27811826218301,
-      "d1_adx": 42.123701679857774,
-      "d1_plus_di": 31.039676030648316,
-      "d1_minus_di": 16.142832625515712
+      "close_h4": 0.71558,
+      "fast_ema_h4": 0.7151166330458865,
+      "medium_ema_h4": 0.7105700372971756,
+      "slow_ema_h4": 0.7036040382165921,
+      "atr_h4": 0.002536697001193205,
+      "rsi_h4": 53.21646384544152,
+      "adx_h4": 34.097491892134435,
+      "plus_di_h4": 31.024310601925947,
+      "minus_di_h4": 21.385791300409522,
+      "macd_hist_h4": -0.0007534739865064318,
+      "rel_volume_h4": 0.5286572601031893,
+      "dist_fast_ema_atr": 0.18266547163321978,
+      "ema_spread_atr": 4.5384193791686895,
+      "d1_close": 0.71557,
+      "d1_ema50": 0.7016860042457226,
+      "d1_ema200": 0.681176425048321,
+      "d1_rsi": 61.2058233547388,
+      "d1_adx": 26.04246431192814,
+      "d1_plus_di": 36.41984278422834,
+      "d1_minus_di": 16.964575261960885
     },
     "lifecycle": {
       "trend_dir_h4": 1,
-      "macro_dir_d1": 0,
+      "macro_dir_d1": 1,
       "fresh_structure_shift": 0,
-      "breakout_dir": 0,
+      "breakout_dir": 1,
       "breakout_fresh": false,
-      "retest_state": 0,
-      "retest_label": "none",
+      "retest_state": 1,
+      "retest_label": "waiting_retest",
       "fake_breakout_risk": false,
       "overextended": true
     },
     "key_levels": {
-      "analysis_price_reference": 1.61278,
-      "price_reference": 1.61278,
-      "support_zone_level": 1.60962,
-      "support_zone_lower": 1.60903,
-      "support_zone_upper": 1.61021,
-      "resistance_zone_level": 1.61828,
-      "resistance_zone_lower": 1.61769,
-      "resistance_zone_upper": 1.61887,
+      "analysis_price_reference": 0.71558,
+      "price_reference": 0.71558,
+      "support_zone_level": 0.70285,
+      "support_zone_lower": 0.70221,
+      "support_zone_upper": 0.70348,
+      "resistance_zone_level": 0.71877,
+      "resistance_zone_lower": 0.71814,
+      "resistance_zone_upper": 0.7194,
       "selected_zone_touches": 4,
-      "selected_zone_age_bars": 250,
+      "selected_zone_age_bars": 240,
       "selected_zone_quality_score": 0.5,
       "analysis_ladder_entries": [
-        1.5617,
-        1.61021,
-        1.60962
+        0.69863,
+        0.69503,
+        0.70348
       ],
       "ladder_entries": [
-        1.60903,
-        1.60962,
-        1.61021
+        0.69863,
+        0.70221,
+        0.70285
       ],
-      "ema_pullback_zone_from": 1.60903,
-      "ema_pullback_zone_to": 1.60962,
-      "slow_ema_invalidation_anchor": 1.60568,
-      "breakout_trigger": 1.6153,
-      "breakout_limit": 1.61554,
-      "entry": 1.60962,
-      "stop_loss": 1.60832,
-      "tp1": 1.61092,
-      "tp2": 1.61196,
+      "ema_pullback_zone_from": 0.69863,
+      "ema_pullback_zone_to": 0.70221,
+      "slow_ema_invalidation_anchor": 0.7036,
+      "breakout_trigger": 0.72191,
+      "breakout_limit": 0.72216,
+      "entry": 0.70123,
+      "stop_loss": 0.69787,
+      "tp1": 0.70459,
+      "tp2": 0.70728,
       "level_selection_notes": [
         "included screener tactical support levels (S1/S2 Below) in ladder construction"
       ]
@@ -196,33 +219,33 @@
       "risk_budget_max_usdt": 150.0,
       "preferred_max_margin_usdt": 1000.0,
       "max_margin_usdt": 1500.0,
-      "model_leverage": 30,
+      "model_leverage": 21,
       "max_model_leverage": 30.0,
-      "quote_to_usd": 0.731670733536494,
+      "quote_to_usd": 1.0,
       "contract_size": 100000.0,
-      "volume_lots": 0.38,
-      "total_risk_usdt": 36.14,
-      "total_notional_usdt": 44753.05,
-      "total_margin_usdt": 1491.77,
-      "binding_constraint": "margin_cap_or_symbol_value_kept_risk_far_below_target",
+      "volume_lots": 0.29,
+      "total_risk_usdt": 97.44,
+      "total_notional_usdt": 20335.67,
+      "total_margin_usdt": 968.37,
+      "binding_constraint": "risk_budget",
       "rr_tp1": 1.0,
       "rr_tp2": 1.8
     },
     "trade_ticket_preview": {
       "side": "buy",
-      "tv_root_symbol": "EURCAD",
-      "analysis_symbol": "EURCAD.pro",
-      "mt5_execution_symbol": "EURCAD.pro",
+      "tv_root_symbol": "AUDUSD",
+      "analysis_symbol": "AUDUSD.pro",
+      "mt5_execution_symbol": "AUDUSD.pro",
       "is_proxy_symbol": false,
       "proxy_source": null,
       "order_plan": "limit_ladder",
       "entry_type": "limit",
-      "entry": 1.60962,
-      "sl": 1.60832,
-      "tp_live": 1.61196,
-      "planned_tp1": 1.61092,
-      "planned_tp2": 1.61196,
-      "volume_lots": 0.38,
+      "entry": 0.70123,
+      "sl": 0.69787,
+      "tp_live": 0.70728,
+      "planned_tp1": 0.70459,
+      "planned_tp2": 0.70728,
+      "volume_lots": 0.29,
       "max_risk_usdt": 100.0,
       "bridge_fallback_reason": null
     },
@@ -230,7 +253,7 @@
       "Deep analysis v2 is MT5-native for H4/D1 market structure, indicators, and level geometry.",
       "TradingView screener still ranks/selects candidates, but execution-grade analysis now uses broker-feed MT5 candles.",
       "Bridge now supports multi-entry pending packages for ladder execution; hybrid cancel-on-fill is managed by package state in the EA timer loop.",
-      "Selected support zone quality=0.50, touches=4, age_bars=250.",
+      "Selected support zone quality=0.50, touches=4, age_bars=240.",
       "included screener tactical support levels (S1/S2 Below) in ladder construction",
       "Phase1 stop-loss is anchored to the first meaningful 4H support/resistance invalidation level with a 0.30 ATR buffer."
     ]

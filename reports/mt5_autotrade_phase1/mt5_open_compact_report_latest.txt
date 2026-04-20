@@ -1,20 +1,14 @@
 MT5 compact open report
 - Symbols: 1
-- Open orders: 0
-- Open positions: 2
-- Cleanup (live): checked 10 pending | eligible 10 | cancelled 10 | would cancel 0 | failed 0
+- Open orders: 3
+- Open positions: 0
+- Cleanup (live): checked 3 pending | eligible 3 | cancelled 0 | would cancel 0 | failed 0
 - Cleanup rule: cancel strategy-managed pending orders aged >= 60m when either unfilled age >= 48h (open-market age for Forex, weekend skipped) or current gap-to-entry is >= 75% farther than at submission
-- Cleanup cancelled: #142657876 CADCHF.pro SELL_LIMIT | age 4800m | dfrac -32% | gap_delta -23%
-- Cleanup cancelled: #142657877 CADCHF.pro SELL_LIMIT | age 4800m | dfrac -22% | gap_delta -20%
-- Cleanup cancelled: #142657884 CADCHF.pro SELL_LIMIT | age 4800m | dfrac -12% | gap_delta -18%
-- Cleanup cancelled: #142667009 EURCAD.pro BUY_LIMIT | age 4680m | dfrac -44% | gap_delta -66%
-- Cleanup cancelled: #142749237 CADCHF.pro SELL_LIMIT | age 3240m | dfrac -67% | gap_delta -28%
-- Cleanup cancelled: #142749244 CADCHF.pro SELL_LIMIT | age 3240m | dfrac -51% | gap_delta -25%
-- Cleanup cancelled: #142749259 CADCHF.pro SELL_LIMIT | age 3240m | dfrac -43% | gap_delta -23%
-- Cleanup cancelled: #142773951 GBPUSD.pro BUY_LIMIT | age 2880m | dfrac +12% | gap_delta +19%
 
-EURCAD
-- p1llm-eurcad-0414071020-leg1 | pending 0 | open 1
-  - pos#142666980 0 0.05 lots @ 1.61720 | SL 1.60740 | TP 1.62380 | now 1.61438 | pnl -8.73 | frac -43%
-- p1llm-eurcad-0414071020-leg2 | pending 0 | open 1
-  - pos#142666992 0 0.05 lots @ 1.61377 | SL 1.60740 | TP 1.62680 | now 1.61438 | pnl 1.89 | frac +10%
+AUDUSD
+- p1llm-audusd-0420051014-leg1 | pending 1 | open 0
+  - #143000612 BUY_LIMIT 0.07 lots @ 0.71260 | SL 0.70640 | TP 0.71980 | now 0.71560 | pnl 0.00 (pending) | frac +42% | dfrac +1% | gap_delta +2% | age 0m
+- p1llm-audusd-0420051014-leg2 | pending 1 | open 0
+  - #143000614 BUY_LIMIT 0.07 lots @ 0.71120 | SL 0.70640 | TP 0.72190 | now 0.71560 | pnl 0.00 (pending) | frac +41% | dfrac +1% | gap_delta +2% | age 0m
+- p1llm-audusd-0420051014-leg3 | pending 1 | open 0
+  - #143000617 BUY_LIMIT 0.07 lots @ 0.70960 | SL 0.70640 | TP 0.72480 | now 0.71560 | pnl 0.00 (pending) | frac +39% | dfrac +0% | gap_delta +1% | age 0m

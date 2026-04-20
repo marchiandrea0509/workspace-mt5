@@ -123,6 +123,12 @@
       "candidate": "EURCAD",
       "ticket_id": "p1-eurcad-0417150738",
       "processed_at": "2026-04-17T15:07:38Z"
+    },
+    "MT5_FRX|4 hours|2026-04-20T05:06:32.821Z": {
+      "status": "dry_run",
+      "candidate": "AUDUSD",
+      "ticket_id": "p1-audusd-0420050821",
+      "processed_at": "2026-04-20T05:08:21Z"
     }
   }
 }
