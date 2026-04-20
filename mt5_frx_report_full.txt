@@ -1,0 +1,71 @@
+TV Pine Screener 4H - MT5_FRX
+Run: 2026-04-20 15:09 Berlin
+Watchlist: MT5_FRX
+Indicator: OC Hybrid Edge Screener v6
+Scanned: 42 symbols
+Top 5: USDCHF 71.4 | GBPCHF 70.8 | USDCZK 68.7 | USDNOK 68.5 | USDSEK 68.0
+
+```
+Top 5 by 03 Best Score (4H)
+TV Column                  | #1 USDCHF | #2 GBPCHF | #3 USDCZK | #4 USDNOK | #5 USDSEK
+---------------------------+-----------+-----------+-----------+-----------+----------
+01 Signal Dir              | 0         | 0         | 0         | 0         | 0        
+02 Best Setup Code         | -2        | 1         | -2        | -2        | -2       
+03 Best Score              | 71.4      | 70.8      | 68.7      | 68.5      | 68.0     
+04 Final Long Score        | 26.5      | 70.8      | 17.6      | 29.9      | 26.9     
+05 Final Short Score       | 71.4      | 42.9      | 68.7      | 68.5      | 68.0     
+06 Long Continuation       | 42.9      | 57.1      | 45.1      | 37.8      | 45.8     
+07 Short Continuation      | 77.4      | 54.9      | 74.7      | 78.5      | 74.0     
+08 Long MeanRev            | 50.5      | 74.8      | 45.6      | 57.9      | 56.9     
+09 Short MeanRev           | 56.3      | 39.4      | 58.1      | 49.8      | 46.9     
+10 Conviction State        | 3         | 3         | 2         | 2         | 2        
+11 Trend Dir               | -1        | 1         | -1        | -1        | -1       
+12 Macro Dir 1D            | -1        | 0         | -1        | -1        | -1       
+13 Position State          | 0         | 0         | 0         | 0         | 0        
+14 Breakout Dir            | 0         | 0         | 0         | 0         | 0        
+15 Retest Dir              | 0         | 0         | 0         | 0         | 0        
+16 ADX                     | 26.2      | 35.7      | 33.5      | 32.5      | 25.7     
+17 Rel Volume              | 0.056     | 0.068     | 0.072     | 0.087     | 0.087    
+18 Dist Fast EMA ATR       | 0.715     | 1.60      | 0.041     | 1.38      | 0.787    
+19 Sweep Dir               | 1         | 1         | -1        | 0         | 1        
+20 Displacement Dir        | 0         | 0         | 0         | 0         | 0        
+21 PD State                | 1         | 2         | 1         | 2         | 1        
+22 FVG State               | -2        | 0         | 2         | -2        | 2        
+23 Tactical Trend Score    | -82.4     | -37.0     | -55.5     | -87.2     | -83.1    
+24 Tactical Breakout Score | -5.24     | -22.1     | 6.35      | -23.2     | -8.10    
+25 Tactical MeanRev Score  | 24.2      | 51.2      | 5.32      | 46.9      | 25.6     
+26 Fresh Struct Shift      | 0         | -2        | -1        | 0         | -1       
+27 Verdict State           | -2        | 1         | -1        | -1        | -1       
+28 Momentum State          | -1        | -1        | 1         | -1        | -1       
+29 Signed Conviction       | -3        | 3         | -2        | -2        | -2       
+30 Break Fresh State       | 0         | 0         | 0         | 0         | -2       
+31 Retest Stage            | 0         | 0         | 0         | 0         | -1       
+32 Short MR Struct         | 100       | 100       | 80        | 60        | 80       
+33 Dist To Resistance %    | 0.004033  | 0.005878  | 0.027     | 0.049     | 0.023    
+34 Zone Count              | 3         | 4         | 3         | 3         | 5        
+35 EMA Trend State         | -1        | 0         | -1        | -1        | -1       
+36 VWAP20                  | 0.782     | 1.06      | 20.6      | 9.38      | 9.17     
+37 Dist To Support %       | —         | 0.001734  | —         | —         | —        
+38 Lifecycle Long Score    | 50        | 50        | 50        | 50        | 18       
+39 R1 Above                | 0.784     | 1.06      | 21.2      | 9.80      | 9.35     
+40 R2 Above                | 0.793     | —         | 21.3      | —         | 9.49     
+41 S1 Below                | —         | 1.05      | —         | —         | —        
+42 S2 Below                | —         | 1.04      | —         | —         | —        
+43 Cnt Res Above           | 2         | 1         | 3         | 1         | 3        
+44 Cnt Sup Below           | 0         | 2         | 0         | 0         | 0        
+45 Cnt Res All             | 2         | 2         | 3         | 1         | 3        
+46 Cnt Sup All             | 1         | 2         | 0         | 2         | 2        
+47 Lifecycle Short Score   | 50        | 50        | 50        | 50        | 86       
+48 Winner Dir              | -1        | 1         | -1        | -1        | -1       
+49 Winner Family Code      | 2         | 1         | 2         | 2         | 2        
+50 Winner Margin           | 44.9      | 27.9      | 51.1      | 38.7      | 41.1     
+51 Winner Base Score       | 77.4      | 74.8      | 74.7      | 78.5      | 74.0     
+52 Winner Penalty          | 6         | 4         | 6         | 10        | 6        
+53 Winner Tactical         | 71.8      | 52.1      | 66.8      | 72.6      | 71.7     
+54 Winner Macro            | 100       | 43        | 100       | 93        | 100      
+55 Winner Structure        | 50        | 100       | 50        | 50        | 50       
+56 Winner ADX Fit          | 93        | 30        | 93        | 93        | 93       
+57 Winner Lifecycle        | 50        | 50        | 50        | 50        | 86       
+58 Winner Context Boost    | 0         | 8         | 1         | 1         | -6       
+59 Winner Family Edge      | 21.2      | -17.6     | 16.6      | 28.7      | 27.1
+```

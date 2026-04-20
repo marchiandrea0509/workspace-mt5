@@ -7,6 +7,30 @@
       "status": "accepted",
       "source": "phase1_llm_live",
       "execution_symbol": "AUDUSD.pro"
+    },
+    "USDCZK": {
+      "session_key": "MT5_FRX|4 hours|2026-04-20T07:09:43.969Z",
+      "ticket_id": "p1llm-usdczk-0420071257",
+      "placed_at": "2026-04-20T07:13:13Z",
+      "status": "accepted",
+      "source": "phase1_llm_live",
+      "execution_symbol": "USDCZK.pro"
+    },
+    "USDCHF": {
+      "session_key": "MT5_FRX|4 hours|2026-04-20T13:09:14.089Z",
+      "ticket_id": "p1llm-usdchf-0420131227",
+      "placed_at": "2026-04-20T13:12:42Z",
+      "status": "accepted",
+      "source": "phase1_llm_live",
+      "execution_symbol": "USDCHF.pro"
+    },
+    "EURCZK": {
+      "session_key": "MT5_FRX|4 hours|2026-04-20T15:06:34.672Z",
+      "ticket_id": "p1llm-eurczk-0420151359",
+      "placed_at": "2026-04-20T15:14:13Z",
+      "status": "accepted",
+      "source": "phase1_llm_live",
+      "execution_symbol": "EURCZK.pro"
     }
   }
 }

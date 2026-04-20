@@ -129,6 +129,24 @@
       "candidate": "AUDUSD",
       "ticket_id": "p1-audusd-0420050821",
       "processed_at": "2026-04-20T05:08:21Z"
+    },
+    "MT5_FRX|4 hours|2026-04-20T07:09:43.969Z": {
+      "status": "dry_run",
+      "candidate": "USDCZK",
+      "ticket_id": "p1-usdczk-0420071107",
+      "processed_at": "2026-04-20T07:11:07Z"
+    },
+    "MT5_FRX|4 hours|2026-04-20T13:09:14.089Z": {
+      "status": "dry_run",
+      "candidate": "USDCHF",
+      "ticket_id": "p1-usdchf-0420131044",
+      "processed_at": "2026-04-20T13:10:44Z"
+    },
+    "MT5_FRX|4 hours|2026-04-20T15:06:34.672Z": {
+      "status": "dry_run",
+      "candidate": "EURCZK",
+      "ticket_id": "p1-eurczk-0420151218",
+      "processed_at": "2026-04-20T15:12:18Z"
     }
   }
 }
