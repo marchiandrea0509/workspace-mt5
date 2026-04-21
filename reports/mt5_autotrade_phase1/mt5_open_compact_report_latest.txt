@@ -1,38 +1,54 @@
 MT5 compact open report
-- Symbols: 4
-- Open orders: 12
+- Symbols: 6
+- Open orders: 18
 - Open positions: 0
-- Cleanup (live): checked 12 pending | eligible 12 | cancelled 0 | would cancel 0 | failed 0
+- Cleanup (live): checked 18 pending | eligible 18 | cancelled 0 | would cancel 0 | failed 0
 - Cleanup rule: cancel strategy-managed pending orders aged >= 60m when either unfilled age >= 48h (open-market age for Forex, weekend skipped) or current gap-to-entry is >= 75% farther than at submission
 
 AUDUSD
 - p1llm-audusd-0420051014-leg1 | pending 1 | open 0
-  - #143000612 BUY_LIMIT 0.07 lots @ 0.71260 | SL 0.70640 | TP 0.71980 | now 0.71633 | pnl 0.00 (pending) | frac +52% | dfrac +11% | gap_delta +27% | age 484m
+  - #143000612 BUY_LIMIT 0.07 lots @ 0.71260 | SL 0.70640 | TP 0.71980 | now 0.71715 | pnl 0.00 (pending) | frac +63% | dfrac +22% | gap_delta +54% | age 1922m
 - p1llm-audusd-0420051014-leg2 | pending 1 | open 0
-  - #143000614 BUY_LIMIT 0.07 lots @ 0.71120 | SL 0.70640 | TP 0.72190 | now 0.71633 | pnl 0.00 (pending) | frac +48% | dfrac +8% | gap_delta +19% | age 484m
+  - #143000614 BUY_LIMIT 0.07 lots @ 0.71120 | SL 0.70640 | TP 0.72190 | now 0.71715 | pnl 0.00 (pending) | frac +56% | dfrac +15% | gap_delta +38% | age 1922m
 - p1llm-audusd-0420051014-leg3 | pending 1 | open 0
-  - #143000617 BUY_LIMIT 0.07 lots @ 0.70960 | SL 0.70640 | TP 0.72480 | now 0.71633 | pnl 0.00 (pending) | frac +44% | dfrac +5% | gap_delta +13% | age 484m
+  - #143000617 BUY_LIMIT 0.07 lots @ 0.70960 | SL 0.70640 | TP 0.72480 | now 0.71715 | pnl 0.00 (pending) | frac +50% | dfrac +11% | gap_delta +27% | age 1922m
 
 EURCZK
 - p1llm-eurczk-0420151359-leg1 | pending 1 | open 0
-  - #143038582 SELL_LIMIT 0.08 lots @ 24.38300 | SL 24.55100 | TP 24.31500 | now 24.28000 | pnl 0.00 (pending) | frac +151% | dfrac +20% | gap_delta +15% | age 0m
+  - #143038582 SELL_LIMIT 0.08 lots @ 24.38300 | SL 24.55100 | TP 24.31500 | now 24.29800 | pnl 0.00 (pending) | frac +125% | dfrac -7% | gap_delta -5% | age 1318m
 - p1llm-eurczk-0420151359-leg2 | pending 1 | open 0
-  - #143038604 SELL_LIMIT 0.08 lots @ 24.42100 | SL 24.55100 | TP 24.31500 | now 24.28000 | pnl 0.00 (pending) | frac +133% | dfrac +13% | gap_delta +11% | age 0m
+  - #143038604 SELL_LIMIT 0.08 lots @ 24.42100 | SL 24.55100 | TP 24.31500 | now 24.29800 | pnl 0.00 (pending) | frac +116% | dfrac -4% | gap_delta -4% | age 1318m
 - p1llm-eurczk-0420151359-leg3 | pending 1 | open 0
-  - #143038614 SELL_LIMIT 0.09 lots @ 24.45900 | SL 24.55100 | TP 24.31500 | now 24.28000 | pnl 0.00 (pending) | frac +124% | dfrac +9% | gap_delta +8% | age 0m
+  - #143038614 SELL_LIMIT 0.09 lots @ 24.45900 | SL 24.55100 | TP 24.31500 | now 24.29800 | pnl 0.00 (pending) | frac +112% | dfrac -3% | gap_delta -3% | age 1318m
+
+USDCAD
+- p1llm-usdcad-0421131136-leg1 | pending 1 | open 0
+  - #143086477 SELL_LIMIT 0.13 lots @ 1.37145 | SL 1.37620 | TP 1.36720 | now 1.36412 | pnl 0.00 (pending) | frac +172% | dfrac +25% | gap_delta +17% | age 0m
+- p1llm-usdcad-0421131136-leg2 | pending 1 | open 0
+  - #143086484 SELL_LIMIT 0.13 lots @ 1.37235 | SL 1.37620 | TP 1.36620 | now 1.36412 | pnl 0.00 (pending) | frac +134% | dfrac +17% | gap_delta +15% | age 0m
+- p1llm-usdcad-0421131136-leg3 | pending 1 | open 0
+  - #143086490 SELL_LIMIT 0.14 lots @ 1.37478 | SL 1.37620 | TP 1.36320 | now 1.36412 | pnl 0.00 (pending) | frac +92% | dfrac +9% | gap_delta +11% | age 0m
 
 USDCHF
 - p1llm-usdchf-0420131227-leg1 | pending 1 | open 0
-  - #143023717 SELL_LIMIT 0.20 lots @ 0.78324 | SL 0.78535 | TP 0.77890 | now 0.77865 | pnl 0.00 (pending) | frac +106% | dfrac +49% | gap_delta +86% | age 2m
+  - #143023717 SELL_LIMIT 0.20 lots @ 0.78324 | SL 0.78535 | TP 0.77890 | now 0.77936 | pnl 0.00 (pending) | frac +89% | dfrac +33% | gap_delta +57% | age 1440m
 - p1llm-usdchf-0420131227-leg2 | pending 1 | open 0
-  - #143023725 SELL_LIMIT 0.15 lots @ 0.78370 | SL 0.78535 | TP 0.77890 | now 0.77865 | pnl 0.00 (pending) | frac +105% | dfrac +44% | gap_delta +73% | age 2m
+  - #143023725 SELL_LIMIT 0.15 lots @ 0.78370 | SL 0.78535 | TP 0.77890 | now 0.77936 | pnl 0.00 (pending) | frac +90% | dfrac +29% | gap_delta +48% | age 1439m
 - p1llm-usdchf-0420131227-leg3 | pending 1 | open 0
-  - #143023731 SELL_LIMIT 0.10 lots @ 0.78410 | SL 0.78535 | TP 0.77890 | now 0.77865 | pnl 0.00 (pending) | frac +105% | dfrac +40% | gap_delta +62% | age 2m
+  - #143023731 SELL_LIMIT 0.10 lots @ 0.78410 | SL 0.78535 | TP 0.77890 | now 0.77936 | pnl 0.00 (pending) | frac +91% | dfrac +26% | gap_delta +41% | age 1439m
 
 USDCZK
 - p1llm-usdczk-0420071257-leg1 | pending 1 | open 0
-  - #143005301 SELL_LIMIT 0.04 lots @ 20.69500 | SL 20.84200 | TP 20.58000 | now 20.62300 | pnl 0.00 (pending) | frac +63% | dfrac +23% | gap_delta +60% | age 361m
+  - #143005301 SELL_LIMIT 0.04 lots @ 20.69500 | SL 20.84200 | TP 20.58000 | now 20.66400 | pnl 0.00 (pending) | frac +27% | dfrac -12% | gap_delta -31% | age 1799m
 - p1llm-usdczk-0420071257-leg2 | pending 1 | open 0
-  - #143005305 SELL_LIMIT 0.06 lots @ 20.73500 | SL 20.84200 | TP 20.58000 | now 20.62300 | pnl 0.00 (pending) | frac +72% | dfrac +17% | gap_delta +31% | age 361m
+  - #143005305 SELL_LIMIT 0.06 lots @ 20.73500 | SL 20.84200 | TP 20.58000 | now 20.66400 | pnl 0.00 (pending) | frac +46% | dfrac -9% | gap_delta -17% | age 1799m
 - p1llm-usdczk-0420071257-leg3 | pending 1 | open 0
-  - #143005309 SELL_LIMIT 0.15 lots @ 20.78500 | SL 20.84200 | TP 20.58000 | now 20.62300 | pnl 0.00 (pending) | frac +79% | dfrac +13% | gap_delta +20% | age 361m
+  - #143005309 SELL_LIMIT 0.15 lots @ 20.78500 | SL 20.84200 | TP 20.58000 | now 20.66400 | pnl 0.00 (pending) | frac +59% | dfrac -7% | gap_delta -11% | age 1799m
+
+USDSEK
+- p1llm-usdsek-0421071303-leg1 | pending 1 | open 0
+  - #143065423 SELL_LIMIT 0.02 lots @ 9.34640 | SL 9.50140 | TP 9.21800 | now 9.14850 | pnl 0.00 (pending) | frac +154% | dfrac -8% | gap_delta -5% | age 359m
+- p1llm-usdsek-0421071303-leg2 | pending 1 | open 0
+  - #143065455 SELL_LIMIT 0.02 lots @ 9.36210 | SL 9.50140 | TP 9.21800 | now 9.14850 | pnl 0.00 (pending) | frac +148% | dfrac -7% | gap_delta -4% | age 359m
+- p1llm-usdsek-0421071303-leg3 | pending 1 | open 0
+  - #143065458 SELL_LIMIT 0.05 lots @ 9.49200 | SL 9.50140 | TP 9.21800 | now 9.14850 | pnl 0.00 (pending) | frac +125% | dfrac -4% | gap_delta -3% | age 359m

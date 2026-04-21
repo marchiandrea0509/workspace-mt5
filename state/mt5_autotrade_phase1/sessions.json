@@ -147,6 +147,23 @@
       "candidate": "EURCZK",
       "ticket_id": "p1-eurczk-0420151218",
       "processed_at": "2026-04-20T15:12:18Z"
+    },
+    "MT5_FRX|4 hours|2026-04-21T07:07:02.613Z": {
+      "status": "dry_run",
+      "candidate": "USDSEK",
+      "ticket_id": "p1-usdsek-0421071052",
+      "processed_at": "2026-04-21T07:10:52Z"
+    },
+    "MT5_FRX|4 hours|2026-04-21T13:08:28.861Z": {
+      "status": "dry_run",
+      "candidate": "USDCAD",
+      "ticket_id": "p1-usdcad-0421130951",
+      "processed_at": "2026-04-21T13:09:51Z"
+    },
+    "MT5_FRX|4 hours|2026-04-21T15:09:54.343Z": {
+      "status": "no_trade",
+      "reason": "no candidate passed the predefined criteria",
+      "processed_at": "2026-04-21T15:11:33Z"
     }
   }
 }

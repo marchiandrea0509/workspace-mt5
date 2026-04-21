@@ -31,6 +31,22 @@
       "status": "accepted",
       "source": "phase1_llm_live",
       "execution_symbol": "EURCZK.pro"
+    },
+    "USDSEK": {
+      "session_key": "MT5_FRX|4 hours|2026-04-21T07:07:02.613Z",
+      "ticket_id": "p1llm-usdsek-0421071303",
+      "placed_at": "2026-04-21T07:13:18Z",
+      "status": "accepted",
+      "source": "phase1_llm_live",
+      "execution_symbol": "USDSEK.pro"
+    },
+    "USDCAD": {
+      "session_key": "MT5_FRX|4 hours|2026-04-21T13:08:28.861Z",
+      "ticket_id": "p1llm-usdcad-0421131136",
+      "placed_at": "2026-04-21T13:11:53Z",
+      "status": "accepted",
+      "source": "phase1_llm_live",
+      "execution_symbol": "USDCAD.pro"
     }
   }
 }
