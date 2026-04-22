@@ -164,6 +164,11 @@
       "status": "no_trade",
       "reason": "no candidate passed the predefined criteria",
       "processed_at": "2026-04-21T15:11:33Z"
+    },
+    "MT5_FRX|4 hours|2026-04-22T05:09:29.708Z": {
+      "status": "no_trade",
+      "reason": "no candidate passed the predefined criteria",
+      "processed_at": "2026-04-22T05:12:00Z"
     }
   }
 }
